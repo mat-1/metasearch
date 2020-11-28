@@ -20,20 +20,19 @@ function getElements(dom, query) {
 	const results = []
 
 	for (const element of elements.get()) {
-		results.push(dom(resultItelementemEl))
+		results.push(dom(element))
 	}
 	return results
 }
 
 function extractText(dom, query) {
 	const element = dom.find(query)
-	return titleEl.text()
+	return element.text()
 }
 
 // for google, bing, etc
 async function parseResultList(url, {resultItemPath, titlePath}) {
-	const results = []
-	const resultListEls = $(resultItemPath)
+	const $ = await requestDom(url)
 
 	for (const resultItemEl of getElements($, resultItemPath)) {
 		const title = extractText(resultItemEl, titlePath)
