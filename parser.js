@@ -1,4 +1,4 @@
-const fetch = require("node-fetch")
+const fetch = require('node-fetch')
 const cheerio = require('cheerio')
 
 async function requestRaw(url) {
@@ -8,6 +8,10 @@ async function requestRaw(url) {
 		}
 	})
 	return await response.text()
+}
+
+async function requestJSON(url) {
+	return JSON.parse(await requestRaw(url))
 }
 
 async function requestDom(url) {
@@ -27,22 +31,77 @@ function getElements(dom, query) {
 
 function extractText(dom, query) {
 	const element = dom.find(query)
-	return element.text()
+	return element.text().trim()
+}
+
+function extractAttribute(dom, query, attribute) {
+	const element = dom.find(query)
+	return element.attr(attribute)
+}
+
+function extractHref(dom, query) {
+	return extractAttribute(dom, query, 'href')
 }
 
 // for google, bing, etc
-async function parseResultList(url, {resultItemPath, titlePath}) {
+async function parseResultList(url, {
+	resultItemPath,
+	titlePath,
+	hrefPath,
+	contentPath,
+	suggestionPath,
+
+	featuredSnippetPath,
+	featuredSnippetContentPath,
+	featuredSnippetTitlePath,
+	featuredSnippetHrefPath,
+
+}) {
 	const $ = await requestDom(url)
 
-	for (const resultItemEl of getElements($, resultItemPath)) {
-		const title = extractText(resultItemEl, titlePath)
-		if (!title) continue
+	const results = []
 
-		console.log(title)
+	const resultElements = getElements($, resultItemPath)
+	
+	var featuredSnippetContent = null
+	var featuredSnippetTitle = null
+	var featuredSnippetUrl = null
+
+
+	for (const resultItemIndex in resultElements) {
+		const resultItemEl = resultElements[resultItemIndex]
+		const resultTitle = extractText(resultItemEl, titlePath)
+		if (!resultTitle) continue
+		const resultUrl = extractHref(resultItemEl, hrefPath)
+		const resultContent = extractText(resultItemEl, contentPath)
+
+
+		if (featuredSnippetPath) {
+			const featuredSnippetEl = $(featuredSnippetPath)
+			if (featuredSnippetEl.length > 0) {
+				featuredSnippetContent = extractText(featuredSnippetEl, featuredSnippetContentPath)
+				featuredSnippetTitle = extractText(featuredSnippetEl, featuredSnippetTitlePath)
+				featuredSnippetUrl = extractHref(featuredSnippetEl, featuredSnippetHrefPath)
+			}
+		}
+	
+
+		results.push({
+			title: resultTitle,
+			url: resultUrl,
+			content: resultContent,
+			position: parseInt(resultItemIndex) + 1 // starts at 1
+		})
+	}
+	return {
+		results,
+		answer: featuredSnippetContent !== null ? {
+			content: featuredSnippetContent,
+			title: featuredSnippetTitle,
+			url: featuredSnippetUrl,
+		} : null
 	}
 }
 
-parseResultList('https://google.com/search?q=matdoesdev', {
-	resultItemPath: 'div.g',
-	titlePath: 'h3'
-})
+module.exports = { requestRaw, parseResultList, requestJSON }
+
