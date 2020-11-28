@@ -10,10 +10,10 @@ async function request(query) {
 		contentPath: 'div.IsZvec',
 		suggestionPath: 'p.card-section a:first-of-type',
 
-		featuredSnippetPath: '.ifM9O',
-		featuredSnippetContentPath: '.hgKElc',
-		featuredSnippetTitlePath: 'div.rc a > h3',
-		featuredSnippetHrefPath: 'div.rc a',
+		featuredSnippetPath: '.c2xzTb, #wp-tabs-container',
+		featuredSnippetContentPath: '.hgKElc, .kno-rdesc > div > span:first-of-type',
+		featuredSnippetTitlePath: 'div.rc a > h3, h2.kno-ecr-pt',
+		featuredSnippetHrefPath: 'div.rc a, .kno-rdesc a',
 	})
 }
 
