@@ -11,7 +11,8 @@ async function request(query) {
 		sidebar: {
 			title: article.title,
 			content: article.extract,
-			image: article.thumbnail ? article.thumbnail.source : undefined
+			image: article.thumbnail ? article.thumbnail.source : undefined,
+			url: 'https://en.wikipedia.org/wiki/' + article.title.replace(' ', '_')
 		}
 	}
 }

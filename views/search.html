@@ -3,14 +3,14 @@
 {% block body %}
 <header>
 	<form action="/search" id="search-form" class="search-form-left-offset" role="search">
-		<input type="text" name="q" id="search-bar" value="{{ query }}">
+		<input type="text" name="q" id="search-bar" value="{{ query }}" autocomplete="off">
 	</form>
 </header>
 <div id="results">
 	{% if sidebar|length > 0 %}
 		<aside id="sidebar"{% if answer|length > 0 %} class="sidebar-possibly-hidden"{% endif %}>
 			{% if sidebar.image %}<img class="sidebar-image" src="{{ sidebar.image }}">{% endif %}
-			<h2 class="sidebar-title">{{ sidebar.title }}</h2>
+			{% if sidebar.url %}<a href="{{ sidebar.url }}">{% endif %}<h2 class="sidebar-title">{{ sidebar.title }}</h2>{% if sidebar.url %}</a>{% endif %}
 			<p class="sidebar-content">{{ sidebar.content }}</p>
 		</aside>
 	{% endif %}

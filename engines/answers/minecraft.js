@@ -1,4 +1,5 @@
 const { getStatus } = require('../../mcstatus')
+const dns = require('dns')
 
 const minecraftRegex = /^(?:(?:minecraft|mc|server|ping|srv|serv|mine craft| )*?) *\b([-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6})\b *(?:(?:minecraft|mc|server|ping|srv|serv|mine craft| )*?)$/
 
@@ -54,9 +55,8 @@ function jsonColorCodes(jsonObject) {
 	if (jsonObject.bold)
 		style.push('font-weight: bold')
 	if (jsonObject.color)
-	// TODO: get the minecraft color instead of css
 		style.push('color: ' + colorCodes[jsonObject.color] || jsonObject.color)
-	let innerHtml = jsonObject.text
+	let innerHtml = colorCodeToHtml(jsonObject.text)
 	if (jsonObject.extra)
 		innerHtml += jsonColorCodes(jsonObject.extra)
 	let html = ''
@@ -88,8 +88,8 @@ function convertColorCodesToHtml(code, symbol='§') {
 	let currentColor = null
 	let output = ''
 	let textOutput = ''
+	let otherActiveStyles = new Set()
 	let i = -1
-	console.log('ok')
 	while (i < code.length - 1) {
 		i += 1
 		if (code[i] == symbol) {
@@ -99,8 +99,18 @@ function convertColorCodesToHtml(code, symbol='§') {
 					output += '</span>'
 				color = colorCodes[code[i]]
 				style = `color:${color}`
-			} else if (otherStyleCodes[code[i]])
+			} else if (otherStyleCodes[code[i]]) {
 				style = otherStyleCodes[code[i]]
+				otherActiveStyles.add(code[i])
+			} else if (code[i] == 'r') {
+				if (currentColor)
+					output += '</span>'
+				for (const _ of Array.from(otherActiveStyles)) {
+					output += '</span>'
+				}
+				otherActiveStyles = new Set()
+				continue
+			}
 			output += `<span style="${style}">`
 			currentColor = color
 		} else {
@@ -141,7 +151,16 @@ function extractServerName(hostName, description) {
 		return sld.charAt(0).toUpperCase() + sld.slice(1)
 }
 
-
+function resolveDnsHost(host) {
+	return new Promise(resolve => {
+		dns.resolveCname('_minecraft._tcp.' + host, (err, addrs) => {
+			if (err || addrs.length == 0)
+				return resolve(host);
+			host = addrs[0]
+			resolve(host)
+		})
+	})
+}
 
 async function request(query) {
 	const regexMatch = query.match(minecraftRegex)
@@ -150,19 +169,26 @@ async function request(query) {
 	let status
 	let port
 	const splitHost = minecraftHost.split(':')
+
+	const hostNameParts = minecraftHost.split('.')
+	const hasSubdomain = hostNameParts[2]
+
 	if (splitHost.length > 1) {
 		port = splitHost[1]
 		minecraftHost = splitHost[0]
 	} else
 		port = null
+	if (!hasSubdomain) {
+		minecraftHost = await resolveDnsHost(minecraftHost)
+	}
 	try {
 		status = await getStatus(minecraftHost, port, {
 			timeout: 500
 		})
 	} catch (e) {
+		console.log('error :(', e)
 		return {}
 	}
-	console.log(status)
 	if (status) {
 		const serverName = extractServerName(minecraftHost, flattenColorCode(status.description))
 		return {

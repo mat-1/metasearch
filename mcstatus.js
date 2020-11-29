@@ -21,7 +21,8 @@ async function getStatus(host, port, options) {
 
 	client.send(new PacketWriter(0x0))
 
-	const status = (await client.nextPacket()).readJSON()
+
+	const status = (await client.nextPacket(null, false)).readJSON()
 
 	if (options.checkPing) {
 		client.send(new PacketWriter(0x1).write(Buffer.alloc(8)))

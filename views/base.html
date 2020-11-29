@@ -14,20 +14,90 @@
 	--background-color: #111;
 	--title-color: #fff;
 	--main-text: #eee;
-	--very-light: rgba(255,255,255,.2);
 	--semi-light: rgba(255,255,255,.5);
+	--very-light: rgba(255,255,255,.2);
+	--very-very-light: rgba(255,255,255,.05);
 	--result-content-color: #ccc;
 {% else %}
 	--background-color: #fff;
 	--title-color: #000;
 	--main-text: #000;
-	--very-light: rgba(0,0,0,.2);
-	--semi-light: rgba(0,0,0,.5);
+	--semi-light: #aaa;
+	--very-light: #bbb;
+	--very-very-light: #eaeaea;
 	--result-content-color: #000;
 {% endif %}
 }
 	</style>
 	<link rel="stylesheet" href="/styles.css">
+	<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+const searchFormEl = document.getElementById('search-form')
+const searchInputEl = document.getElementById('search-bar')
+const dataList = document.createElement('datalist')
+searchInputEl.parentNode.insertBefore(dataList, searchInputEl.nextSibling)
+dataList.id = 'autocomplete'
+
+async function autoComplete(query) {
+	const result = await fetch('/autocomplete?q=' + encodeURIComponent(query))
+	return await result.json()
+}
+async function autoCompleteDataList(query) {
+	const results = await autoComplete(query)
+	dataList.innerHTML = ''
+	for (const result of results) {
+		const optionEl = document.createElement('option')
+		optionEl.textContent = result
+		optionEl.onclick = () => {
+			searchInputEl.value = result
+			dataList.style.display = 'none'
+			searchFormEl.submit()
+		}
+		dataList.appendChild(optionEl)
+	}
+
+	if (dataList.options.length > 0) {
+		dataList.style.display = 'block'
+		dataList.style.width = (searchInputEl.offsetWidth - 2) + 'px'
+		dataList.style.left = searchInputEl.offsetLeft + 'px'
+		searchInputEl.style.borderBottom = 'none'
+		searchInputEl.style.borderBottomLeftRadius = '0'
+		searchInputEl.style.borderBottomRightRadius = '0'
+	} else {
+		dataList.style.display = 'none';
+		searchInputEl.style.borderBottom = ''
+		searchInputEl.style.borderBottomLeftRadius = ''
+		searchInputEl.style.borderBottomRightRadius = ''
+
+	}
+}
+searchInputEl.addEventListener('input', (e) => {
+	autoCompleteDataList(e.target.value)
+})
+
+searchInputEl.onfocus = function () {
+	if (dataList.options.length > 0) {
+		dataList.style.display = 'block';
+		searchInputEl.style.borderBottom = 'none'
+		searchInputEl.style.borderBottomLeftRadius = '0'
+		searchInputEl.style.borderBottomRightRadius = '0'
+	}
+}
+searchInputEl.onblur = function () {
+	setTimeout(() => {
+		dataList.style.display = 'none';
+		searchInputEl.style.borderBottom = ''
+		searchInputEl.style.borderBottomLeftRadius = ''
+		searchInputEl.style.borderBottomRightRadius = ''
+	}, 100)
+}
+window.addEventListener('resize', () => {
+	dataList.style.width = (searchInputEl.offsetWidth - 2) + 'px';
+	dataList.style.left = searchInputEl.offsetLeft + 'px';
+})
+})
+	</script>
 	{% endblock %}
 </head>
 <body>

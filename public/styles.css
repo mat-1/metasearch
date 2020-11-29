@@ -21,7 +21,9 @@ body {
   opacity: .5
 }
 .result-engine {
-	margin-left: .5em
+	margin-left: .5em;
+	z-index: 1;
+	position: relative;
 }
 .result a, #answer a {
 	text-decoration: none
@@ -36,6 +38,9 @@ body {
 .result-url {
 	color: #3B8;
 }
+#search-form {
+	position: relative
+}
 #search-form.search-form-left-offset {
 	margin-left: 1em;
 }
@@ -45,7 +50,7 @@ body {
 #search-bar {
 	color: var(--text-color);
 	max-width: 39rem;
-	margin: 0 1rem 1rem;
+	margin: 0 1rem 0;
 	padding: .5rem;
 	font-size: 1rem;
 	border-radius: .5rem;
@@ -117,3 +122,25 @@ aside {
 .sidebar-image {
 	float: right
 }
+datalist {
+	position: absolute;
+	font-family: sans-serif;
+	font-size: 0.8rem;
+	border: 1px solid var(--semi-light);
+	border-top: none;
+	overflow: hidden;
+	border-bottom-left-radius: .5em;
+	border-bottom-right-radius: .5em;
+	z-index: 1000;
+}
+option {
+	padding: 4px;
+	cursor: pointer;
+	text-align: left;
+	transition: background-color 200ms;
+	background-color: var(--background-color);
+	position: relative;
+}
+option:hover {
+	background-color: var(--very-very-light)
+} 
