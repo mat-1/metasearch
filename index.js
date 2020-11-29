@@ -14,7 +14,7 @@ app.get('/', function(req, res) {
     res.render('index.html')
 })
 
-env.addGlobal('dark', true)
+env.addGlobal('dark', false)
 
 app.get('/search', async function(req, res) {
     const query = req.query.q
