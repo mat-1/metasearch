@@ -15,12 +15,14 @@
 	--main-text: #eee;
 	--very-light: rgba(255,255,255,.2);
 	--semi-light: rgba(255,255,255,.5);
+	--result-content-color: #ddd;
 {% else %}
 	--background-color: #fff;
 	--title-color: #000;
 	--main-text: #000;
 	--very-light: rgba(0,0,0,.2);
 	--semi-light: rgba(0,0,0,.5);
+	--result-content-color: #000;
 {% endif %}
 }
 body {
@@ -89,8 +91,11 @@ body {
 	border-radius: 1em;
 	margin-bottom: 2em;
 }
+.result-content {
+	color: var(--result-content-color)
+}
 #answer .result-content {
-	margin-bottom: 2em
+	margin-bottom: 2em;
 }
 #answer h2.result-content {
 	margin-bottom: 0
