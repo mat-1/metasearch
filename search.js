@@ -1,5 +1,6 @@
 const requireDir = require('require-dir')
 const normalizeUrl = require('./normalize-url')
+const { performance } = require('perf_hooks')
 
 const recursedEngines = requireDir('./engines', {recurse: true})
 const engines = {}
@@ -26,7 +27,10 @@ async function requestAllEngines(query) {
 
 async function request(query) {
 	const results = {}
+	// var t0 = performance.now()
 	const enginesResults = await requestAllEngines(query)
+	// var t1 = performance.now()
+	// console.log(`${query} requesting engines took ${t1 - t0}ms.`);
 	var answer = {}
 	var sidebar = {}
 	for (engineName in enginesResults) {

@@ -39,6 +39,12 @@ const colorCodes = {
 	'white': '#ffffff',
 }
 
+const serverAliases = {
+	'hypixel': 'mc.hypixel.net',
+	'wynncraft': 'play.wynncraft.com',
+	'wynncraft.com': 'play.wynncraft.com',
+}
+
 otherStyleCodes = {
 	'l': 'font-weight: bold;'
 }
@@ -151,36 +157,25 @@ function extractServerName(hostName, description) {
 		return sld.charAt(0).toUpperCase() + sld.slice(1)
 }
 
-function resolveDnsHost(host) {
-	return new Promise(resolve => {
-		dns.resolveCname('_minecraft._tcp.' + host, (err, addrs) => {
-			if (err || addrs.length == 0)
-				return resolve(host);
-			host = addrs[0]
-			resolve(host)
-		})
-	})
-}
 
 async function request(query) {
 	const regexMatch = query.match(minecraftRegex)
-	if (!regexMatch) return {}
-	let minecraftHost = regexMatch[1]
+	if (!regexMatch && !serverAliases[query]) return {}
+	let minecraftHost
+	if (serverAliases[query.toLowerCase()])
+		minecraftHost = serverAliases[query.toLowerCase()]
+	else
+		minecraftHost = regexMatch[1]
 	let status
 	let port
 	const splitHost = minecraftHost.split(':')
-
-	const hostNameParts = minecraftHost.split('.')
-	const hasSubdomain = hostNameParts[2]
 
 	if (splitHost.length > 1) {
 		port = splitHost[1]
 		minecraftHost = splitHost[0]
 	} else
 		port = null
-	if (!hasSubdomain) {
-		minecraftHost = await resolveDnsHost(minecraftHost)
-	}
+		
 	try {
 		status = await getStatus(minecraftHost, port, {
 			timeout: 500

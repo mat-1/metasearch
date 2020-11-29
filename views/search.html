@@ -20,7 +20,7 @@
 				{% include 'answers/' + answer.template + '.html' %}
 			{% else %}
 				{% set bigContent = not answer.title and answer.content.length < 20 %}
-				<{% if bigContent %}h2{% else %}p{% endif %} class="result-content">{{ answer.content }}</{% if bigContent %}h2{% else %}p{% endif %}>
+				{% if answer.content %}<{% if bigContent %}h2{% else %}p{% endif %} class="result-content">{{ answer.content }}</{% if bigContent %}h2{% else %}p{% endif %}>{% endif %}
 				
 				{% if answer.url %}<a href="{{ answer.url }}">{% endif %}
 					{% if answer.title %}<h3 class="result-title">{{ answer.title }}</h3>{% endif %}
