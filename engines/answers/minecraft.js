@@ -161,7 +161,6 @@ async function request(query) {
 			timeout: 500
 		})
 	} catch (e) {
-		console.log('error :pensive:', e)
 		return {}
 	}
 	console.log(status)

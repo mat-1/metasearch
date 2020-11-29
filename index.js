@@ -4,7 +4,8 @@ const search = require('./search')
 
 var app = express()
 
-nunjucks.configure('views', {
+
+const env = nunjucks.configure('views', {
     autoescape: true,
     express: app
 })
@@ -12,6 +13,8 @@ nunjucks.configure('views', {
 app.get('/', function(req, res) {
     res.render('index.html')
 })
+
+env.addGlobal('dark', true)
 
 app.get('/search', async function(req, res) {
     const query = req.query.q

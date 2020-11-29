@@ -8,9 +8,25 @@
 	<meta name="robots" content="noindex, nofollow">
 	<title>{% block title %}Metasearch{% endblock %}</title>
 	<style>
-
+:root {
+{% if dark %}
+	--background-color: #111;
+	--title-color: #fff;
+	--main-text: #eee;
+	--very-light: rgba(255,255,255,.2);
+	--semi-light: rgba(255,255,255,.5);
+{% else %}
+	--background-color: #fff;
+	--title-color: #000;
+	--main-text: #000;
+	--very-light: rgba(0,0,0,.2);
+	--semi-light: rgba(0,0,0,.5);
+{% endif %}
+}
 body {
-	font-family: Arial, sans-serif
+	font-family: Arial, sans-serif;
+	background-color: var(--background-color);
+	color: var(--main-text);
 }
 .result-title, .result-content {
 	margin: 0
@@ -39,7 +55,7 @@ body {
 	color: #4ac;
 	transition: color 200ms
 }
-.result-title:hover {
+.result-title:hover, a:visited .result-title {
 	color: #269
 }
 .result-url {
@@ -49,24 +65,26 @@ body {
 	text-align: center
 }
 #search-bar {
+	color: var(--text-color);
 	max-width: 49rem;
 	margin: 0 1rem 1rem;
 	padding: .5rem;
 	font-size: 1rem;
 	border-radius: .5rem;
 	transition: border 200ms;
-	border: 1px solid rgba(0,0,0,.2);
+	border: 1px solid var(--very-light);
 	width: 75%;
+	background-color: var(--background-color);
 }
 #search-bar:focus {
-	border: 1px solid rgba(0,0,0,.5)
+	border: 1px solid var(--semi-light)
 }
 #search-centered {
 	position: relative;
 	margin-top: calc(50vh - 3em);
 }
 #answer {
-	border: 1px solid rgba(0,0,0,.2);
+	border: 1px solid var(--very-light);
 	padding: 1em;
 	border-radius: 1em;
 	margin-bottom: 2em;
@@ -80,6 +98,7 @@ body {
 #search-centered h1 {
 	text-align: center;
 	margin-top: 0;
+	color: var(--title-color)
 }
 
 .minecraft-server-description {
