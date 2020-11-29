@@ -1,4 +1,4 @@
-const { parseResultList } = require('../parser')
+const { parseResultList } = require('../../parser')
 
 async function request(query) {
 	return await parseResultList('https://html.duckduckgo.com/html?q=' + encodeURIComponent(query), {

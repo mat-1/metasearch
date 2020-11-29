@@ -1,4 +1,4 @@
-const solve = require('../math')
+const solve = require('../../math')
 
 async function request(query) {
 	const answer = solve(query)

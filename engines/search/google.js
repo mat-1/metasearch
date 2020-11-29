@@ -1,6 +1,5 @@
-const { parseResultList } = require('../parser')
+const { parseResultList } = require('../../parser')
 
-const weight = 1.05
 
 async function request(query) {
 	return await parseResultList('https://google.com/search?pws=0&q=' + encodeURIComponent(query), {
@@ -17,4 +16,5 @@ async function request(query) {
 	})
 }
 
-module.exports = { request, weight }
+module.exports.weight = 1.05
+module.exports.request = request

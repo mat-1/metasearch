@@ -1,4 +1,4 @@
-const { parseResultList } = require('../parser')
+const { parseResultList } = require('../../parser')
 
 async function request(query) {
 	return await parseResultList('https://www.bing.com/search?q=' + encodeURIComponent(query), {

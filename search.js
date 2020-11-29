@@ -1,7 +1,12 @@
 const requireDir = require('require-dir')
 const normalizeUrl = require('./normalize-url')
 
-const engines = requireDir('./engines')
+const recursedEngines = requireDir('./engines', {recurse: true})
+const engines = {}
+
+Object.assign(engines, recursedEngines.answers, recursedEngines.search)
+
+console.log('engines', engines)
 
 async function requestAllEngines(query) {
 	const promises = []
@@ -34,7 +39,13 @@ async function websites(query) {
 		}
 
 		for (const result of engineResults.results || []) {
-			const normalUrl = normalizeUrl(result.url)
+			let normalUrl
+			try {
+				normalUrl = normalizeUrl(result.url)
+			} catch {
+				console.log('Invalid URL!', result, engineName)
+				continue
+			}
 
 			// Default values
 			if (!results[normalUrl])

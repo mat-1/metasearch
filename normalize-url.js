@@ -1,5 +1,7 @@
 // https://github.com/sindresorhus/normalize-url
 
+const querystring = require('querystring')
+
 const DATA_URL_DEFAULT_MIME_TYPE = 'text/plain';
 const DATA_URL_DEFAULT_CHARSET = 'us-ascii';
 
@@ -76,6 +78,9 @@ const normalizeUrl = (urlString, options) => {
 	};
 
 	urlString = urlString.trim();
+
+	if (urlString.startsWith('/rebates/welcome?url='))
+		urlString = querystring.parse(urlString.slice(17)).url
 
 	// Data URL
 	if (/^data:/i.test(urlString)) {
