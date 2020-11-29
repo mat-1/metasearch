@@ -49,21 +49,21 @@ body {
 	text-align: center
 }
 #search-bar {
-	width: 49rem;
+	max-width: 49rem;
 	margin: 0 1rem 1rem;
 	padding: .5rem;
 	font-size: 1rem;
 	border-radius: .5rem;
 	transition: border 200ms;
-	border: 1px solid rgba(0,0,0,.2)
+	border: 1px solid rgba(0,0,0,.2);
+	width: 75%;
 }
 #search-bar:focus {
 	border: 1px solid rgba(0,0,0,.5)
 }
 #search-centered {
 	position: relative;
-	margin-top: 50vh;
-	bottom: 100%
+	margin-top: calc(50vh - 3em);
 }
 #answer {
 	border: 1px solid rgba(0,0,0,.2);
@@ -78,81 +78,10 @@ body {
 	margin-bottom: 0
 }
 #search-centered h1 {
-	text-align: center
+	text-align: center;
+	margin-top: 0;
 }
 
-
-body {
-	font-family: Arial, sans-serif
-}
-.result-title, .result-content {
-	margin: 0
-}
-.result {
-	padding: .5em 0;
-}
-#results {
-	padding: 0 1em;
-	margin: 0 auto;
-	max-width: 50em;
-	margin-top: 1em
-}
-.result-engines {
-  float: right;
-  font-size: .75em;
-  opacity: .5
-}
-.result-engine {
-	margin-left: .5em
-}
-.result a, #answer a {
-	text-decoration: none
-}
-.result-title {
-	color: #4ac;
-	transition: color 200ms
-}
-.result-title:hover {
-	color: #269
-}
-.result-url {
-	color: #3B8;
-}
-#search-form {
-	text-align: center
-}
-#search-bar {
-	width: 49rem;
-	margin: 0 1rem 1rem;
-	padding: .5rem;
-	font-size: 1rem;
-	border-radius: .5rem;
-	transition: border 200ms;
-	border: 1px solid rgba(0,0,0,.2)
-}
-#search-bar:focus {
-	border: 1px solid rgba(0,0,0,.5)
-}
-#search-centered {
-	position: relative;
-	margin-top: 50vh;
-	bottom: 100%
-}
-#answer {
-	border: 1px solid rgba(0,0,0,.2);
-	padding: 1em;
-	border-radius: 1em;
-	margin-bottom: 2em;
-}
-#answer .result-content {
-	margin-bottom: 2em
-}
-#answer h2.result-content {
-	margin-bottom: 0
-}
-#search-centered h1 {
-	text-align: center
-}
 .minecraft-server-description {
 	position: relative;
 	white-space: pre;
