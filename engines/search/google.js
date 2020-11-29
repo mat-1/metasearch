@@ -19,9 +19,8 @@ async function request(query) {
 async function autoComplete(query) {
 	const dom = await requestDom('https://suggestqueries.google.com/complete/search?client=toolbar&q=' + query)
 	const results = []
-	for (const suggestion of getElements(dom, 'suggestion')) {
+	for (const suggestion of getElements(dom, 'suggestion'))
 		results.push(suggestion.attr('data'))
-	}
 	return results
 }
 
@@ -29,3 +28,5 @@ async function autoComplete(query) {
 module.exports.weight = 1.05
 module.exports.request = request
 module.exports.autoComplete = autoComplete
+
+

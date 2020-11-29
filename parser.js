@@ -19,12 +19,19 @@ async function requestDom(url) {
 	return cheerio.load(htmlResponse)
 }
 
+function get(dom, query) {
+	if (dom.find)
+		return dom.find(query)
+	else
+		return dom(query)
+}
+
 function getElements(dom, query) {
-	const elements = dom(query)
+	const elements = get(dom, query)
 	const results = []
 
 	for (const element of elements.get()) {
-		results.push(dom(element))
+		results.push(get(dom, element))
 	}
 	return results
 }

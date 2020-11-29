@@ -1,0 +1,42 @@
+<style>
+	.definition-word {
+	display: inline-block;
+	margin-top: 0
+}
+.definition-ipa-spelling {
+	opacity: .5
+}
+.definition-part-of-speech {
+	font-style: italic
+}
+ol.definition-entry-definitions {
+  counter-reset: myOrderedListItemsCounter;
+}
+ol.definition-entry-definitions li {
+  list-style-type: none;
+  position: relative;
+}
+ol.definition-entry-definitions li:before {
+  position: relative;
+  counter-increment: myOrderedListItemsCounter;
+  content: counter(myOrderedListItemsCounter)".";
+  margin-right: -1em;
+  right: 2em;
+  opacity: .5;
+  font-size: .8em
+}
+</style>
+
+<span class="definition-title"><h2 class="definition-word">{{ answer.word }}</h2> <span class="definition-ipa-spelling">{{ answer.ipaSpelling }}</span></span>
+<div class="definition-entries">
+{% for entry in answer.entries %}
+<div>
+<p class="definition-part-of-speech">{{ entry.partOfSpeech }}</p>
+<ol class="definition-entry-definitions">
+{% for definition in entry.definitions %}
+	<li>{% if definition.label %}<i>{{ definition.label }}</i> {% endif %}{{ definition.definition }}</li>
+{% endfor %}
+</ol>
+</div>
+{% endfor %}
+</div>

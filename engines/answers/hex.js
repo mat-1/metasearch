@@ -53,7 +53,7 @@ async function request(query) {
 	return {
 		answer: {
 			title: title,
-			content: answer
+			content: answer,
 		}
 	}
 }
