@@ -103,5 +103,5 @@ async function parseResultList(url, {
 	}
 }
 
-module.exports = { requestRaw, parseResultList, requestJSON }
+module.exports = { requestRaw, parseResultList, requestJSON, requestDom, getElements, extractText }
 
