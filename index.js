@@ -28,6 +28,8 @@ app.get('/search', async function(req, res) {
     }
 })
 
+app.use(express.static('public'))
+
 app.listen(8000, () => console.log('pog'))
 
 module.exports = require('require-dir')();

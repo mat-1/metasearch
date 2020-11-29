@@ -9,12 +9,26 @@
 <div id="results">
 	{% if answer|length > 0 %}
 		<div id="answer">
-			<{% if answer.title %}p{% else %}h2{% endif %} class="result-content">{{ answer.content }}</{% if answer.title %}p{% else %}h2{% endif %}>
-			
-			{% if answer.url %}<a href="{{ answer.url }}">{% endif %}
-				{% if answer.title %}<h3 class="result-title">{{ answer.title }}</h3>{% endif %}
-				{% if answer.url %}<span class="result-url">{{ answer.url }}</h3>{% endif %}
-			{% if answer.url %}</a>{% endif %}
+			{% if answer.type == 'minecraft' %}
+				<style>@font-face{font-family:Minecraft;src:url(/Minecraft.otf)}</style>
+				<div class="minecraft-server">
+					<img class="minecraft-server-favicon" src="{{ answer.favicon }}">
+					<span class="minecraft-ping">
+						<span class="minecraft-playercount">{{ answer.players.online }}<span class="minecraft-playercount-divider">/</span>{{ answer.players.max }}</span>
+						<img class="minecraft-ping-icon" src="/minecraft-ping.png" title="">
+						<span class="minecraft-ping-display">{{ answer.ping }}ms</span>
+					</span>
+					<p class="minecraft-server-name">{{ answer.name }}</p>
+					<p class="minecraft-server-description">{{ answer.descriptionHtml|safe }}</p>
+				</div>
+			{% else %}
+				<{% if answer.title %}p{% else %}h2{% endif %} class="result-content">{{ answer.content }}</{% if answer.title %}p{% else %}h2{% endif %}>
+				
+				{% if answer.url %}<a href="{{ answer.url }}">{% endif %}
+					{% if answer.title %}<h3 class="result-title">{{ answer.title }}</h3>{% endif %}
+					{% if answer.url %}<span class="result-url">{{ answer.url }}</h3>{% endif %}
+				{% if answer.url %}</a>{% endif %}
+			{% endif %}
 		</div>
 	{% endif %}
 	{% for result in results %}

@@ -81,6 +81,138 @@ body {
 	text-align: center
 }
 
+
+body {
+	font-family: Arial, sans-serif
+}
+.result-title, .result-content {
+	margin: 0
+}
+.result {
+	padding: .5em 0;
+}
+#results {
+	padding: 0 1em;
+	margin: 0 auto;
+	max-width: 50em;
+	margin-top: 1em
+}
+.result-engines {
+  float: right;
+  font-size: .75em;
+  opacity: .5
+}
+.result-engine {
+	margin-left: .5em
+}
+.result a, #answer a {
+	text-decoration: none
+}
+.result-title {
+	color: #4ac;
+	transition: color 200ms
+}
+.result-title:hover {
+	color: #269
+}
+.result-url {
+	color: #3B8;
+}
+#search-form {
+	text-align: center
+}
+#search-bar {
+	width: 49rem;
+	margin: 0 1rem 1rem;
+	padding: .5rem;
+	font-size: 1rem;
+	border-radius: .5rem;
+	transition: border 200ms;
+	border: 1px solid rgba(0,0,0,.2)
+}
+#search-bar:focus {
+	border: 1px solid rgba(0,0,0,.5)
+}
+#search-centered {
+	position: relative;
+	margin-top: 50vh;
+	bottom: 100%
+}
+#answer {
+	border: 1px solid rgba(0,0,0,.2);
+	padding: 1em;
+	border-radius: 1em;
+	margin-bottom: 2em;
+}
+#answer .result-content {
+	margin-bottom: 2em
+}
+#answer h2.result-content {
+	margin-bottom: 0
+}
+#search-centered h1 {
+	text-align: center
+}
+.minecraft-server-description {
+	position: relative;
+	white-space: pre;
+	margin: 0;
+	top: 8px;
+	word-spacing: 4px
+}
+.minecraft-server-name {
+	position: relative;
+	color: #fff;
+	margin: 0;
+	top: 8px
+}
+.minecraft-server {
+	background-image: url(/minecraft-server-background.png);
+	height: 80px;
+	font-family: Minecraft;
+	font-size: 16px;
+	font-weight: normal;
+	max-width: 600px;
+	position: relative
+}
+.minecraft-server-favicon {
+	float: left;
+	margin: 8px;
+}
+.minecraft-ping {
+	position: absolute;
+	right: 0;
+	padding: 8px;
+	z-index: 100
+}
+.minecraft-ping-icon {
+	height: 14px;
+	image-rendering: crisp-edges;
+	image-rendering: pixelated;
+}
+.minecraft-ping-display {
+	display: none;
+	position: absolute;
+	user-select: none
+}
+.minecraft-ping-icon:hover ~ .minecraft-ping-display {
+	position: absolute;
+	display: inline-block;
+	color: #fff;
+	background-color: rgba(0,0,0,.9);
+	padding: 2px;
+	border-radius: 4px;
+	border: 2px solid #205;
+	outline: 2px solid #000;
+	-moz-outline-radius: 8px;
+	margin-top: -1.9em
+}
+.minecraft-playercount {
+  color: #bebebe
+}
+.minecraft-playercount-divider {
+	color: #3f3f3f
+}
 </style>
 	{% endblock %}
 </head>

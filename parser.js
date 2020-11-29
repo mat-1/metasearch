@@ -73,6 +73,8 @@ async function parseResultList(url, {
 		const resultTitle = extractText(resultItemEl, titlePath)
 		if (!resultTitle) continue
 		const resultUrl = extractHref(resultItemEl, hrefPath)
+		if (resultUrl.startsWith('https://duckduckgo.com/y.js'))
+			continue
 		const resultContent = extractText(resultItemEl, contentPath)
 
 
