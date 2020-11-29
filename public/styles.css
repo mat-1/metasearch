@@ -77,6 +77,7 @@ body {
 }
 #answer .result-content {
 	margin-bottom: 2em;
+	white-space: break-spaces;
 }
 #answer.answer-no-title .result-content {
 	margin-bottom: 0
