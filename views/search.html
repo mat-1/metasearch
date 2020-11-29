@@ -22,7 +22,7 @@
 			{% endif %}
 		</div>
 	{% endif %}
-	{% if sidebar %}
+	{% if sidebar|length > 0 %}
 		<aside>
 			<h2>{{ sidebar.title }}</h2>
 			<p>{{ sidebar.content }}</p>

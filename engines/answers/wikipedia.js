@@ -6,7 +6,7 @@ async function request(query) {
 	const pages = summaryJson.query.pages
 	const pageId = Object.keys(pages)[0]
 	const article = pages[pageId]
-	if (article.missing) return {}
+	if (article.missing !== undefined) return {}
 	return {
 		sidebar: {
 			title: article.title,
