@@ -24,7 +24,7 @@ async function requestAllEngines(query) {
 	return results
 }
 
-async function websites(query) {
+async function request(query) {
 	const results = {}
 	const enginesResults = await requestAllEngines(query)
 	var answer = {}
@@ -78,4 +78,4 @@ async function websites(query) {
 	}
 }
 
-module.exports = { websites }
+module.exports = { request }

@@ -15,7 +15,7 @@ app.get('/', function(req, res) {
 
 app.get('/search', async function(req, res) {
     const query = req.query.q
-    const results = await search.websites(query)
+    const results = await search.request(query)
     const options = {
         results: results.results,
         answer: results.answer,
