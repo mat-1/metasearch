@@ -36,9 +36,11 @@ body {
 .result-url {
 	color: #3B8;
 }
-#search-form {
-	/*! text-align: center */
+#search-form.search-form-left-offset {
 	margin-left: 10em;
+}
+#search-form:not(.search-form-left-offset) {
+	text-align: center
 }
 #search-bar {
 	color: var(--text-color);
