@@ -141,6 +141,8 @@ function extractServerName(hostName, description) {
 		return sld.charAt(0).toUpperCase() + sld.slice(1)
 }
 
+
+
 async function request(query) {
 	const regexMatch = query.match(minecraftRegex)
 	if (!regexMatch) return {}
@@ -165,7 +167,7 @@ async function request(query) {
 		const serverName = extractServerName(minecraftHost, flattenColorCode(status.description))
 		return {
 			answer: {
-				type: 'minecraft',
+				template: 'minecraft',
 				name: serverName,
 				version: status.version.name,
 				descriptionHtml: colorCodeToHtml(status.description),
