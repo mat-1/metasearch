@@ -8,11 +8,12 @@
 </header>
 <div id="results">
 	{% if answer|length > 0 %}
-		<div id="answer">
+		<div id="answer" {% if not answer.title and not answer.template %}class="answer-no-title"{% endif %}>
 			{% if answer.template %}
 				{% include 'answers/' + answer.template + '.html' %}
 			{% else %}
-				<{% if answer.title %}p{% else %}h2{% endif %} class="result-content">{{ answer.content }}</{% if answer.title %}p{% else %}h2{% endif %}>
+				{% set bigContent = not answer.title and answer.content.length < 20 %}
+				<{% if bigContent %}h2{% else %}p{% endif %} class="result-content">{{ answer.content }}</{% if bigContent %}h2{% else %}p{% endif %}>
 				
 				{% if answer.url %}<a href="{{ answer.url }}">{% endif %}
 					{% if answer.title %}<h3 class="result-title">{{ answer.title }}</h3>{% endif %}
