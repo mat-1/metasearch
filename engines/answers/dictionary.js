@@ -48,6 +48,7 @@ async function parseDictionary(url, {
 		phoneticSpelling,
 		ipaSpelling,
 		entries,
+		url
 	}
 }
 
@@ -72,7 +73,7 @@ async function request(query) {
 	if (!regexMatch) return {}
 	let inputtedWord = regexMatch[1]
 
-	let { word, phoneticSpelling, ipaSpelling, entries } = await dictionaryCom(inputtedWord)
+	let { word, phoneticSpelling, ipaSpelling, entries, url } = await dictionaryCom(inputtedWord)
 
 	console.log(entries)
 	return {
@@ -81,7 +82,8 @@ async function request(query) {
 			word,
 			phoneticSpelling,
 			ipaSpelling,
-			entries
+			entries,
+			url 
 		}
 	}
 }

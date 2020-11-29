@@ -1,13 +1,13 @@
 <style>
-	.definition-word {
-	display: inline-block;
-	margin-top: 0
+.definition-word {
+  display: inline-block;
+  margin-top: 0
 }
 .definition-ipa-spelling {
-	opacity: .5
+  opacity: .5
 }
 .definition-part-of-speech {
-	font-style: italic
+  font-style: italic
 }
 ol.definition-entry-definitions {
   counter-reset: myOrderedListItemsCounter;
@@ -25,7 +25,10 @@ ol.definition-entry-definitions li:before {
   opacity: .5;
   font-size: .8em
 }
-</style>
+.definition-link {
+  margin-bottom: 0;
+  font-size: .8em
+}</style>
 
 <span class="definition-title"><h2 class="definition-word">{{ answer.word }}</h2> <span class="definition-ipa-spelling">{{ answer.ipaSpelling }}</span></span>
 <div class="definition-entries">
@@ -39,4 +42,5 @@ ol.definition-entry-definitions li:before {
 </ol>
 </div>
 {% endfor %}
+<p class="definition-link"><a href="{{ answer.url }}">dictionary.com</a></p>
 </div>
