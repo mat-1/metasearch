@@ -28,3 +28,4 @@ async function autoComplete(query) {
 
 module.exports.weight = 1.05
 module.exports.request = request
+module.exports.autoComplete = autoComplete

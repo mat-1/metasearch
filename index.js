@@ -40,6 +40,7 @@ app.get('/opensearch.xml', async function(req, res) {
 })
 
 app.get('/autocomplete', async function(req, res) {
+    const query = req.query.q
     const results = await search.autocomplete(query)
     res.json(results)
 })
