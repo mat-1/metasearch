@@ -7,6 +7,13 @@
 	</form>
 </header>
 <div id="results">
+	{% if sidebar|length > 0 %}
+		<aside id="sidebar"{% if answer|length > 0 %} class="sidebar-possibly-hidden"{% endif %}>
+			{% if sidebar.image %}<img class="sidebar-image" src="{{ sidebar.image }}">{% endif %}
+			<h2 class="sidebar-title">{{ sidebar.title }}</h2>
+			<p class="sidebar-content">{{ sidebar.content }}</p>
+		</aside>
+	{% endif %}
 	{% if answer|length > 0 %}
 		<div id="answer" {% if not answer.title and not answer.template %}class="answer-no-title"{% endif %}>
 			{% if answer.template %}
@@ -21,13 +28,6 @@
 				{% if answer.url %}</a>{% endif %}
 			{% endif %}
 		</div>
-	{% endif %}
-	{% if sidebar|length > 0 %}
-		<aside id="sidebar">
-			{% if sidebar.image %}<img class="sidebar-image" src="{{ sidebar.image }}">{% endif %}
-			<h2 class="sidebar-title">{{ sidebar.title }}</h2>
-			<p class="sidebar-content">{{ sidebar.content }}</p>
-		</aside>
 	{% endif %}
 	{% for result in results %}
 	<div class="result">

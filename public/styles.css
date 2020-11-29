@@ -11,7 +11,7 @@ body {
 }
 #results {
 	padding: 0 1em;
-	margin: 0 10em;
+	margin: 0 1em;
 	max-width: 40em;
 	margin-top: 1em
 }
@@ -37,7 +37,7 @@ body {
 	color: #3B8;
 }
 #search-form.search-form-left-offset {
-	margin-left: 10em;
+	margin-left: 1em;
 }
 #search-form:not(.search-form-left-offset) {
 	text-align: center
@@ -94,6 +94,9 @@ aside {
 	box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
 	margin-bottom: 2em
 }
+.sidebar-possibly-hidden {
+	display: none
+}
 @media only screen and (min-width: 1300px) {
 	aside {
 		position: absolute;
@@ -101,6 +104,14 @@ aside {
 		width: 25em;
 		box-shadow: none;
 		margin-bottom: 0
+	}
+	.sidebar-possibly-hidden {
+		display: block
+	}
+}
+@media only screen and (min-width: 1000px) {
+	#search-form.search-form-left-offset, #results {
+		margin-left: 10em;
 	}
 }
 .sidebar-image {
