@@ -2,7 +2,10 @@
 	"name": "metasearch",
 	"version": "1.0.0",
 	"dependencies": {
+		"cheerio": "^1.0.0-rc.3",
 		"express": "^4.17.1",
-		"mcproto": "^0.8.2"
+		"mcproto": "^0.8.2",
+		"nunjucks": "^3.2.2",
+		"require-dir": "^1.2.0"
 	}
 }
