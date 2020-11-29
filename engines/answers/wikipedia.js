@@ -11,7 +11,7 @@ async function request(query) {
 		sidebar: {
 			title: article.title,
 			content: article.extract,
-			image: article.thumbnail?.source
+			image: article.thumbnail ? article.thumbnail.source : undefined
 		}
 	}
 }
