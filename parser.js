@@ -1,5 +1,6 @@
 const fetch = require('node-fetch')
 const cheerio = require('cheerio')
+const { performance } = require('perf_hooks')
 
 async function requestRaw(url) {
 	const response = await fetch(url, {
@@ -7,7 +8,11 @@ async function requestRaw(url) {
 			'user-agent': 'Mozilla/5.0 Firefox/84.0'
 		}
 	})
-	return await response.text()
+	let perfBefore = performance.now()
+	const text = await response.buffer()
+	let perfAfter = performance.now()
+	console.log(`.text ${url} took ${Math.floor(perfAfter - perfBefore)}ms. ${text.length}`);
+	return text
 }
 
 async function requestJSON(url) {

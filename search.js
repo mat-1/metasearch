@@ -9,12 +9,21 @@ Object.assign(engines, recursedEngines.answers, recursedEngines.search)
 
 console.log('engines', engines)
 
+async function requestEngine(engineName, query) {
+	let engine = engines[engineName]
+	// let perfBefore = performance.now()
+	let response = await engine.request(query)
+	// let perfAfter = performance.now()
+	// console.log(`${engineName} took ${Math.floor(perfAfter - perfBefore)}ms.`);
+	return response
+}
+
 async function requestAllEngines(query) {
 	const promises = []
 	for (let engineName in engines) {
 		let engine = engines[engineName]
 		if (engine.request)
-			promises.push(engine.request(query))
+			promises.push(requestEngine(engineName, query))
 	}
 	const resolvedRequests = await Promise.all(promises)
 	results = {}
@@ -27,10 +36,7 @@ async function requestAllEngines(query) {
 
 async function request(query) {
 	const results = {}
-	// var t0 = performance.now()
 	const enginesResults = await requestAllEngines(query)
-	// var t1 = performance.now()
-	// console.log(`${query} requesting engines took ${t1 - t0}ms.`);
 	var answer = {}
 	var sidebar = {}
 	for (engineName in enginesResults) {
