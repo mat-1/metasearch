@@ -1,4 +1,4 @@
-const { parseResultList } = require('../../parser')
+const { parseResultList, requestDom, getElements } = require('../../parser')
 
 
 async function request(query) {
@@ -15,6 +15,16 @@ async function request(query) {
 		featuredSnippetHrefPath: 'div.rc a',
 	})
 }
+
+async function autoComplete(query) {
+	const dom = await requestDom('https://suggestqueries.google.com/complete/search?client=toolbar&q=' + query)
+	const results = []
+	for (const suggestion of getElements(dom, 'suggestion')) {
+		results.push(suggestion.attr('data'))
+	}
+	return results
+}
+
 
 module.exports.weight = 1.05
 module.exports.request = request

@@ -39,6 +39,11 @@ app.get('/opensearch.xml', async function(req, res) {
     })
 })
 
+app.get('/autocomplete', async function(req, res) {
+    const results = await search.autocomplete(query)
+    res.json(results)
+})
+
 app.use(express.static('public'))
 
 app.listen(8000, () => console.log('pog'))

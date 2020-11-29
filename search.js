@@ -85,4 +85,8 @@ async function request(query) {
 	}
 }
 
+async function autocomplete(query) {
+	return await engines.google.autoComplete(query)
+}
+
 module.exports = { request }
