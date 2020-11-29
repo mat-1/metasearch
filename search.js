@@ -28,12 +28,12 @@ async function websites(query) {
 		const engineResults = enginesResults[engineName]
 
 		const engineAnswer = engineResults.answer
-		if (engineAnswer !== null && (answer.engine && answer.engine.weight || 1 < engine.weight || 1)) {
+		if (engineAnswer != null && (answer.engine && answer.engine.weight || 1 < engine.weight || 1)) {
 			answer = engineAnswer
 			answer.engine = engine
 		}
 
-		for (const result of engineResults.results) {
+		for (const result of engineResults.results || []) {
 			const normalUrl = normalizeUrl(result.url)
 
 			// Default values

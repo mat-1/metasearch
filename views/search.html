@@ -9,11 +9,12 @@
 <div id="results">
 	{% if answer|length > 0 %}
 		<div id="answer">
-			<p class="result-content">{{ answer.content }}</p>
-			<a href="{{ answer.url }}">
-				<h3 class="result-title">{{ answer.title }}</h3>
-				<span class="result-url">{{ answer.url }}</h3>
-			</a>
+			<{% if answer.title %}p{% else %}h2{% endif %} class="result-content">{{ answer.content }}</{% if answer.title %}p{% else %}h2{% endif %}>
+			
+			{% if answer.url %}<a href="{{ answer.url }}">{% endif %}
+				{% if answer.title %}<h3 class="result-title">{{ answer.title }}</h3>{% endif %}
+				{% if answer.url %}<span class="result-url">{{ answer.url }}</h3>{% endif %}
+			{% if answer.url %}</a>{% endif %}
 		</div>
 	{% endif %}
 	{% for result in results %}
