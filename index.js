@@ -22,6 +22,7 @@ app.get('/search', async function(req, res) {
     const options = {
         results: results.results,
         answer: results.answer,
+        sidebar: results.sidebar,
         query
     }
     if (req.query.json === 'true') {

@@ -28,14 +28,20 @@ async function request(query) {
 	const results = {}
 	const enginesResults = await requestAllEngines(query)
 	var answer = {}
+	var sidebar = {}
 	for (engineName in enginesResults) {
 		const engine = engines[engineName]
 		const engineResults = enginesResults[engineName]
 
 		const engineAnswer = engineResults.answer
+		const engineSidebarAnswer = engineResults.sidebar
 		if (engineAnswer != null && (answer.engine && answer.engine.weight || 1 < engine.weight || 1)) {
 			answer = engineAnswer
 			answer.engine = engine
+		}
+		if (engineSidebarAnswer != null && (sidebar.engine && sidebar.engine.weight || 1 < engine.weight || 1)) {
+			sidebar = engineSidebarAnswer
+			sidebar.engine = engine
 		}
 
 		for (const result of engineResults.results || []) {
@@ -74,7 +80,8 @@ async function request(query) {
 
 	return {
 		results: calculatedResults,
-		answer
+		answer,
+		sidebar
 	}
 }
 

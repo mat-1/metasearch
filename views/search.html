@@ -22,6 +22,12 @@
 			{% endif %}
 		</div>
 	{% endif %}
+	{% if sidebar %}
+		<aside>
+			<h2>{{ sidebar.title }}</h2>
+			<p>{{ sidebar.content }}</p>
+		</aside>
+	{% endif %}
 	{% for result in results %}
 	<div class="result">
 		<a href="{{ result.url }}">
