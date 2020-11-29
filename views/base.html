@@ -46,7 +46,7 @@ async function autoComplete(query) {
 async function autoCompleteDataList(query) {
 	const results = await autoComplete(query)
 	dataList.innerHTML = ''
-	for (const result of results) {
+	for (const result of results[1]) {
 		const optionEl = document.createElement('option')
 		optionEl.textContent = result
 		optionEl.onclick = () => {
