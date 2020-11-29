@@ -86,7 +86,6 @@ function flattenJsonText(jsonObject) {
 
 function convertColorCodesToHtml(code, symbol='§') {
 	let currentColor = null
-	let currentEffects = new Set()
 	let output = ''
 	let textOutput = ''
 	let i = -1
@@ -100,10 +99,8 @@ function convertColorCodesToHtml(code, symbol='§') {
 					output += '</span>'
 				color = colorCodes[code[i]]
 				style = `color:${color}`
-			} else if (otherStyleCodes[code[i]]) {
-				currentEffects.add(code[i])
+			} else if (otherStyleCodes[code[i]])
 				style = otherStyleCodes[code[i]]
-			}
 			output += `<span style="${style}">`
 			currentColor = color
 		} else {
