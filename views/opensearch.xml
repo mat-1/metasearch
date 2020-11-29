@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
-  <ShortName>metasearch</ShortName>
-  <Description>Search everything.</Description>
-  <InputEncoding>UTF-8</InputEncoding>
-  <LongName>metasearch</LongName>
-    <Url type="text/html" method="get" template="https://{{ host }}/search">
-        <Param name="q" value="{searchTerms}" />
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
+                    xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+    <ShortName>metasearch</ShortName>
+    <Description>Search everything.</Description>
+    <InputEncoding>UTF-8</InputEncoding>
+    {# <Image width="16" height="16" type="image/x-icon">[https://example.com/favicon.ico]</Image> #}
+    <Url type="text/html" template="https://{{ host }}/search">
+        <Param name="q" value="{searchTerms}"/>
     </Url>
-    <Url type="application/x-suggestions+json" method="get" template="https://{{ host }}/autocomplete">
-        <Param name="format" value="x-suggestions" />
-        <Param name="q" value="{searchTerms}" />
-    </Url>
+    <Url type="application/x-suggestions+json" template="https://{{ host }}/autocomplete"/>
+    <moz:SearchForm>https://{{ host }}/search</moz:SearchForm>
+
+    <Url type="application/opensearchdescription+xml"
+     rel="self"
+     template="https://{{ host }}/opensearch.xml" />
 </OpenSearchDescription>

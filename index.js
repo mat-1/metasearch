@@ -33,7 +33,7 @@ app.get('/search', async function(req, res) {
 })
 
 app.get('/opensearch.xml', async function(req, res) {
-    res.header('Content-Type', 'text/xml');
+    res.header('Content-Type', 'application/opensearchdescription+xml');
     res.render('opensearch.xml', {
         host: req.hostname,
     })
