@@ -2,7 +2,7 @@ const { requestJSON } = require('../../parser')
 
 
 async function request(query) {
-	const summaryJson = await requestJSON('https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&exsentences=2&titles=' + encodeURIComponent(query))
+	const summaryJson = await requestJSON('https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts|pageimages&exintro&explaintext&redirects=1&exsentences=2&titles=' + encodeURIComponent(query))
 	const pages = summaryJson.query.pages
 	const pageId = Object.keys(pages)[0]
 	const article = pages[pageId]
@@ -10,7 +10,8 @@ async function request(query) {
 	return {
 		sidebar: {
 			title: article.title,
-			content: article.extract
+			content: article.extract,
+			image: article.thumbnail?.source
 		}
 	}
 }

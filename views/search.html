@@ -23,9 +23,10 @@
 		</div>
 	{% endif %}
 	{% if sidebar|length > 0 %}
-		<aside>
-			<h2>{{ sidebar.title }}</h2>
-			<p>{{ sidebar.content }}</p>
+		<aside id="sidebar">
+			{% if sidebar.image %}<img class="sidebar-image" src="{{ sidebar.image }}">{% endif %}
+			<h2 class="sidebar-title">{{ sidebar.title }}</h2>
+			<p class="sidebar-content">{{ sidebar.content }}</p>
 		</aside>
 	{% endif %}
 	{% for result in results %}
