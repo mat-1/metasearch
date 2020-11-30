@@ -4,36 +4,37 @@
 	position: relative;
 	white-space: pre;
 	margin: 0;
-	top: 8px;
-	word-spacing: 4px
+	top: .5em;
+	word-spacing: .25px;
 }
 .minecraft-server-name {
 	position: relative;
 	color: #fff;
 	margin: 0;
-	top: 8px
+	top: .25em;
 }
 .minecraft-server {
 	background-image: url(/minecraft-server-background.png);
-	height: 80px;
+	height: 5em;
 	font-family: Minecraft;
 	font-size: 16px;
 	font-weight: normal;
-	max-width: 600px;
+	max-width: 37.5em;
 	position: relative
 }
 .minecraft-server-favicon {
 	float: left;
-	margin: 8px;
+	margin: .5em;
+	height: 4em;
 }
 .minecraft-ping {
 	position: absolute;
 	right: 0;
-	padding: 8px;
+	padding: .5em;
 	z-index: 100
 }
 .minecraft-ping-icon {
-	height: 14px;
+	height: 0.875em;
 	image-rendering: crisp-edges;
 	image-rendering: pixelated;
 }
@@ -59,6 +60,11 @@
 }
 .minecraft-playercount-divider {
 	color: #3f3f3f
+}
+@media only screen and (max-width:720px) {
+	.minecraft-server {
+		font-size: .5em;
+	}
 }
 </style>
 <div class="minecraft-server">
