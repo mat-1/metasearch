@@ -81,6 +81,7 @@ body {
 #answer .result-content {
 	margin-bottom: 2em;
 	white-space: break-spaces;
+	word-wrap: break-word;
 }
 #answer.answer-no-title .result-content {
 	margin-bottom: 0
