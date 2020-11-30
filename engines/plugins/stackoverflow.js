@@ -19,9 +19,9 @@ async function runPlugin({ id }) {
 	url = url + '#' + answerId
 	return {
 		html: answerEl.html().trim().replace(/\n/g, '\\n').replace(/`/g, '\\`'),
-		url,
-		title,
-		originalUrl
+		url: url.replace(/`/g, '\\`'),
+		title: title.replace(/`/g, '\\`'),
+		originalUrl: originalUrl.replace(/`/g, '\\`')
 	}
 }
 
