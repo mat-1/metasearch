@@ -11,8 +11,8 @@ async function request(query) {
 	const summaryJson = await requestJSON('https://wynncraft.gamepedia.com/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=' + encodeURIComponent(wynncraftQuery))
 	const pages = summaryJson.query.pages
 	const pageId = Object.keys(pages)[0]
+	if (pageId == '-1') return {}
 	const article = pages[pageId]
-	if (article.missing !== undefined) return {}
 	return {
 		sidebar: {
 			title: article.title,
