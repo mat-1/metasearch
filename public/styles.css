@@ -122,7 +122,8 @@ aside {
 	}
 }
 .sidebar-image {
-	float: right
+	float: right;
+	max-height: 5em;
 }
 datalist {
 	position: absolute;
