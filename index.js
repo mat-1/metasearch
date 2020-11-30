@@ -15,15 +15,20 @@ app.get('/', function(req, res) {
 })
 
 env.addGlobal('dark', false)
+env.addFilter('qs', (params) => {
+    return (
+        Object.keys(params)
+        .map(key => `${key}=${params[key]}`)
+        .join('&')
+    )
+})
 
 app.get('/search', async function(req, res) {
     const query = req.query.q
     const results = await search.request(query)
-    const options = {
-        results: results.results,
-        answer: results.answer,
-        sidebar: results.sidebar,
-        query
+    let options = {
+        query,
+        ...results
     }
     if (req.query.json === 'true') {
         res.json(options)
@@ -44,6 +49,20 @@ app.get('/autocomplete', async function(req, res) {
     const results = await search.autocomplete(query)
     res.json([query, results])
 })
+
+app.get('/plugins/:plugin.js', async function(req, res) {
+    const pluginName = req.params.plugin
+    const options = req.query
+    let data = await search.runPlugin({ pluginName, options })
+    res.header('Content-Type', 'application/javascript');
+    if (data === false)
+        // if it's false then it shouldn't do anything
+        res.send('')
+    else
+        res.render(`plugins/${pluginName}.js`, data)
+})
+
+
 
 app.use(express.static('public'))
 

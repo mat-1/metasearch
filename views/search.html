@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 
+{% block head %}
+{{ super() }}
+{% for pluginName, pluginData in plugins %}
+<script src="/plugins/{{ pluginName }}.js?{{ pluginData|qs }}" async defer></script>
+{% endfor %}
+{% endblock %}
+
 {% block body %}
 <header>
 	<form action="/search" id="search-form" class="search-form-left-offset" role="search">

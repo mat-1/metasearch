@@ -39,12 +39,23 @@ function getElements(dom, query) {
 }
 
 function extractText(dom, query) {
-	const element = dom.find(query)
+	const element = get(dom, query)
+	if (element[0] && element[0].name == 'ol') {
+		// if it's a list, number it and add newlines
+		let listTexts = []
+		let listItems = getElements(element, 'li')
+		for (let listItemIndex in listItems) {
+			let listItem = listItems[listItemIndex]
+			let displayedIndex = parseInt(listItemIndex)+1
+			listTexts.push(displayedIndex + '. ' + listItem.text().trim())
+		}
+		return listTexts.join('\n')
+	}
 	return element.text().trim()
 }
 
 function extractAttribute(dom, query, attribute) {
-	const element = dom.find(query)
+	const element = get(dom, query)
 	return element.attr(attribute)
 }
 
@@ -114,5 +125,5 @@ async function parseResultList(url, {
 	}
 }
 
-module.exports = { requestRaw, parseResultList, requestJSON, requestDom, getElements, extractText, extractAttribute }
+module.exports = { requestRaw, parseResultList, requestJSON, requestDom, getElements, extractText, extractAttribute, get, extractHref }
 

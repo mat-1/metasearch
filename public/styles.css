@@ -86,6 +86,9 @@ body {
 #answer.answer-no-title .result-content {
 	margin-bottom: 0
 }
+#answer p {
+	margin-top: 0
+}
 #search-centered h1 {
 	text-align: center;
 	margin-top: 0;

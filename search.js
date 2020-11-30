@@ -5,9 +5,15 @@ const { performance } = require('perf_hooks')
 const recursedEngines = requireDir('./engines', {recurse: true})
 const engines = {}
 
-Object.assign(engines, recursedEngines.answers, recursedEngines.search)
+const plugins = recursedEngines.plugins
 
-console.log('engines', engines)
+Object.assign(
+	engines,
+	recursedEngines.answers,
+	recursedEngines.search,
+)
+
+console.log('plugins', plugins)
 
 async function requestEngine(engineName, query) {
 	let engine = engines[engineName]
@@ -86,17 +92,35 @@ async function request(query) {
 		}
 	}
 
-	const calculatedResults = Object.values(results).sort((a, b) => b.score - a.score).filter((result) => result.url != answer.url)
+	let calculatedResults = Object.values(results).sort((a, b) => b.score - a.score).filter((result) => result.url != answer.url)
 
-	return {
+	// do some last second modifications, if necessary, and return the results!
+	return await requestAllPlugins({
 		results: calculatedResults,
 		answer,
-		sidebar
-	}
+		sidebar,
+
+		plugins: {} // these will be modified by plugins()
+	})
 }
 
 async function autocomplete(query) {
 	return await engines.google.autoComplete(query)
 }
 
-module.exports = { request, autocomplete }
+
+// do some last second non-http modifications to the results
+async function requestAllPlugins(options) {
+	for (let pluginName in plugins) {
+		let plugin = plugins[pluginName]
+		if (plugin.changeOptions)
+			options = await plugin.changeOptions(options)
+	}
+	return options
+}
+
+async function runPlugin({ pluginName, options }) {
+	return await plugins[pluginName].runPlugin(options)
+}
+
+module.exports = { request, autocomplete, runPlugin }
