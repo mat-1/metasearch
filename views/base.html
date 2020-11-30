@@ -39,9 +39,43 @@ const dataList = document.createElement('datalist')
 searchInputEl.parentNode.insertBefore(dataList, searchInputEl.nextSibling)
 dataList.id = 'autocomplete'
 
+let query = ''
+
 async function autoComplete(query) {
 	const result = await fetch('/autocomplete?q=' + encodeURIComponent(query))
 	return await result.json()
+}
+function getActiveOptionIndex() {
+	let activeOption = dataList.getElementsByClassName('active')[0]
+	if (!activeOption) return -1
+	for (var i=0; (activeOption = activeOption.previousSibling); i++) {}
+	return i
+}
+function arrowUp() {
+	let options = dataList.getElementsByTagName('option')
+	let activeIndex = getActiveOptionIndex()
+	if (activeIndex > -1)
+		options[activeIndex].classList.remove('active')
+	if (activeIndex == 0) {
+		searchInputEl.value = query
+		return
+	}
+	else if (activeIndex == -1)
+		activeIndex = options.length
+	let selectedOption = options[(activeIndex - 1) % options.length]
+	if (!selectedOption) return
+	selectedOption.classList.add('active')
+	searchInputEl.value = selectedOption.value
+}
+function arrowDown() {
+	let options = dataList.getElementsByTagName('option')
+	let activeIndex = getActiveOptionIndex()
+	if (activeIndex > -1)
+		options[activeIndex].classList.remove('active')
+	let selectedOption = options[(activeIndex + 1) % (options.length)]
+	if (!selectedOption) return
+	selectedOption.classList.add('active')
+	searchInputEl.value = selectedOption.value
 }
 async function autoCompleteDataList(query) {
 	const results = await autoComplete(query)
@@ -53,6 +87,14 @@ async function autoCompleteDataList(query) {
 			searchInputEl.value = result
 			dataList.style.display = 'none'
 			searchFormEl.submit()
+		}
+		optionEl.onmouseover = () => {
+			let activeOption = dataList.getElementsByClassName('active')[0]
+			if (activeOption) activeOption.classList.remove('active')
+			optionEl.classList.add('active')
+		}
+		optionEl.onmouseout = () => {
+			optionEl.classList.remove('active')
 		}
 		dataList.appendChild(optionEl)
 	}
@@ -96,6 +138,24 @@ window.addEventListener('resize', () => {
 	dataList.style.width = (searchInputEl.offsetWidth - 2) + 'px';
 	dataList.style.left = searchInputEl.offsetLeft + 'px';
 })
+
+window.addEventListener('keydown', (e) => {
+	if (searchFormEl.contains(document.activeElement)) {
+		switch (e.key) {
+			case 'ArrowUp':
+				e.preventDefault()
+				arrowUp()
+				break
+			case 'ArrowDown':
+				e.preventDefault()
+				arrowDown()
+				break
+			default:
+				query = searchInputEl.value + e.key
+		}
+	}
+})
+
 })
 	</script>
 	{% endblock %}

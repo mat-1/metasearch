@@ -134,7 +134,6 @@ aside {
 datalist {
 	position: absolute;
 	font-family: sans-serif;
-	font-size: 0.8rem;
 	border: 1px solid var(--semi-light);
 	border-top: none;
 	overflow: hidden;
@@ -143,14 +142,14 @@ datalist {
 	z-index: 1000;
 }
 option {
-	padding: 4px;
+	padding: .2em .5em;
 	cursor: pointer;
 	text-align: left;
 	transition: background-color 200ms;
 	background-color: var(--background-color);
 	position: relative;
 }
-option:hover {
+option.active {
 	background-color: var(--very-very-light)
 }
 code {
