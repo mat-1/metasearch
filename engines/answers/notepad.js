@@ -1,6 +1,6 @@
 const { requestJSON } = require('../../parser')
 
-const notepadRegex = /^(note ?pad|text ?area)$/i
+const notepadRegex = /^(python|js|javascript|html|xml|code)? ?(note ?pad|text ?(area|editor)|editor)$/i
 
 
 async function request(query) {
