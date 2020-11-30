@@ -4,14 +4,6 @@
     <ShortName>metasearch</ShortName>
     <Description>Search everything.</Description>
     <InputEncoding>UTF-8</InputEncoding>
-    {# <Image width="16" height="16" type="image/x-icon">[https://example.com/favicon.ico]</Image> #}
-    <Url type="text/html" template="https://{{ host }}/search">
-        <Param name="q" value="{searchTerms}"/>
-    </Url>
-    <Url type="application/x-suggestions+json" template="https://{{ host }}/autocomplete"/>
-    <moz:SearchForm>https://{{ host }}/search</moz:SearchForm>
-
-    <Url type="application/opensearchdescription+xml"
-     rel="self"
-     template="https://{{ host }}/opensearch.xml" />
+    <Url rel="results" type="text/html" method="get" template="https://{{ host }}/search?q={searchTerms}"/>
+    <Url rel="suggestions" type="application/json" template="https://{{ host }}/autocomplete"/>
 </OpenSearchDescription>
