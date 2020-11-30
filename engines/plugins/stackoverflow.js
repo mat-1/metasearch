@@ -12,7 +12,7 @@ async function runPlugin({ id }) {
 		
 	let title = extractText(dom, 'h1.fs-headline1 a.question-hyperlink')
 
-	let url = stackOverflowHost + 'questions' + extractHref(dom, '.question-hyperlink')
+	let url = stackOverflowHost + extractHref(dom, '.question-hyperlink')
 	
 	let answerId = answerContainerEl.attr('data-answerid')
 	let answerEl = get(answerContainerEl, 'div.answercell > div.js-post-body')
