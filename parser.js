@@ -8,10 +8,7 @@ async function requestRaw(url) {
 			'user-agent': 'Mozilla/5.0 Firefox/84.0'
 		}
 	})
-	let perfBefore = performance.now()
 	const text = await response.buffer()
-	let perfAfter = performance.now()
-	console.log(`.text ${url} took ${Math.floor(perfAfter - perfBefore)}ms. ${text.length}`);
 	return text
 }
 
