@@ -37,6 +37,7 @@ body {
 }
 .result-url {
 	color: #3B8;
+	overflow-wrap: break-word;
 }
 #search-form {
 	position: relative
