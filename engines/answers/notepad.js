@@ -1,5 +1,3 @@
-const { requestJSON } = require('../../parser')
-
 const notepadRegex = /^(python|js|javascript|html|xml|code)? ?(note ?pad|text ?(area|editor)|editor)$/i
 
 

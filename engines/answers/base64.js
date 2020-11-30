@@ -1,5 +1,3 @@
-const { requestJSON } = require('../../parser')
-
 const base64Regex = /^b(?:ase)?64( encode| decode|)(?:\s+)(.+)$/i
 
 function base64Encode(string) {

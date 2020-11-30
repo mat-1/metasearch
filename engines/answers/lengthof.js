@@ -1,5 +1,3 @@
-const { requestJSON } = require('../../parser')
-
 const lengthofRegex = /^(?:(?:how long is|len(?:gth(?: of)?)?|(?:(?:number of |how many )?char(?:acters|s) in))(.+?)|(.+?)(?:len(?:gth)))$/i
 
 async function request(query) {

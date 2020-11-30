@@ -1,5 +1,4 @@
 const { getStatus } = require('../../mcstatus')
-const dns = require('dns')
 
 const minecraftRegex = /^(?:(?:minecraft|mc|server|ping|srv|serv|mine craft| )*?) *\b([-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6})\b *(?:(?:minecraft|mc|server|ping|srv|serv|mine craft| )*?)$/i
 

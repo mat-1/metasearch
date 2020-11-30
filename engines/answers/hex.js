@@ -1,5 +1,3 @@
-const { requestJSON } = require('../../parser')
-
 const hexRegex = /^(?:hex(?:adecimal)?|base ?16?) ?(encode|decode|)(?:\s+)(.+)$/i
 
 function hexEncode(string) {

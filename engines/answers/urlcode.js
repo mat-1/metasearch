@@ -1,5 +1,3 @@
-const { requestJSON } = require('../../parser')
-
 const urlcodeRegex = /^(?:ur[li] (encode|decode) )(.+)$/i
 
 async function request(query) {
