@@ -152,4 +152,8 @@ option {
 }
 option:hover {
 	background-color: var(--very-very-light)
-} 
+}
+code {
+	white-space: break-spaces;
+	word-wrap: break-word
+}
