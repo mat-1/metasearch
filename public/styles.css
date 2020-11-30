@@ -104,7 +104,7 @@ aside {
 .sidebar-possibly-hidden {
 	display: none
 }
-@media only screen and (min-width: 1300px) {
+@media only screen and (min-width: 1340px) {
 	aside {
 		position: absolute;
 		left: 55em;
