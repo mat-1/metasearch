@@ -186,7 +186,7 @@ async function request(query) {
 		
 	try {
 		status = await getStatus(minecraftHost, port, {
-			timeout: 500
+			timeout: 750
 		})
 	} catch (e) {
 		console.log('error :(', e)
