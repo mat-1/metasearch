@@ -29,14 +29,14 @@ body {
 	text-decoration: none
 }
 .result-title {
-	color: #4ac;
+	color: var(--result-title);
 	transition: color 200ms
 }
 .result-title:hover, a:visited .result-title {
-	color: #269
+	color: var(--result-title-selected)
 }
 .result-url {
-	color: #3B8;
+	color: var(--result-url);
 	overflow-wrap: break-word;
 }
 #search-form {
@@ -109,6 +109,9 @@ aside {
 }
 .sidebar-possibly-hidden {
 	display: none
+}
+.sidebar-title {
+	color: var(--result-title)
 }
 @media only screen and (min-width: 1340px) {
 	aside {
