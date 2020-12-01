@@ -142,16 +142,25 @@ function colorCodeToHtml(code) {
 		return jsonColorCodes(code)
 }
 
+function includesCaseInsensitive(string1, string2) {
+	let index = string2.toLowerCase().indexOf(string1.toLowerCase())
+	if (index == -1) return false
+	return string2.slice(index, index + string1.length)
+}
+
 function extractServerName(hostName, description) {
 	hostName = hostName.split(':')[0] // remove the port, if it exists
 	const hostNameParts = hostName.split('.')
 	const tld = hostNameParts[hostNameParts.length - 1]
 	const sld = hostNameParts[hostNameParts.length - 2]
 	const sldAndTld = sld + '.' + tld
+	const sldAndTldSpaced = sld + ' ' + tld
 	if (description.toLowerCase().includes(hostName.toLowerCase()))
 		return hostName.toLowerCase()
 	else if (description.toLowerCase().includes(sldAndTld.toLowerCase()))
 		return sldAndTld.toLowerCase()
+	else if (description.toLowerCase().includes(sldAndTldSpaced.toLowerCase()))
+		return includesCaseInsensitive(sldAndTldSpaced, description)
 	else
 		return sld.charAt(0).toUpperCase() + sld.slice(1)
 }
