@@ -27,16 +27,19 @@ async function request(query) {
 		return {}
 	}
 
-	let answer = timeUnits[targetUnit] / timeUnits[currentUnit]
+	let answer = (timeUnits[targetUnit] * targetUnitAmount) / timeUnits[currentUnit]
 
 	// nope
 	if (answer == 1) return {}
 
 	let currentUnitPlural = answer == 1 ? currentUnit : currentUnit + 's'
+	
+	let targetUnitAmountDisplay = targetUnitAmount == 1 ? 'a' : targetUnitAmount
+	let targetUnitPlural = targetUnitAmount == 1 ? targetUnit : targetUnit + 's'
 
 	return {
 		answer: {
-			content: `There are ${answer} ${currentUnitPlural} in a ${targetUnit}`,
+			content: `There are ${answer} ${currentUnitPlural} in ${targetUnitAmountDisplay} ${targetUnitPlural}`,
 		}
 	}
 }
