@@ -145,13 +145,14 @@ window.addEventListener('keydown', (e) => {
 			case 'ArrowUp':
 				e.preventDefault()
 				arrowUp()
-				break
+				return
 			case 'ArrowDown':
 				e.preventDefault()
 				arrowDown()
-				break
+				return
 			default:
-				query = searchInputEl.value + e.key
+				if (e.key.length == 1)
+					query = searchInputEl.value + e.key
 		}
 	}
 })
