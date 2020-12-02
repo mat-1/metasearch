@@ -1,0 +1,78 @@
+<style>
+.minecraft-name-history {
+	margin: .5em;
+	border: 1px solid var(--very-light);
+	border-radius: .5em;
+	padding: .5em;
+	counter-increment: nameHistoryCounter;
+	counter-reset: nameHistoryCounter {{ answer.history.length }};
+	display: inline-block;
+	width: 100%
+}
+ol.minecraft-name-history li {
+	list-style-type: none;
+	position: relative;
+	left: .5em;
+	margin-right: .5em;
+}
+ol.minecraft-name-history li:before {
+	position: relative;
+	counter-increment: nameHistoryCounter -1;
+	content: counter(nameHistoryCounter);
+	right: .5em;
+	opacity: .5;
+	font-size: .8em
+}
+.minecraft-skin-container img {
+	height: 12em;
+}
+.minecraft-skin-container {
+	display: inline-block;
+	margin: 1em;
+}
+.minecraft-player-data {
+	margin: 1em;
+	display: flex;
+	flex-wrap: wrap
+}
+.minecraft-player-data-box {
+	margin: 0;
+	border: 1px solid var(--very-light);
+	border-radius: .5em;
+	padding: .5em;
+	margin: .5em;
+	width: 100%
+}
+.minecraft-name-history-time, .minecraft-player-data-box-value {
+	text-align: right;
+	float: right;
+	margin-left: 0 .5em;
+}
+.minecraft-name-history-title {
+	margin: 0;
+	border-bottom: 1px solid var(--semi-light);
+	padding: .25em;
+	margin-bottom: .5em;
+}
+</style>
+<a href="{{ answer.url }}">
+	<h3 class="result-title">{{ answer.username }}</h3>
+	<span class="result-url">{{ answer.url }}</span>
+</a>
+<div class="minecraft-player-data">
+	<div class="minecraft-skin-container">
+		<img src="https://mc-heads.net/body/{{ answer.uuid }}">
+	</div>
+	<div class="minecraft-player-container">
+		<div class="minecraft-player-data-box">
+			<div><strong>UUID</strong> <span class="minecraft-player-data-box-value"><samp>{{ answer.uuid }}<br>{{ answer.undasheduuid }}</samp></span></div>
+			<div><strong>Username</strong> <span class="minecraft-player-data-box-value">{{ answer.username }}</span></div>
+		</div>
+		<ol class="minecraft-name-history">
+			<h4 class="minecraft-name-history-title">Name history</h4>
+			{%- for history in answer.history | reverse -%}
+				<li><strong>{{ history.username }}</strong>{% if history.changed_at %}<span class="minecraft-name-history-time">{{ history.changed_at }}</span>{% endif %}</li>
+			{%- endfor -%}
+		</ol>
+	</div>
+</div>

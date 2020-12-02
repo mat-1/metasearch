@@ -159,3 +159,6 @@ code {
 	white-space: break-spaces;
 	word-wrap: break-word
 }
+samp {
+	font-family: Courier
+}
