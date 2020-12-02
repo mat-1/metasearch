@@ -72,7 +72,8 @@ app.get('/plugins/:plugin.js', async function(req, res) {
 })
 
 app.get('/settings', function(req, res) {
-    render(res, 'settings.html', {themes})
+    let activeTheme = res.req.cookies.theme || 'light'
+    render(res, 'settings.html', {themes, activeTheme})
 })
 
 

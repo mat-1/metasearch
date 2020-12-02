@@ -22,7 +22,7 @@ themeEl.onchange = (e) => {
 <label for="theme">Theme:</label>
 <select name="theme" id="theme">
 {% for theme, value in themes %}
-  <option value="{{ theme }}">{{ theme|title }}</option>
+  <option value="{{ theme }}"{% if activeTheme == theme %} selected{% endif %}>{{ theme|title }}</option>
 {% endfor %}
 </select> 
 {% endblock %}
