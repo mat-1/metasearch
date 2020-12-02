@@ -21,10 +21,17 @@ env.addFilter('qs', (params) => {
     )
 })
 
+function loadTheme(name) {
+    let themeData = themes[name]
+    if (name != 'light')
+        themeData = Object.assign({}, loadTheme(themeData.base || 'light'), themeData)
+    return themeData
+}
+
 function render(res, template, options={}) {
     let themeName = res.req.cookies.theme || 'light'
-    let theme = themes[themeName]
-    Object.assign(options, {theme: themes.light}, {theme})
+    let theme = loadTheme(themeName)
+    options.theme = theme
     return res.render(template, options)
 }
 

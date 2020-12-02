@@ -1,16 +1,16 @@
 {
 	"light": {
 		"background-color": "#fff",
-		"title-color": "#000",
 		"main-text": "#000",
+		"result-url": "#3B8",
 		"anchor-text": "#4ac",
 		"semi-light": "#aaa",
 		"very-light": "#bbb",
 		"very-very-light": "#eaeaea",
 		"result-content-color": "#444",
-		"result-title": "#4ac",
 		"result-title-selected": "#269",
-		"result-url": "#3B8"
+		"title-color": "var(--main-text, #000)",
+		"result-title": "var(--anchor-text)"
 	},
 	"dark": {
 		"background-color": "#111",
@@ -19,10 +19,12 @@
 		"semi-light": "rgba(255,255,255,.5)",
 		"very-light": "rgba(255,255,255,.2)",
 		"very-very-light": "rgba(255,255,255,.05)",
-		"result-content-color": "#ccc",
-		"result-title": "#4ac",
-		"result-title-selected": "#269",
-		"result-url": "#3B8"
+		"result-content-color": "#ccc"
+	},
+	"amoled": {
+		"base": "dark",
+		"background-color": "#000",
+		"main-text": "#eee"
 	},
 	"sushi1": {
 		"background-color": "#2D3142",
