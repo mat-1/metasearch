@@ -159,7 +159,7 @@ function extractServerName(hostName, description) {
 		return hostName.toLowerCase()
 	else if (description.toLowerCase().includes(sldAndTld.toLowerCase()))
 		return sldAndTld.toLowerCase()
-	else if (description.toLowerCase().includes(sldAndTldSpaced.toLowerCase()))
+	else if (RegExp(`\b${sldAndTldSpaced}\b`, 'i').test(description))
 		return includesCaseInsensitive(sldAndTldSpaced, description)
 	else
 		return sld.charAt(0).toUpperCase() + sld.slice(1)
