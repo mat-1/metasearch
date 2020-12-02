@@ -10,29 +10,9 @@
 	<title>{% block title %}Metasearch{% endblock %}</title>
 	<style>
 :root {
-{% if dark %}
-	--background-color: #111;
-	--title-color: #fff;
-	--main-text: #eee;
-	--semi-light: rgba(255,255,255,.5);
-	--very-light: rgba(255,255,255,.2);
-	--very-very-light: rgba(255,255,255,.05);
-	--result-content-color: #ccc;
-	--result-title: #4ac;
-	--result-title-selected: #269;
-	--result-url: #3B8;
-{% else %}
-	--background-color: #fff;
-	--title-color: #000;
-	--main-text: #000;
-	--semi-light: #aaa;
-	--very-light: #bbb;
-	--very-very-light: #eaeaea;
-	--result-content-color: #444;
-	--result-title: #4ac;
-	--result-title-selected: #269;
-	--result-url: #3B8;
-{% endif %}
+	{% for key, value in theme -%}
+	--{{ key }}: {{ value }};
+	{%- endfor %}
 }
 	</style>
 	<link rel="stylesheet" href="/styles.css">
@@ -41,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const searchFormEl = document.getElementById('search-form')
 const searchInputEl = document.getElementById('search-bar')
+if (searchInputEl) {
 const dataList = document.createElement('datalist')
 searchInputEl.parentNode.insertBefore(dataList, searchInputEl.nextSibling)
 dataList.id = 'autocomplete'
@@ -162,6 +143,8 @@ window.addEventListener('keydown', (e) => {
 		}
 	}
 })
+
+}
 
 })
 	</script>

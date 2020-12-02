@@ -1,17 +1,15 @@
-const express = require('express')
+const cookieParser = require('cookie-parser')
 const nunjucks = require('nunjucks')
+const express = require('express')
 const search = require('./search')
+const themes = require('./themes.json')
 
 var app = express()
-
+app.use(cookieParser())
 
 const env = nunjucks.configure('views', {
     autoescape: true,
     express: app
-})
-
-app.get('/', function(req, res) {
-    res.render('index.html')
 })
 
 env.addGlobal('dark', false)
@@ -21,6 +19,17 @@ env.addFilter('qs', (params) => {
         .map(key => `${key}=${params[key]}`)
         .join('&')
     )
+})
+
+function render(res, template, options={}) {
+    let themeName = res.req.cookies.theme || 'light'
+    let theme = themes[themeName]
+    Object.assign(options, {theme: themes.light}, {theme})
+    return res.render(template, options)
+}
+
+app.get('/', function(req, res) {
+    render(res, 'index.html')
 })
 
 app.get('/search', async function(req, res) {
@@ -33,13 +42,13 @@ app.get('/search', async function(req, res) {
     if (req.query.json === 'true') {
         res.json(options)
     } else {
-        res.render('search.html', options)
+        render(res, 'search.html', options)
     }
 })
 
 app.get('/opensearch.xml', async function(req, res) {
     res.header('Content-Type', 'application/opensearchdescription+xml');
-    res.render('opensearch.xml', {
+    render(res, 'opensearch.xml', {
         host: req.hostname,
     })
 })
@@ -59,9 +68,12 @@ app.get('/plugins/:plugin.js', async function(req, res) {
         // if it's false then it shouldn't do anything
         res.send('')
     else
-        res.render(`plugins/${pluginName}.js`, data)
+        render(res, `plugins/${pluginName}.js`, data)
 })
 
+app.get('/settings', function(req, res) {
+    render(res, 'settings.html', {themes})
+})
 
 
 app.use(express.static('public'))

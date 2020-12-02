@@ -151,6 +151,7 @@ option {
 	transition: background-color 200ms;
 	background-color: var(--background-color);
 	position: relative;
+	color: var(--main-text)
 }
 option.active {
 	background-color: var(--very-very-light)
@@ -161,4 +162,12 @@ code {
 }
 samp {
 	font-family: Courier
+}
+a {
+	color: var(--anchor-text);
+}
+.settings-link {
+	position: absolute;
+	top: .5em;
+	right: .5em;
 }
