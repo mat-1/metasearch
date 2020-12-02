@@ -8,79 +8,79 @@ var app = express()
 app.use(cookieParser())
 
 const env = nunjucks.configure('views', {
-    autoescape: true,
-    express: app
+	autoescape: true,
+	express: app
 })
 
 env.addGlobal('dark', false)
 env.addFilter('qs', (params) => {
-    return (
-        Object.keys(params)
-        .map(key => `${key}=${params[key]}`)
-        .join('&')
-    )
+	return (
+		Object.keys(params)
+		.map(key => `${key}=${params[key]}`)
+		.join('&')
+	)
 })
 
 function loadTheme(name) {
-    let themeData = themes[name]
-    if (name != 'light')
-        themeData = Object.assign({}, loadTheme(themeData.base || 'light'), themeData)
-    return themeData
+	let themeData = themes[name]
+	if (name != 'light')
+		themeData = Object.assign({}, loadTheme(themeData.base || 'light'), themeData)
+	return themeData
 }
 
 function render(res, template, options={}) {
-    let themeName = res.req.cookies.theme || 'light'
-    let theme = loadTheme(themeName)
-    options.theme = theme
-    return res.render(template, options)
+	let themeName = res.req.cookies.theme || 'light'
+	let theme = loadTheme(themeName)
+	options.theme = theme
+	return res.render(template, options)
 }
 
 app.get('/', function(req, res) {
-    render(res, 'index.html')
+	render(res, 'index.html')
 })
 
 app.get('/search', async function(req, res) {
-    const query = req.query.q
-    const results = await search.request(query)
-    let options = {
-        query,
-        ...results
-    }
-    if (req.query.json === 'true') {
-        res.json(options)
-    } else {
-        render(res, 'search.html', options)
-    }
+	const query = req.query.q
+	const results = await search.request(query)
+	let options = {
+		query,
+		...results
+	}
+	if (req.query.json === 'true') {
+		res.json(options)
+	} else {
+		render(res, 'search.html', options)
+	}
 })
 
 app.get('/opensearch.xml', async function(req, res) {
-    res.header('Content-Type', 'application/opensearchdescription+xml');
-    render(res, 'opensearch.xml', {
-        host: req.hostname,
-    })
+	res.header('Content-Type', 'application/opensearchdescription+xml');
+	render(res, 'opensearch.xml', {
+		host: req.hostname,
+	})
 })
 
 app.get('/autocomplete', async function(req, res) {
-    const query = req.query.q
-    const results = await search.autocomplete(query)
-    res.json([query, results])
+	const query = req.query.q
+	const results = await search.autocomplete(query)
+	res.json([query, results])
 })
 
 app.get('/plugins/:plugin.js', async function(req, res) {
-    const pluginName = req.params.plugin
-    const options = req.query
-    let data = await search.runPlugin({ pluginName, options })
-    res.header('Content-Type', 'application/javascript');
-    if (data === false)
-        // if it's false then it shouldn't do anything
-        res.send('')
-    else
-        render(res, `plugins/${pluginName}.js`, data)
+	const pluginName = req.params.plugin
+	const options = req.query
+	let data = await search.runPlugin({ pluginName, options })
+	res.header('Content-Type', 'application/javascript');
+	if (data === false)
+		// if it's false then it shouldn't do anything
+		res.send('')
+	else
+		render(res, `plugins/${pluginName}.js`, data)
 })
 
 app.get('/settings', function(req, res) {
-    let activeTheme = res.req.cookies.theme || 'light'
-    render(res, 'settings.html', {themes, activeTheme})
+	let activeTheme = res.req.cookies.theme || 'light'
+	render(res, 'settings.html', {themes, activeTheme})
 })
 
 
