@@ -39,15 +39,14 @@ function solve(input) {
 		|| input.includes('(')
 	))
 		return null
-	var foundEquations = input.match(/\b([xyz]|[+\-*=^\/\.]|[0-9]| |\(|\)){3,}\b\)?/g)
-	if (!foundEquations)
-		return null
+	var foundEquations = input.match(/^([xyz]|[+\-*=^\/\.]|[0-9]+| |\(|\)){3,}\b\)?$/g)
+	if (!foundEquations) return null
+
 	var input = foundEquations[0]
 
-
-	var parser = new Parser();
+	var parser = new Parser()
 	try {
-		var result = parser.parse(input);
+		var result = parser.parse(input)
 	} catch(err) {
 		return null
 	}
