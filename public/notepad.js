@@ -27,7 +27,6 @@ require([
 	function update() {
 		let code = editor.getValue()
 		let language = guessLanguage(code)
-		console.log(language)
 		editor.setOption('mode', language)
 	}
 	

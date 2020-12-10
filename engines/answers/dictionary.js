@@ -75,7 +75,6 @@ async function request(query) {
 
 	let { word, phoneticSpelling, ipaSpelling, entries, url } = await dictionaryCom(inputtedWord)
 
-	console.log(entries)
 	return {
 		answer: {
 			template: 'dictionary',
