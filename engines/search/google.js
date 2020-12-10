@@ -1,4 +1,4 @@
-const { parseResultList, requestDom, getElements } = require('../../parser')
+const { parseResultList, requestJSON, getElements } = require('../../parser')
 
 
 async function request(query) {
@@ -17,10 +17,12 @@ async function request(query) {
 }
 
 async function autoComplete(query) {
-	const dom = await requestDom('https://suggestqueries.google.com/complete/search?client=toolbar&q=' + query)
+	if (!query.trim()) return []
+	const data = await requestJSON('https://suggestqueries.google.com/complete/search?output=firefox&client=firefox&hl=US-en&q=' + query)
+	console.log(data)
 	const results = []
-	for (const suggestion of getElements(dom, 'suggestion'))
-		results.push(suggestion.attr('data'))
+	for (const suggestion of data[1])
+		results.push(suggestion)
 	return results
 }
 
