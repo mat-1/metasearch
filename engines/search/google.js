@@ -10,7 +10,7 @@ async function request(query) {
 		suggestionPath: 'p.card-section a:first-of-type',
 
 		featuredSnippetPath: '.c2xzTb',
-		featuredSnippetContentPath: '.hgKElcm, .X5LH0c',
+		featuredSnippetContentPath: '.hgKElcm, .X5LH0c, .LGOjhe',
 		featuredSnippetTitlePath: 'div.rc a > h3',
 		featuredSnippetHrefPath: 'div.rc a',
 	})
