@@ -41,6 +41,7 @@ async function requestAllEngines(query) {
 }
 
 async function requestAllAutoCompleteEngines(query) {
+	if (!query) return []
 	const promises = []
 	for (let engineName in engines) {
 		let engine = engines[engineName]
