@@ -2,7 +2,7 @@ const { parseResultList, requestJSON, getElements } = require('../../parser')
 
 
 async function request(query) {
-	return await parseResultList('https://www.google.com/search?pws=0&q=' + encodeURIComponent(query), {
+	return await parseResultList('https://www.google.com/search?pws=0&nfpr=1&q=' + encodeURIComponent(query), {
 		resultItemPath: 'div.g',
 		titlePath: 'h3 > span',
 		hrefPath: 'div.yuRUbf > a[href], h3.H1u2de > a[href]',
