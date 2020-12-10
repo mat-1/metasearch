@@ -1,7 +1,7 @@
 const { requestJSON } = require('../../parser')
 
 // if you want to make this regex less cursed, good luck :)
-const minecraftRegex = /^(?:(?:(?:(?:minecraft|mc|mine craft|namemc) ?)+(?:name|namemc|ign)? *\b(.{1,16}|[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12})\b)|(?:\b(.{1,16}|[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12})\b(?:(?:minecraft|mc|mine craft|namemc) ?)+(?:name|namemc|ign)? *))$/i
+const minecraftRegex = /^(?:(?:(?:minecraft name|namemc|minecraft ign)? *\b(.{1,16}|[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12})\b)|(?:\b(.{1,16}|[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12})\b(?:(?:minecraft name|namemc|minecraft ign)? *))$/i
 
 
 async function requestMojang(name) {
