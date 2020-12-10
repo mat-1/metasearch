@@ -19,7 +19,6 @@ async function request(query) {
 async function autoComplete(query) {
 	if (!query.trim()) return []
 	const data = await requestJSON('https://suggestqueries.google.com/complete/search?output=firefox&client=firefox&hl=US-en&q=' + query)
-	console.log(data)
 	const results = []
 	for (const suggestion of data[1])
 		results.push(suggestion)
