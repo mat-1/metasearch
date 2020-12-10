@@ -29,16 +29,6 @@ var toTex = function(input) {
 };
 
 function solve(input) {
-	if (!(
-		   input.includes('+')
-		|| input.includes('-')
-		|| input.includes('*')
-		|| input.includes('/')
-		|| input.includes('^')
-		|| input.includes('=')  
-		|| input.includes('(')
-	))
-		return null
 	var foundEquations = input.match(/^([xyz]|[+\-*=^\/\.]|[0-9]+| |\(|\)){3,}\b\)?$/g)
 	if (!foundEquations) return null
 
