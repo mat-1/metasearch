@@ -1,7 +1,6 @@
 var Parser = require('./src/parser')
 
 
-
 function solve(input) {
 	var foundEquations = input.match(/^([xyz]|[+\-*=^\/\.]|[0-9]+| |\(|\)){3,}\b\)?$/g)
 	if (!foundEquations) return null
@@ -46,4 +45,4 @@ function solve(input) {
 }
 
 
-module.exports = solve;
+module.exports = solve

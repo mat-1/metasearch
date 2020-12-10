@@ -40,6 +40,22 @@ async function requestAllEngines(query) {
 	return results
 }
 
+async function requestAllAutoCompleteEngines(query) {
+	const promises = []
+	for (let engineName in engines) {
+		let engine = engines[engineName]
+		if (engine.autoComplete)
+			promises.push(engine.autoComplete(query))
+	}
+	const resolvedRequests = await Promise.all(promises)
+	results = {}
+	for (const engineIndex in resolvedRequests) {
+		const engineName = Object.keys(engines)[engineIndex]
+		results[engineName] = resolvedRequests[engineIndex]
+	}
+	return results
+}
+
 async function request(query) {
 	const results = {}
 	const enginesResults = await requestAllEngines(query)
@@ -69,6 +85,8 @@ async function request(query) {
 				continue
 			}
 
+			const engineWeight = engine.weight || 1
+
 			// Default values
 			if (!results[normalUrl])
 				results[normalUrl] = {
@@ -76,18 +94,18 @@ async function request(query) {
 					title: result.title,
 					content: result.content,
 					score: 0,
-					weight: engine.weight || 1,
+					weight: engineWeight,
 					engines: []
 				}
 
 			// position 1 is score 1, position 2 is score .5, position 3 is score .333, etc
 
-			if (results[normalUrl].weight || 1 < engine.weight || 1) {
+			if (results[normalUrl].weight < engineWeight) {
 				// if the weight of this engine is higher than the previous one, replace the title and content
 				results[normalUrl].title = result.title
 				results[normalUrl].content = result.content
 			}
-			results[normalUrl].score += 1 / result.position
+			results[normalUrl].score += engineWeight / result.position
 			results[normalUrl].engines.push(engineName)
 		}
 	}
@@ -105,7 +123,30 @@ async function request(query) {
 }
 
 async function autocomplete(query) {
-	return await engines.google.autoComplete(query)
+	const results = {}
+	const enginesResults = await requestAllAutoCompleteEngines(query)
+	for (engineName in enginesResults) {
+		const engine = engines[engineName]
+		const engineResults = enginesResults[engineName]
+		let resultPosition = 0
+		for (const result of engineResults) {
+			const engineWeight = engine.weight || 1
+			resultPosition ++
+
+			// Default values
+			if (!results[result])
+				results[result] = {
+					result,
+					score: 0,
+					weight: engineWeight,
+					engines: []
+				}
+
+			results[result].score += engineWeight / resultPosition
+			results[result].engines.push(engineName)
+		}
+	}
+	return Object.keys(results)
 }
 
 
