@@ -3,6 +3,12 @@ body {
 	background-color: var(--background-color);
 	color: var(--main-text);
 }
+@media only screen and (max-width: 175px) {
+	body::before {
+		content: "why are you like this";
+	}
+}
+
 .result-title, .result-content {
 	margin: 0
 }
@@ -40,18 +46,28 @@ body {
 	overflow-wrap: break-word;
 }
 #search-form {
-	position: relative
+	position: relative;
+	text-align: center;
+	width: 0
 }
 #search-form.search-form-left-offset {
 	margin-left: 1em;
+	width: 0
 }
-#search-form:not(.search-form-left-offset) {
-	text-align: center
+#search-centered #search-bar {
+	margin-left: 3rem;
+	margin-top: 3rem;
+}
+#search-form {
+	width: 100%
+}
+.search-form-left-offset #search-bar {
+	width: 75vw;
 }
 #search-bar {
 	color: var(--text-color);
 	max-width: 39rem;
-	margin: 0 1rem 0;
+	margin: 0 1rem 0 1rem;
 	padding: .5rem;
 	font-size: 1rem;
 	border-radius: .5rem;
@@ -92,7 +108,13 @@ body {
 #search-centered h1 {
 	text-align: center;
 	margin-top: 0;
-	color: var(--title-color)
+	color: var(--title-color);
+	width: 100%
+}
+h1 {
+	position: absolute;
+	width: 100%;
+	text-align: center
 }
 aside h2 {
 	margin-top: 0
@@ -130,6 +152,12 @@ aside {
 		margin-left: 10em;
 	}
 }
+@media only screen and (max-width: 1000px) {
+	.toplogo {
+		display: none
+	}
+}
+
 .sidebar-image {
 	float: right;
 	max-height: 5em;
@@ -170,4 +198,10 @@ a {
 	position: absolute;
 	top: .5em;
 	right: .5em;
+}
+.toplogo {
+	font-size: 1.5em;
+	width: 0;
+	margin: .15em 0 0 .5em;
+	color: var(--main-text);
 }
