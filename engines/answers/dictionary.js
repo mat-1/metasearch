@@ -1,4 +1,5 @@
 const { requestDom, extractText, getElements } = require('../../parser')
+const commonWords = require('../../common-words.json')
 
 const defineRegex = /^(?:define )(.+)$/i
 
@@ -67,14 +68,20 @@ async function dictionaryCom(query) {
 }
 
 
+function matchWord(query) {
+	const regexMatch = query.match(defineRegex)
+	if (regexMatch)
+		return regexMatch[1]
+	else if (!query.includes(' ') && !commonWords.includes(query))
+		return query
+	return {}
+}
 
 async function request(query) {
-	const regexMatch = query.match(defineRegex)
-	if (!regexMatch) return {}
-	let inputtedWord = regexMatch[1]
-
+	const inputtedWord = matchWord(query)
+	if (!inputtedWord) return {}
 	let { word, phoneticSpelling, ipaSpelling, entries, url } = await dictionaryCom(inputtedWord)
-
+	if (!word) return {}
 	return {
 		answer: {
 			template: 'dictionary',
