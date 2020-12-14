@@ -18,5 +18,10 @@
             }
         ],
         "indent": "off"
-    }
+    },
+    "overrides": [
+        {
+          "files": ["*.js"]
+        }
+    ]
 }
