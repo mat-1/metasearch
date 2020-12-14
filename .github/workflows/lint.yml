@@ -21,3 +21,4 @@ jobs:
         uses: wearerequired/lint-action@v1.7.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          eslint: true
