@@ -27,8 +27,7 @@ jobs:
 
 
       - name: Lint Action
-        uses: wearerequired/lint-action@v1.7.0
+        uses: hallee/eslint-action@1.0.3
         with:
-          github_token: ${{ secrets.github_token }}
-          eslint: true
-          eslint_dir: ./
+          repo-token: ${{secrets.GITHUB_TOKEN}}
+          eslint-rc: .eslintrc.json
