@@ -6,6 +6,7 @@ timezones = {
 	'ECT': 1,
 	'EET': 2,
 	'ART': 2,
+	'CAT': 2,
 	'EAT': 3,
 	'MET': 3.5,
 	'NET': 4,
@@ -26,35 +27,86 @@ timezones = {
 	'PNT': -7,
 	'MST': -7,
 	'CST': -6,
+	'CDT': -5, // daylight savings time
 	'EST': -5,
 	'IET': -5,
 	'PRT': -4,
 	'CNT': -3.5,
 	'AGT': -3,
 	'BET': -3,
-	'CAT': -1
 }
 
 function to24h(hour, ampm) {
 	// 1am = 
-	if (ampm == 'pm' && hours < 12)
-		hour = hour + 12
-	if (ampm == 'am' && hours == 12)
-		hour = hour - 12
+	if (ampm == 'pm' && hour < 12)
+		hour += 12
+	if (ampm == 'am' && hour == 12)
+		hour -= 12
 	return hour
+}
+
+function from24h(hour) {
+	const ampm = hour >= 12 ? 'pm' : 'am'
+	hour %= 12
+	if (hour < 1) hour += 12
+	return { ampm, hour }
 }
 
 async function request(query) {
 	const regexMatch = query.match(timezoneRegex)
 	if (!regexMatch) return {}
-	console.log(regexMatch)
-	const fromHour = parseInt(regexMatch[1])
-	const fromMinute = parseInt(regexMatch[2])
+	let fromHour = parseInt(regexMatch[1])
+	const fromMinute = parseInt(regexMatch[2] || '0')
 	const fromAMPM = (regexMatch[3] || '').toLowerCase()
 	const fromTimezone = regexMatch[4].toUpperCase()
+	const fromOffset = timezones[fromTimezone]
+	if (fromOffset === undefined) return {}
 
 	const toTimezone = regexMatch[5].toUpperCase()
-	return {}
+	const toOffset = timezones[toTimezone]
+	if (toOffset === undefined) return {}
+	const totalOffset = toOffset - fromOffset
+
+
+	if (fromAMPM)
+		// if it has am/pm, make it a 24 hour time
+		fromHour = to24h(fromHour, fromAMPM)
+
+	const fromTimeString = `${fromHour % 12 || 12}:${('0' + fromMinute).slice(-2)}${fromAMPM}`
+
+
+	fromHour += fromMinute / 60 // add the minute as a decimal
+	
+	let { ampm: toAMPM, hour: toHour } = from24h(fromHour + totalOffset)
+	const toMinutes = Math.round((toHour - Math.floor(toHour)) * 60)
+	toHour -= (toMinutes / 60)
+	console.log(toAMPM, toHour, toMinutes)
+
+	const toTimeString = `${toHour}:${('0' + toMinutes).slice(-2)}${toAMPM}`
+
+	let aheadBehindString = ''
+	aheadBehindString += `${fromTimezone} is `
+	if (Math.floor(totalOffset) == 1) aheadBehindString += '1 hour '
+	else if (Math.floor(totalOffset) == -1) aheadBehindString += '1 hour '
+	else aheadBehindString += `${Math.floor(totalOffset)} hours `
+	if (totalOffset - Math.floor(totalOffset) > 0) {
+		const aheadBehindMinutes = Math.floor((totalOffset - Math.floor(totalOffset)) * 60)
+		aheadBehindString += `and ${aheadBehindMinutes} minutes `
+	}
+
+	if (totalOffset >= 0)
+		aheadBehindString += 'behind '
+	else
+		aheadBehindString += 'ahead of '
+	aheadBehindString += toTimezone
+
+	return {
+		answer: {
+			content: `<h3>${fromTimeString} ${fromTimezone} = ${toTimeString} ${toTimezone}</h3>\n${aheadBehindString}`,
+			template: 'html'
+		}
+	}
 }
 
-module.exports = { request }
+module.exports.request = request
+module.exports.weight = 2
