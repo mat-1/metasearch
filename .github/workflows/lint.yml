@@ -24,10 +24,3 @@ jobs:
         
       - name: Install Node.js dependencies
         run: npm install
-
-
-      - name: Lint Action
-        uses: hallee/eslint-action@1.0.3
-        with:
-          repo-token: ${{secrets.GITHUB_TOKEN}}
-          eslint-rc: .eslintrc.json
