@@ -60,19 +60,23 @@ async function requestAllAutoCompleteEngines(query) {
 async function request(query) {
 	const results = {}
 	const enginesResults = await requestAllEngines(query)
-	var answer = {}
-	var sidebar = {}
-	for (engineName in enginesResults) {
+	let answer = {}
+	let sidebar = {}
+	for (const engineName in enginesResults) {
 		const engine = engines[engineName]
+		const engineWeight = engine.weight || 1
 		const engineResults = enginesResults[engineName]
 
 		const engineAnswer = engineResults.answer
 		const engineSidebarAnswer = engineResults.sidebar
-		if (engineAnswer != null && (answer.engine && answer.engine.weight || 1 < engine.weight || 1)) {
+		const answerEngineWeight = answer.engine ? answer.engine.weight || 1 : 0
+		console.log(engineName, engineAnswer, answer)
+		if (engineAnswer && ((answer.engine && engineWeight > answerEngineWeight) || Object.keys(answer).length == 0)) {
 			answer = engineAnswer
 			answer.engine = engine
+			console.log('answer', answer.engine, answer.engine.weight, '<', engine.weight)
 		}
-		if (engineSidebarAnswer != null && (sidebar.engine && sidebar.engine.weight || 1 < engine.weight || 1)) {
+		if (engineSidebarAnswer != null && (sidebar.engine && sidebar.engine.weight || 1 < engineWeight)) {
 			sidebar = engineSidebarAnswer
 			sidebar.engine = engine
 		}
@@ -85,8 +89,6 @@ async function request(query) {
 				console.log('Invalid URL!', result, engineName)
 				continue
 			}
-
-			const engineWeight = engine.weight || 1
 
 			// Default values
 			if (!results[normalUrl])
