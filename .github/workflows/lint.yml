@@ -29,5 +29,5 @@ jobs:
       - name: Lint Action
         uses: wearerequired/lint-action@v1.7.0
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.github_token }}
           eslint: true
