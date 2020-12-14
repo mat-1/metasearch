@@ -11,5 +11,12 @@
         "ecmaVersion": 12
     },
     "rules": {
+        "no-tabs": [
+            "error",
+            {
+                "allowIndentationTabs": true
+            }
+        ],
+        "indent": "off"
     }
 }
