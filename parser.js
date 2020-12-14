@@ -1,6 +1,5 @@
 const fetch = require('node-fetch')
 const cheerio = require('cheerio')
-const { performance } = require('perf_hooks')
 
 async function requestRaw(url) {
 	const response = await fetch(url, {
@@ -22,10 +21,7 @@ async function requestDom(url) {
 }
 
 function get(dom, query) {
-	if (dom.find)
-		return dom.find(query)
-	else
-		return dom(query)
+	if (dom.find) { return dom.find(query) } else { return dom(query) }
 }
 
 function getElements(dom, query) {
@@ -40,13 +36,13 @@ function getElements(dom, query) {
 
 function extractText(dom, query) {
 	const element = get(dom, query)
-	if (element[0] && element[0].name == 'ol') {
+	if (element[0] && element[0].name === 'ol') {
 		// if it's a list, number it and add newlines
-		let listTexts = []
-		let listItems = getElements(element, 'li')
-		for (let listItemIndex in listItems) {
-			let listItem = listItems[listItemIndex]
-			let displayedIndex = parseInt(listItemIndex)+1
+		const listTexts = []
+		const listItems = getElements(element, 'li')
+		for (const listItemIndex in listItems) {
+			const listItem = listItems[listItemIndex]
+			const displayedIndex = parseInt(listItemIndex) + 1
 			listTexts.push(displayedIndex + '. ' + listItem.text().trim())
 		}
 		return listTexts.join('\n')
@@ -74,7 +70,7 @@ async function parseResultList(url, {
 	featuredSnippetPath,
 	featuredSnippetContentPath,
 	featuredSnippetTitlePath,
-	featuredSnippetHrefPath,
+	featuredSnippetHrefPath
 
 }) {
 	const $ = await requestDom(url)
@@ -82,21 +78,18 @@ async function parseResultList(url, {
 	const results = []
 
 	const resultElements = getElements($, resultItemPath)
-	
-	var featuredSnippetContent = null
-	var featuredSnippetTitle = null
-	var featuredSnippetUrl = null
 
+	let featuredSnippetContent = null
+	let featuredSnippetTitle = null
+	let featuredSnippetUrl = null
 
 	for (const resultItemIndex in resultElements) {
 		const resultItemEl = resultElements[resultItemIndex]
 		const resultTitle = extractText(resultItemEl, titlePath)
 		if (!resultTitle) continue
 		const resultUrl = extractHref(resultItemEl, hrefPath)
-		if (resultUrl.startsWith('https://duckduckgo.com/y.js'))
-			continue
+		if (resultUrl.startsWith('https://duckduckgo.com/y.js')) { continue }
 		const resultContent = extractText(resultItemEl, contentPath)
-
 
 		if (featuredSnippetPath) {
 			const featuredSnippetEl = $(featuredSnippetPath)
@@ -106,7 +99,6 @@ async function parseResultList(url, {
 				featuredSnippetUrl = extractHref(featuredSnippetEl, featuredSnippetHrefPath)
 			}
 		}
-	
 
 		results.push({
 			title: resultTitle,
@@ -117,13 +109,14 @@ async function parseResultList(url, {
 	}
 	return {
 		results,
-		answer: featuredSnippetContent !== null ? {
+		answer: featuredSnippetContent !== null
+		? {
 			content: featuredSnippetContent,
 			title: featuredSnippetTitle,
-			url: featuredSnippetUrl,
-		} : null
+			url: featuredSnippetUrl
+		}
+		: null
 	}
 }
 
 module.exports = { requestRaw, parseResultList, requestJSON, requestDom, getElements, extractText, extractAttribute, get, extractHref }
-

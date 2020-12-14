@@ -17,7 +17,10 @@
                 "allowIndentationTabs": true
             }
         ],
-        "indent": "off"
+        "indent": "off",
+        "curly": "off",
+        "space-before-function-paren": ["error", "never"],
+        "comma-dangle": "off"
     },
     "overrides": [
         {

@@ -6,7 +6,6 @@ const defaultOptions = {
 	protocol: 736
 }
 
-
 async function getStatus(host, port, options) {
 	options = { ...defaultOptions, ...options }
 
@@ -20,7 +19,6 @@ async function getStatus(host, port, options) {
 		.writeVarInt(State.Status))
 
 	client.send(new PacketWriter(0x0))
-
 
 	const status = (await client.nextPacket(null, false)).readJSON()
 

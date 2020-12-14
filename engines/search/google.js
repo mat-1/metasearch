@@ -1,5 +1,4 @@
-const { parseResultList, requestJSON, getElements } = require('../../parser')
-
+const { parseResultList, requestJSON } = require('../../parser')
 
 async function request(query) {
 	return await parseResultList('https://www.google.com/search?pws=0&nfpr=1&q=' + encodeURIComponent(query), {
@@ -25,9 +24,6 @@ async function autoComplete(query) {
 	return results
 }
 
-
 module.exports.weight = 1.05
 module.exports.request = request
 module.exports.autoComplete = autoComplete
-
-
