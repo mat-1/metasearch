@@ -29,11 +29,8 @@ jobs:
         uses: actions/cache@v2.1.3
         with:
           # An explicit key for restoring and saving the cache
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+          path: metasearch
+          key: ${{ runner.os }}-metasearch
 
       - name: ESlint
         run: npm run eslint:github-action
