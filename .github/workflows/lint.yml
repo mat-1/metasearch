@@ -17,6 +17,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+        
+      - name: Install Node.js dependencies
+        run: npm install
+
+
       - name: Lint Action
         uses: wearerequired/lint-action@v1.7.0
         with:
