@@ -5,5 +5,5 @@
     <Description>Search everything.</Description>
     <InputEncoding>UTF-8</InputEncoding>
     <Url rel="results" type="text/html" method="get" template="https://{{ host }}/search?q={searchTerms}"/>
-    <Url rel="suggestions" type="application/x-suggestions+json" template="https://{{ host }}/autocomplete"/>
+    <Url rel="suggestions" type="application/x-suggestions+json" template="https://{{ host }}/autocomplete?q={searchTerms}"/>
 </OpenSearchDescription>
