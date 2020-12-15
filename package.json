@@ -23,6 +23,6 @@
 		"typescript": "^4.1.3"
 	},
 	"scripts": {
-		"eslint:github-action": "eslint *.js"
+		"eslint:github-action": "eslint *.ts"
 	}
 }
