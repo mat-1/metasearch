@@ -1,8 +1,8 @@
 {
 	"compilerOptions": {
 	  "module": "commonjs",
-	  "lib": ["es2020", "dom", "DOM.Iterable"],
-	  "target": "es2020"
+	  "lib": ["esnext", "dom", "DOM.Iterable"],
+	  "target": "esnext"
 	},
 	"include": ["**/*"],
 	"exclude": ["node_modules"]
