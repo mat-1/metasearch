@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
+                    xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+    <ShortName>metasearch</ShortName>
+    <Description>Search everything.</Description>
+    <InputEncoding>UTF-8</InputEncoding>
+    <Url rel="results" type="text/html" method="get" template="https://{{ host }}/search?q={searchTerms}"/>
+    <Url rel="suggestions" type="application/x-suggestions+json" template="https://{{ host }}/autocomplete"/>
+</OpenSearchDescription>

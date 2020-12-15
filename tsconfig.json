@@ -1,0 +1,9 @@
+{
+	"compilerOptions": {
+	  "module": "commonjs",
+	  "lib": ["es2020", "dom", "DOM.Iterable"],
+	  "target": "es2020"
+	},
+	"include": ["**/*"],
+	"exclude": ["node_modules"]
+}
