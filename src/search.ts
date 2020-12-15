@@ -1,8 +1,11 @@
 import normalizeUrl from './normalize-url'
 import * as requireDir from 'require-dir'
+import { performance } from 'perf_hooks'
 
 const recursedEngines = requireDir('./engines', { recurse: true })
 const engines = {}
+
+const debugPerf: boolean = false
 
 const plugins = recursedEngines.plugins
 
@@ -12,14 +15,17 @@ Object.assign(
 	recursedEngines.search
 )
 
-console.log('plugins', plugins)
 
 async function requestEngine(engineName, query) {
 	const engine = engines[engineName]
-	// let perfBefore = performance.now()
+	let perfBefore, perfAfter
+	if (debugPerf)
+		perfBefore = performance.now()
 	const response = await engine.request(query)
-	// let perfAfter = performance.now()
-	// console.log(`${engineName} took ${Math.floor(perfAfter - perfBefore)}ms.`);
+	if (debugPerf) {
+		perfAfter = performance.now()
+		console.log(`${engineName} took ${Math.floor(perfAfter - perfBefore)}ms.`)
+	}
 	return response
 }
 
