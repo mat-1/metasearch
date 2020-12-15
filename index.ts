@@ -3,9 +3,6 @@ import * as cookieParser from 'cookie-parser'
 import * as nunjucks from 'nunjucks'
 import * as express from 'express'
 import * as search from './src/search'
-import * as http from 'http'
-
-http.globalAgent.maxSockets = 1000
 
 const app = express()
 app.use(cookieParser())
