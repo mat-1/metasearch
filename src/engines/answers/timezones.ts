@@ -80,7 +80,6 @@ export async function request(query) {
 	let { ampm: toAMPM, hour: toHour } = from24h(fromHour + totalOffset)
 	const toMinutes = Math.round((toHour - Math.floor(toHour)) * 60)
 	toHour -= (toMinutes / 60)
-	console.log(toAMPM, toHour, toMinutes)
 
 	const toTimeString = `${toHour}:${('0' + toMinutes).slice(-2)}${toAMPM}`
 
