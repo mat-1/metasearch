@@ -48,7 +48,7 @@ const otherStyleCodes = {
 	l: 'font-weight: bold;'
 }
 
-function jsonColorCodes (jsonObject) {
+function jsonColorCodes(jsonObject) {
 	if (Array.isArray(jsonObject)) {
 		const parts = []
 		for (const part of jsonObject) { parts.push(jsonColorCodes(part)) }
@@ -70,7 +70,7 @@ function jsonColorCodes (jsonObject) {
 	return html
 }
 
-function flattenJsonText (jsonObject) {
+function flattenJsonText(jsonObject) {
 	if (Array.isArray(jsonObject)) {
 		const parts = []
 		for (const part of jsonObject)
@@ -83,7 +83,7 @@ function flattenJsonText (jsonObject) {
 	return text
 }
 
-function convertColorCodesToHtml (code, symbol = '§') {
+function convertColorCodesToHtml(code, symbol = '§') {
 	let currentColor = null
 	let output = ''
 	let otherActiveStyles = new Set()
@@ -119,21 +119,21 @@ function convertColorCodesToHtml (code, symbol = '§') {
 	return output
 }
 
-function flattenColorCode (code) {
+function flattenColorCode(code) {
 	if (typeof code === 'string') { return code.replace(/§./g, '') } else { return flattenJsonText(code) }
 }
 
-function colorCodeToHtml (code) {
+function colorCodeToHtml(code) {
 	if (typeof code === 'string') { return convertColorCodesToHtml(code) } else { return jsonColorCodes(code) }
 }
 
-function includesCaseInsensitive (string1, string2) {
+function includesCaseInsensitive(string1, string2) {
 	const index = string2.toLowerCase().indexOf(string1.toLowerCase())
 	if (index === -1) return false
 	return string2.slice(index, index + string1.length)
 }
 
-function extractServerName (hostName, description) {
+function extractServerName(hostName, description) {
 	hostName = hostName.split(':')[0] // remove the port, if it exists
 	const hostNameParts = hostName.split('.')
 	const tld = hostNameParts[hostNameParts.length - 1]
@@ -143,7 +143,7 @@ function extractServerName (hostName, description) {
 	if (description.toLowerCase().includes(hostName.toLowerCase())) { return hostName.toLowerCase() } else if (description.toLowerCase().includes(sldAndTld.toLowerCase())) { return sldAndTld.toLowerCase() } else if (RegExp(`\b${sldAndTldSpaced}\b`, 'i').test(description)) { return includesCaseInsensitive(sldAndTldSpaced, description) } else { return sld.charAt(0).toUpperCase() + sld.slice(1) }
 }
 
-export async function request (query) {
+export async function request(query) {
 	const regexMatch = query.match(minecraftRegex)
 	if (!regexMatch && !serverAliases[query]) return {}
 	let minecraftHost
