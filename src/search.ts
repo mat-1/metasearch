@@ -27,7 +27,7 @@ async function requestAllEngines(query) {
 	const promises = []
 	for (const engineName in engines) {
 		const engine = engines[engineName]
-		if (engine.request) { promises.push(requestEngine(engineName, query)) }
+		if (engine.request) promises.push(requestEngine(engineName, query))
 	}
 	const resolvedRequests = await Promise.all(promises)
 	const results = {}
