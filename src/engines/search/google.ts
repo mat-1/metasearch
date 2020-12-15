@@ -1,6 +1,7 @@
-const { parseResultList, requestJSON } = require('../../parser')
+import { parseResultList, requestJSON } from '../../parser'
+import { EngineRequest } from '../../search'
 
-export async function request(query) {
+export async function request(query): Promise<EngineRequest> {
 	return await parseResultList('https://www.google.com/search?pws=0&nfpr=1&q=' + encodeURIComponent(query), {
 		resultItemPath: 'div.g',
 		titlePath: 'h3 > span',

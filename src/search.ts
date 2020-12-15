@@ -2,8 +2,27 @@ import normalizeUrl from './normalize-url'
 import * as requireDir from 'require-dir'
 import { performance } from 'perf_hooks'
 
+export interface EngineResult {
+	url: string,
+	title: string,
+	content: number,
+	position: number
+}
+
+export interface EngineRequest {
+	results?: Array<EngineResult>,
+	answer?: any,
+	sidebar?: any
+}
+
+interface Engine {
+	request?: Function,
+	autoComplete?: Function,
+	weight?: number,
+}
+
 const recursedEngines = requireDir('./engines', { recurse: true })
-const engines = {}
+const engines: { [engineName: string]: Engine } = {}
 
 const debugPerf: boolean = false
 
@@ -16,9 +35,9 @@ Object.assign(
 )
 
 
-async function requestEngine(engineName, query) {
-	const engine = engines[engineName]
-	let perfBefore, perfAfter
+async function requestEngine(engineName: string, query: string): Promise<EngineRequest> {
+	const engine: Engine = engines[engineName]
+	let perfBefore: number, perfAfter: number
 	if (debugPerf)
 		perfBefore = performance.now()
 	const response = await engine.request(query)
@@ -29,14 +48,14 @@ async function requestEngine(engineName, query) {
 	return response
 }
 
-async function requestAllEngines(query) {
-	const promises = []
+async function requestAllEngines(query: string): Promise<{[engineName: string]: EngineRequest}> {
+	const promises: Array<Promise<EngineRequest>> = []
 	for (const engineName in engines) {
-		const engine = engines[engineName]
+		const engine: Engine = engines[engineName]
 		if (engine.request) promises.push(requestEngine(engineName, query))
 	}
-	const resolvedRequests = await Promise.all(promises)
-	const results = {}
+	const resolvedRequests: Array<EngineRequest> = await Promise.all(promises)
+	const results: {[engineName: string]: EngineRequest} = {}
 	for (const engineIndex in resolvedRequests) {
 		const engineName = Object.keys(engines)[engineIndex]
 		results[engineName] = resolvedRequests[engineIndex]

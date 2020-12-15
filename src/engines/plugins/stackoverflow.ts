@@ -7,7 +7,7 @@ export async function runPlugin({ id }) {
 	let dom = await requestDom(originalUrl)
 	let answerContainerEl = get(dom, 'div.answer.accepted-answer')
 	if (answerContainerEl.html() == null)
-	// no accepted answer :(
+		// no accepted answer :(
 		return false
 		
 	let title = extractText(dom, 'h1.fs-headline1 a.question-hyperlink')

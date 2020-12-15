@@ -1,3 +1,4 @@
+import { EngineRequest } from './search'
 import * as fetch from 'node-fetch'
 import * as cheerio from 'cheerio'
 import { Agent } from 'https'
@@ -80,7 +81,7 @@ interface ParseResultListOptions {
 }
 
 // for google, bing, etc
-export async function parseResultList(url, options = {} as ParseResultListOptions) {
+export async function parseResultList(url, options = {} as ParseResultListOptions): Promise<EngineRequest> {
 	const $ = await requestDom(url)
 
 	const results = []

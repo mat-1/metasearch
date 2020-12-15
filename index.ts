@@ -28,10 +28,10 @@ function loadTheme(name) {
 }
 
 interface RenderOptions {
-	host?: string;
-	themes?: Array<any>;
-	activeTheme?: string;
-	theme?: string;
+	host?: string
+	themes?: Array<any>
+	activeTheme?: string
+	theme?: string
 }
   
 function render(res, template, options = {} as RenderOptions) {
