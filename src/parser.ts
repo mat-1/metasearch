@@ -1,11 +1,18 @@
 import * as fetch from 'node-fetch'
 import * as cheerio from 'cheerio'
+import { Agent } from 'https'
+
+const httpsAgent = new Agent({
+	keepAlive: true
+})
+
 
 export async function requestRaw(url) {
 	const response = await fetch(url, {
 		headers: {
 			'user-agent': 'Mozilla/5.0 Firefox/84.0'
-		}
+		},
+		agent: () => httpsAgent
 	})
 	const text = await response.buffer()
 	return text
