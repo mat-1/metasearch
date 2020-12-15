@@ -159,7 +159,7 @@ export async function request(query) {
 
 	try {
 		status = await getStatus(minecraftHost, port, {
-			timeout: 750
+			timeout: 500
 		})
 	} catch (e) {
 		return {}
