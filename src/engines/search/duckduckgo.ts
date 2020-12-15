@@ -1,6 +1,6 @@
 import { parseResultList } from '../../parser'
 
-async function request(query) {
+export async function request(query) {
 	return await parseResultList('https://html.duckduckgo.com/html?q=' + encodeURIComponent(query), {
 		resultItemPath: '.result',
 		titlePath: 'h2',
@@ -8,5 +8,3 @@ async function request(query) {
 		contentPath: '.result__snippet'
 	})
 }
-
-module.exports = { request }

@@ -162,7 +162,6 @@ export async function request(query) {
 			timeout: 750
 		})
 	} catch (e) {
-		console.log('error :(', e)
 		return {}
 	}
 	if (status) {
@@ -178,6 +177,7 @@ export async function request(query) {
 				ping: status.ping
 			}
 		}
-	} else { return {} }
+	} else
+		return {}
 }
 

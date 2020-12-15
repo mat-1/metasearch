@@ -93,4 +93,4 @@ app.use('/', express.static('src/public'))
 
 app.listen(8000, () => console.log('pog'))
 
-module.exports = require('require-dir')()
+export default require('require-dir')()

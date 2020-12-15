@@ -1,4 +1,4 @@
-const { Client, PacketWriter, State } = require('mcproto')
+import { Client, PacketWriter, State } from 'mcproto'
 
 const defaultOptions = {
 	checkPing: true,
@@ -6,7 +6,28 @@ const defaultOptions = {
 	protocol: 736
 }
 
-export async function getStatus(host, port, options) {
+export interface Status {
+    version: {
+        name: string
+        protocol: number
+    }
+    players: {
+        max: number
+        online: number
+    }
+    description: string
+    favicon?: string
+    ping?: number
+}
+
+
+export interface StatusOptions {
+    checkPing?: boolean
+    timeout?: number
+    protocol?: number
+}
+
+export async function getStatus(host: string, port?: number | null, options?: StatusOptions): Promise<Status> {
 	options = { ...defaultOptions, ...options }
 
 	const client = await Client.connect(host, port, {

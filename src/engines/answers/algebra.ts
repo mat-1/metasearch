@@ -1,6 +1,5 @@
 import solve from '../../math'
 
-const weight = 1.1
 
 export async function request(query) {
 	const answer = solve(query)
@@ -14,7 +13,7 @@ export async function request(query) {
 		return {}
 }
 
-async function autoComplete(query) {
+export async function autoComplete(query) {
 	const answer = solve(query)
 	if (answer)
 		return ['= ' + answer]
@@ -23,4 +22,4 @@ async function autoComplete(query) {
 }
 
 
-export { autoComplete, weight }
+export const weight = 1.1

@@ -1,5 +1,5 @@
-const requireDir = require('require-dir')
 import normalizeUrl from './normalize-url'
+import * as requireDir from 'require-dir'
 
 const recursedEngines = requireDir('./engines', { recurse: true })
 const engines = {}
