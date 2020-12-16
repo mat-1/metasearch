@@ -8,7 +8,7 @@ const defaultOptions = {
 
 export interface Status {
     version: {
-        name: string
+    name: string
         protocol: number
     }
     players: {
