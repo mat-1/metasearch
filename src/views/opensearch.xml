@@ -2,8 +2,9 @@
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
                     xmlns:moz="http://www.mozilla.org/2006/browser/search/">
     <ShortName>metasearch</ShortName>
-    <Description>Search everything.</Description>
+    <Description>Search metasearch</Description>
     <InputEncoding>UTF-8</InputEncoding>
+    <Image height="16" width="16">data:image/x-icon;base64, iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAE0lEQVR42mNk+M+AFzCOKhhJCgBrLxABLz0PwwAAAABJRU5ErkJggg==</Image>
     <Url rel="results" type="text/html" method="get" template="https://{{ host }}/search?q={searchTerms}"/>
     <Url rel="suggestions" type="application/x-suggestions+json" template="https://{{ host }}/autocomplete?q={searchTerms}"/>
 </OpenSearchDescription>
