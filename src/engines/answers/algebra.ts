@@ -3,7 +3,7 @@ import solve from '../../math'
 
 export async function request(query) {
 	const answer = solve(query)
-	if (answer)
+	if (answer && answer != query)
 		return {
 			answer: {
 				content: answer
