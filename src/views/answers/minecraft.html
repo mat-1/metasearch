@@ -1,3 +1,4 @@
+{% block answer %}
 <style>
 @font-face{font-family:Minecraft;src:url(/Minecraft.otf)}
 .minecraft-server-description {
@@ -5,7 +6,9 @@
 	white-space: pre;
 	margin: 0;
 	top: .5em;
-	word-spacing: .25px;
+	word-spacing: 4px;
+	letter-spacing: .5px;
+	color: #808080
 }
 .minecraft-server-name {
 	position: relative;
@@ -68,16 +71,43 @@
 }
 #answer {
 	border: none;
-	padding: 0
+	padding: f0
 }
 </style>
-<div class="minecraft-server">
-	<img class="minecraft-server-favicon" src="{{ answer.favicon }}">
-	<span class="minecraft-ping">
-		<span class="minecraft-playercount">{{ answer.players.online }}<span class="minecraft-playercount-divider">/</span>{{ answer.players.max }}</span>
-		<img class="minecraft-ping-icon" src="/minecraft-ping.png" title="">
-		<span class="minecraft-ping-display">{{ answer.ping }}ms</span>
-	</span>
-	<p class="minecraft-server-name">{{ answer.name }}</p>
-	<p class="minecraft-server-description">{{ answer.descriptionHtml|safe }}</p>
+<div class="minecraft-server-container">
+	<div class="minecraft-server">
+		<img class="minecraft-server-favicon" src="{{ answer.favicon or '/pack.png' }}">
+		<span class="minecraft-ping">
+			<span class="minecraft-playercount">
+			{%- if answer.hasPlayers -%}
+				{%- if answer.versionProtocol <= 0 -%}
+					{{- (answer.versionHtml + ' ')|safe -}}
+				{%- else -%}
+					{{- answer.players.online }}<span class="minecraft-playercount-divider">/</span>{{ answer.players.max -}}
+				{%- endif -%}
+			{%- else %}<span class="minecraft-playercount-divider">???</span>
+			{%- endif -%}
+			</span>
+			<img class="minecraft-ping-icon" src="{%- if answer.versionProtocol <= 0 -%}/minecraft-ping-failed.png{% else %}/minecraft-ping.png{% endif %}" title="">
+			<span class="minecraft-ping-display">{{ answer.ping }}ms</span>
+		</span>
+		<p class="minecraft-server-name">{{ answer.name }}</p>
+		<p class="minecraft-server-description">{{ answer.descriptionHtml|safe }}</p>
+	</div>
+	<details>
+		<summary>Details</summary>
+		<div>
+		<div><b>Version: </b>{{ answer.version }} ({{ answer.versionProtocol }})</div>
+		<div><b>Online players: </b>{{ answer.players.online }}</div>
+		<div><b>Max players: </b>{{ answer.players.max }}</div>
+		{% if answer.players.sample|length > 0 %}<div><b>Player list sample: </b><ul>{% for player in answer.players.sample %}
+		<li>{{ player|dump }}</li>
+		{% endfor %}</ul></div>{% endif %}
+		<div><b>Favicon: </b>{{ answer.favicon|length }} bytes</div>
+		<div><b>Ping: </b>{{ answer.ping }}ms</div>
+		{{ answer.players|dump }}
+		</div>
+	</details>
+
 </div>
+{% endblock %}

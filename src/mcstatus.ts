@@ -3,7 +3,7 @@ import { Client, PacketWriter, State } from 'mcproto'
 const defaultOptions = {
 	checkPing: true,
 	timeout: 5000,
-	protocol: 736
+	protocol: 1
 }
 
 export interface Status {

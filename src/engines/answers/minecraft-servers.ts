@@ -1,6 +1,6 @@
 import { getStatus } from '../../mcstatus'
 
-const minecraftRegex = /^(?:(?:minecraft|mc|server|ping|srv|serv|mine craft| )*?) *\b([-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6})\b *(?:(?:minecraft|mc|server|ping|srv|serv|mine craft| )*?)$/i
+const minecraftRegex = /^(?:(?:minecraft|mc|server|ping|srv|serv|mine craft| )*?) *\b([-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}(?::\d{5})?)\b *(?:(?:minecraft|mc|server|ping|srv|serv|mine craft| )*?)$/i
 
 const colorCodes = {
 	0: '#000000',
@@ -48,18 +48,23 @@ const otherStyleCodes = {
 	l: 'font-weight: bold;'
 }
 
+function stringToColor(colorCode) {
+	return colorCodes[colorCode] || colorCode
+}
+
 function jsonColorCodes(jsonObject) {
 	if (Array.isArray(jsonObject)) {
 		const parts = []
-		for (const part of jsonObject) { parts.push(jsonColorCodes(part)) }
+		for (const part of jsonObject)
+			parts.push(jsonColorCodes(part))
 		return parts.join('')
 	}
 
 	const style = []
-	if (jsonObject.bold) { style.push('font-weight: bold') }
-	if (jsonObject.color) { style.push('color: ' + colorCodes[jsonObject.color] || jsonObject.color) }
+	if (jsonObject.bold) style.push('font-weight: bold')
+	if (jsonObject.color) style.push('color: ' + stringToColor(jsonObject.color))
 	let innerHtml = colorCodeToHtml(jsonObject.text)
-	if (jsonObject.extra) { innerHtml += jsonColorCodes(jsonObject.extra) }
+	if (jsonObject.extra) innerHtml += jsonColorCodes(jsonObject.extra)
 	let html = ''
 	if (style.length > 0) {
 		const joinedStyles = style.join(';')
@@ -133,7 +138,12 @@ function includesCaseInsensitive(string1, string2) {
 	return string2.slice(index, index + string1.length)
 }
 
+function isIp(string: string) {
+	return /^((?:2[0-4]\d)|(?:25[0-5])|(?:1?\d?\d))\.((?:2[0-4]\d)|(?:25[0-5])|(?:1?\d?\d))\.((?:2[0-4]\d)|(?:25[0-5])|(?:1?\d?\d))\.((?:2[0-4]\d)|(?:25[0-5])|(?:1?\d?\d))$/.test(string)
+}
+
 function extractServerName(hostName, description) {
+	if (isIp(hostName)) return hostName
 	hostName = hostName.split(':')[0] // remove the port, if it exists
 	const hostNameParts = hostName.split('.')
 	const tld = hostNameParts[hostNameParts.length - 1]
@@ -145,18 +155,25 @@ function extractServerName(hostName, description) {
 
 export async function request(query) {
 	const regexMatch = query.match(minecraftRegex)
-	if (!regexMatch && !serverAliases[query]) return {}
+	if (!regexMatch && !serverAliases[query]) {
+		console.log('didnt match regex')
+		return {}
+	}
 	let minecraftHost
-	if (serverAliases[query.toLowerCase()]) { minecraftHost = serverAliases[query.toLowerCase()] } else { minecraftHost = regexMatch[1] }
+	if (serverAliases[query.toLowerCase()]) 
+		minecraftHost = serverAliases[query.toLowerCase()]
+	else
+		minecraftHost = regexMatch[1]
 	let status
-	let port
+	let port: number | null
 	const splitHost = minecraftHost.split(':')
 
 	if (splitHost.length > 1) {
-		port = splitHost[1]
 		minecraftHost = splitHost[0]
-	} else { port = null }
-
+		port = parseInt(splitHost[1])
+	} else
+		port = null
+	console.log(minecraftHost, port)
 	try {
 		status = await getStatus(minecraftHost, port, {
 			timeout: 500
@@ -171,10 +188,13 @@ export async function request(query) {
 				template: 'minecraft',
 				name: serverName,
 				version: status.version.name,
+				versionHtml: colorCodeToHtml(status.version.name),
+				versionProtocol: status.version.protocol,
 				descriptionHtml: colorCodeToHtml(status.description),
 				players: status.players,
 				favicon: status.favicon,
-				ping: status.ping
+				ping: status.ping,
+				hasPlayers: status.players != undefined
 			}
 		}
 	} else

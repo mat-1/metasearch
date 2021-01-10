@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{# {% block metatitle %}Metasearch - {{ query }}{% endblock %} #}
+
 {% block head %}
 {{ super() }}
 {% for pluginName, pluginData in plugins %}
@@ -24,6 +26,7 @@
 	{% endif %}
 	{% if answer|length > 0 %}
 		<div id="answer" {% if not answer.title and not answer.template %}class="answer-no-title"{% endif %}>
+			{% block answer %}
 			{% if answer.template %}
 				{% include 'answers/' + answer.template + '.html' %}
 			{% else %}
@@ -35,6 +38,7 @@
 					{% if answer.url %}<span class="result-url">{{ answer.url }}</h3>{% endif %}
 				{% if answer.url %}</a>{% endif %}
 			{% endif %}
+			{% endblock %}
 		</div>
 	{% endif %}
 	{% for result in results %}

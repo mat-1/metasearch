@@ -8,6 +8,13 @@
 	<meta name="robots" content="noindex, nofollow">
 	<link rel="search" type="application/opensearchdescription+xml" title="metasearch" href="/opensearch.xml"/>
 	<title>{% block title %}Metasearch{% endblock %}</title>
+	<meta name="description" content="{% block description %}The best (meta)search engine{% endblock %}">
+
+	<meta property="og:title" content="{% block metatitle %}{% endblock %}">
+	<meta property="og:description" content="{% block metadescription %}{% endblock %}">
+	<meta property="og:site_name" content="metasearch">
+	<meta property="og:type" content="website"/>
+
 	<style>
 :root {
 	{% for key, value in theme -%}
