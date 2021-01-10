@@ -205,3 +205,6 @@ a {
 	margin: .15em 0 0 .5em;
 	color: var(--main-text);
 }
+.sidebar-content img {
+	max-width: 100%
+}
