@@ -1,5 +1,5 @@
 import { EngineRequest } from './search'
-import * as fetch from 'node-fetch'
+import fetch from 'node-fetch'
 import * as cheerio from 'cheerio'
 import { Agent } from 'https'
 
@@ -8,33 +8,32 @@ const httpsAgent = new Agent({
 })
 
 
-export async function requestRaw(url) {
+export async function requestRaw(url: string): Promise<string> {
 	const response = await fetch(url, {
 		headers: {
 			'user-agent': 'Mozilla/5.0 Firefox/84.0'
 		},
 		agent: () => httpsAgent
 	})
-	const text = await response.buffer()
-	return text
+	return await response.text()
 }
 
-export async function requestJSON(url) {
+export async function requestJSON(url: string): Promise<any> {
 	return JSON.parse(await requestRaw(url))
 }
 
-export async function requestDom(url) {
+export async function requestDom(url): Promise<cheerio.Root> {
 	const htmlResponse = await requestRaw(url)
 	return cheerio.load(htmlResponse)
 }
 
-export function get(dom, query) {
-	if (dom.find) { return dom.find(query) } else { return dom(query) }
+export function get(dom: cheerio.Cheerio, query: string): cheerio.Cheerio {
+	return dom.find(query)
 }
 
-export function getElements(dom, query) {
-	const elements = get(dom, query)
-	const results = []
+export function getElements(dom: cheerio.Cheerio, query: string): cheerio.Cheerio[] {
+	const elements: cheerio.Cheerio = get(dom, query)
+	const results: cheerio.Cheerio[] = []
 
 	for (const element of elements.get()) {
 		results.push(get(dom, element))
@@ -42,9 +41,9 @@ export function getElements(dom, query) {
 	return results
 }
 
-export function extractText(dom, query) {
+export function extractText(dom: cheerio.Cheerio, query: string): string {
 	const element = get(dom, query)
-	if (element[0] && element[0].name === 'ol') {
+	if (element.first && element.first.name === 'ol') {
 		// if it's a list, number it and add newlines
 		const listTexts = []
 		const listItems = getElements(element, 'li')
@@ -82,11 +81,12 @@ interface ParseResultListOptions {
 
 // for google, bing, etc
 export async function parseResultList(url, options = {} as ParseResultListOptions): Promise<EngineRequest> {
-	const $ = await requestDom(url)
+	const $: cheerio.Root = await requestDom(url)
+	const body = $('body')
 
 	const results = []
 
-	const resultElements = getElements($, options.resultItemPath)
+	const resultElements = getElements(body, options.resultItemPath)
 
 	let featuredSnippetContent = null
 	let featuredSnippetTitle = null
@@ -101,7 +101,7 @@ export async function parseResultList(url, options = {} as ParseResultListOption
 		const resultContent = extractText(resultItemEl, options.contentPath)
 
 		if (options.featuredSnippetPath) {
-			const featuredSnippetEl = $(options.featuredSnippetPath)
+			const featuredSnippetEl = get(body, options.featuredSnippetPath)
 			if (featuredSnippetEl.length > 0) {
 				featuredSnippetContent = extractText(featuredSnippetEl, options.featuredSnippetContentPath)
 				featuredSnippetTitle = extractText(featuredSnippetEl, options.featuredSnippetTitlePath)

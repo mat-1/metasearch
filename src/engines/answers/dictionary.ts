@@ -3,6 +3,18 @@ import { requestDom, extractText, getElements } from '../../parser'
 
 const defineRegex = /^(?:define )(.+)$/i
 
+interface DictionaryConfig {
+	containerPath: string
+	wordNamePath: string
+	phoneticSpellingPath: string
+	ipaSpellingPath: string
+	entryPaths: string
+	partOfSpeechPath: string
+	entryDefinitionsPath: string
+	definitionPath: string
+	definitionLabelPath: string
+}
+
 async function parseDictionary(url, {
 	containerPath,
 	wordNamePath,
@@ -13,12 +25,13 @@ async function parseDictionary(url, {
 	entryDefinitionsPath,
 	definitionPath,
 	definitionLabelPath,
-}) {
-	const dom = await requestDom(url)
+}: DictionaryConfig) {
+	const dom: cheerio.Root = await requestDom(url)
 	
-	const body = dom(containerPath)
+	const body: cheerio.Cheerio = dom(containerPath)
 
 	const wordName = extractText(body, wordNamePath)
+	console.log('body', body, 'wordName', wordName)
 	const phoneticSpelling = extractText(body, phoneticSpellingPath)
 	const ipaSpelling = extractText(body, ipaSpellingPath)
 
@@ -55,8 +68,8 @@ async function parseDictionary(url, {
 
 async function dictionaryCom(query) {
 	return await parseDictionary('https://www.dictionary.com/browse/' + encodeURI(query), {
-		containerPath: 'section.e1hj943x0 > div.e16867sm0:first-of-type',
-		wordNamePath: 'section.entry-headword h1.e1wg9v5m3',
+		containerPath: '.default-content',
+		wordNamePath: 'section.entry-headword > div > div h1',
 		phoneticSpellingPath: 'section.entry-headword span.pron-spell-content',
 		ipaSpellingPath: '.pron-ipa-content',
 		entryPaths: 'section.e1hk9ate0',
@@ -81,6 +94,7 @@ export async function request(query) {
 	const inputtedWord = matchWord(query)
 	if (!inputtedWord) return {}
 	let { word, phoneticSpelling, ipaSpelling, entries, url } = await dictionaryCom(inputtedWord)
+	console.log('dictionary', word, phoneticSpelling, ipaSpelling, entries, url)
 	if (!word) return {}
 	return {
 		answer: {
