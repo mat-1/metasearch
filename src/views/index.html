@@ -17,12 +17,18 @@ header, h1, form, input, autocomplete {
 <script>
 const searchForm = document.getElementById('search-form')
 const titleEl = document.getElementsByTagName('h1')[0]
+const githubButtonEl = document.getElementById('github-button')
+const settingsButtonEl = document.getElementsByClassName('settings-link')[0]
 let autocompleteEl = document.getElementById('autocomplete')
 searchForm.addEventListener('submit', () => {
 	autocompleteEl = document.getElementById('autocomplete')
 	document.getElementById('search-centered').id = ''
 	titleEl.classList.add('toplogo')
 	searchForm.classList.add('search-form-left-offset')
+
+	githubButtonEl.style.display = 'none'
+	settingsButtonEl.style.display = 'none'
+
 	if (autocompleteEl)
 		autocompleteEl.style.left = '1em'
 })
