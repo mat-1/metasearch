@@ -117,7 +117,6 @@ export async function parseResultList(url, options: ParseResultListOptions): Pro
 		})
 	}
 	const suggestionText: string = options.suggestionPath ? extractText(body, options.suggestionPath) : null
-	console.log(url, suggestionText)
 	return {
 		results,
 		answer: featuredSnippetContent !== null

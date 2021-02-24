@@ -1,9 +1,10 @@
 import { requestJSON } from '../../parser'
+import { EngineRequest } from '../../search'
 
 const wynncraftRegex = /^(?:wynn(?:craft)?)?\s*?([^<>]+?)\s*(?:wynn(?:craft)?)?$/i
 
 
-export async function request(query) {
+export async function request(query): Promise<EngineRequest> {
 	const regexMatch = query.match(wynncraftRegex)
 	if (!regexMatch) return {}
 	let wynncraftQuery = regexMatch[1] + ' (Quest)'

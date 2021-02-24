@@ -15,10 +15,17 @@ interface InstantAnswer {
 	url: string
 }
 
+interface SidebarAnswer {
+	title: string
+	content: string
+	image: string
+	url: string
+}
+
 export interface EngineRequest {
 	results?: EngineResult[],
 	answer?: InstantAnswer,
-	sidebar?: any
+	sidebar?: SidebarAnswer
 	suggestion?: string
 }
 
@@ -126,7 +133,7 @@ async function request(query) {
 			answer = engineAnswer
 			answer.engine = engine
 		}
-		if (engineSidebarAnswer != null && ((sidebar.engine && sidebar.engine.weight) || engineWeight > 1)) {
+		if (engineSidebarAnswer !== undefined && (!sidebar.engine || (sidebar.engine.weight && engineWeight > sidebar.engine.weight))) {
 			sidebar = engineSidebarAnswer
 			sidebar.engine = engine
 		}
