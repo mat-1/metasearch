@@ -16,6 +16,7 @@ let answerEl = document.getElementById('answer')
 #}
 
 let resultsEl = document.getElementById('results')
+const firstResult = document.getElementsByClassName('result')[0]
 
 if (!answerEl) {
 	answerEl = document.createElement('{% if usingSidebar %}aside{% else %}div{% endif %}')
@@ -52,7 +53,7 @@ if (!answerEl) {
 	answerEl.appendChild(stackoverflowAnswerEl)
 	answerEl.appendChild(answerHrefEl)
 	{% endif %}
-	resultsEl.prepend(answerEl)
+	resultsEl.insertBefore(answerEl, firstResult)
 
 
 // 	{% if answer.url %}<a href="{{ answer.url }}">{% endif %}

@@ -8,7 +8,7 @@ export async function request(query): Promise<EngineRequest> {
 		hrefPath: 'h2 > a',
 		contentPath: '.result__snippet',
 
-		// this is disabled because the answers are bad
+		// this is disabled because the answers are low quality
 		// suggestionPath: '#did_you_mean > a:first-of-type'
 	})
 }
