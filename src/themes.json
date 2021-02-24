@@ -18,7 +18,7 @@
 		"main-text": "#eee",
 		"semi-light": "rgba(255,255,255,.5)",
 		"very-light": "rgba(255,255,255,.2)",
-		"very-very-light": "rgba(255,255,255,.05)",
+		"very-very-light": "#222",
 		"result-content-color": "#ccc"
 	},
 	"amoled": {

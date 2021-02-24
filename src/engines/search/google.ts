@@ -1,7 +1,7 @@
 import { parseResultList, requestJSON } from '../../parser'
-import { EngineRequest } from '../../search'
+import { EngineResponse } from '../../search'
 
-export async function request(query): Promise<EngineRequest> {
+export async function request(query): Promise<EngineResponse> {
 	return await parseResultList('https://www.google.com/search?nfpr=1&q=' + encodeURIComponent(query), {
 		resultItemPath: 'div.g',
 		titlePath: 'h3 > span',

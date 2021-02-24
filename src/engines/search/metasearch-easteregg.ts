@@ -1,8 +1,8 @@
-import { EngineRequest } from '../../search'
+import { EngineResponse } from '../../search'
 
 // searching "metasearch" will show metasearch as the top result
 
-export async function request(query): Promise<EngineRequest> {
+export async function request(query): Promise<EngineResponse> {
 	if (query.toLowerCase() === 'metasearch')
 		return {
 			results: [{

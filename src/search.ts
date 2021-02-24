@@ -23,11 +23,12 @@ interface SidebarAnswer {
 	url: string
 }
 
-export interface EngineRequest {
+export interface EngineResponse {
 	results?: EngineResult[],
 	answer?: InstantAnswer,
 	sidebar?: SidebarAnswer
 	suggestion?: string
+	time?: number
 }
 
 interface Engine {
@@ -40,7 +41,7 @@ interface Engine {
 const recursedEngines = requireDir('./engines', { recurse: true })
 const engines: { [engineName: string]: Engine } = {}
 
-const debugPerf: boolean = false
+const debugPerf: boolean = true
 
 const plugins = recursedEngines.plugins
 
@@ -55,27 +56,26 @@ for (const engineName in engines)
 	engines[engineName].name = engineName
 
 
-async function requestEngine(engineName: string, query: string, req: ExpressRequest): Promise<EngineRequest> {
+async function requestEngine(engineName: string, query: string, req: ExpressRequest): Promise<EngineResponse> {
 	const engine: Engine = engines[engineName]
 	let perfBefore: number, perfAfter: number
+	perfBefore = performance.now()
+	const response: EngineResponse = await engine.request(query, req)
+	perfAfter = performance.now()
 	if (debugPerf)
-		perfBefore = performance.now()
-	const response: EngineRequest = await engine.request(query, req)
-	if (debugPerf) {
-		perfAfter = performance.now()
 		console.log(`${engineName} took ${Math.floor(perfAfter - perfBefore)}ms.`)
-	}
+	response.time = Math.floor(perfAfter - perfBefore)
 	return response
 }
 
-async function requestAllEngines(query: string, req: ExpressRequest): Promise<{[engineName: string]: EngineRequest}> {
-	const promises: Promise<EngineRequest>[] = []
+async function requestAllEngines(query: string, req: ExpressRequest): Promise<{[engineName: string]: EngineResponse}> {
+	const promises: Promise<EngineResponse>[] = []
 	for (const engineName in engines) {
 		const engine: Engine = engines[engineName]
 		if (engine.request) promises.push(requestEngine(engineName, query, req))
 	}
-	const resolvedRequests: EngineRequest[] = await Promise.all(promises)
-	const results: {[engineName: string]: EngineRequest} = {}
+	const resolvedRequests: EngineResponse[] = await Promise.all(promises)
+	const results: {[engineName: string]: EngineResponse} = {}
 	for (const engineIndex in resolvedRequests) {
 		const engineName = Object.keys(engines)[engineIndex]
 		results[engineName] = resolvedRequests[engineIndex]
@@ -127,13 +127,16 @@ async function request(query: string, req: ExpressRequest) {
 	let answer: any = {}
 	let sidebar: any = {}
 	let suggestions: WeightedValue[] = []
+
+	const slowEngines = {}
+
 	for (const engineName in enginesResults) {
 		const engine: Engine = engines[engineName]
 		const engineWeight: number = engine.weight || 1
-		const engineResults: EngineRequest = enginesResults[engineName]
+		const engineResponse: EngineResponse = enginesResults[engineName]
 
-		const engineAnswer = engineResults.answer
-		const engineSidebarAnswer = engineResults.sidebar
+		const engineAnswer = engineResponse.answer
+		const engineSidebarAnswer = engineResponse.sidebar
 		const answerEngineWeight = answer.engine ? answer.engine.weight || 1 : 0
 
 		if (engineAnswer && ((engineWeight > answerEngineWeight) || Object.keys(answer).length === 0)) {
@@ -144,14 +147,14 @@ async function request(query: string, req: ExpressRequest) {
 			sidebar = engineSidebarAnswer
 			sidebar.engine = engine
 		}
-		if (engineResults.suggestion) {
+		if (engineResponse.suggestion) {
 			suggestions.push({
-				value: engineResults.suggestion,
+				value: engineResponse.suggestion,
 				weight: engineWeight
 			})
 		}
 
-		for (const result of engineResults.results || []) {
+		for (const result of engineResponse.results || []) {
 			let normalUrl
 			try {
 				normalUrl = normalizeUrl(result.url)
@@ -182,6 +185,10 @@ async function request(query: string, req: ExpressRequest) {
 			results[normalUrl].score += engineWeight / result.position
 			results[normalUrl].engines.push(engineName)
 		}
+
+		if (engineResponse.time > 1000) {
+			slowEngines[engineName] = engineResponse.time
+		}
 	}
 
 	const calculatedResults = Object.values(results).sort((a: any, b: any) => b.score - a.score).filter((result: any) => result.url !== answer.url)
@@ -194,6 +201,7 @@ async function request(query: string, req: ExpressRequest) {
 		answer,
 		sidebar,
 		suggestion,
+		slowEngines,
 
 		plugins: {} // these will be modified by plugins()
 	})

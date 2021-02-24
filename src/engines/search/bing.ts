@@ -1,7 +1,7 @@
 import { parseResultList } from '../../parser'
-import { EngineRequest } from '../../search'
+import { EngineResponse } from '../../search'
 
-export async function request(query): Promise<EngineRequest> {
+export async function request(query): Promise<EngineResponse> {
 	return await parseResultList('https://www.bing.com/search?q=' + encodeURIComponent(query), {
 		resultItemPath: '#b_results > li.b_algo',
 		titlePath: '.b_algo > h2 > a',

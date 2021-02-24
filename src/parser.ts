@@ -1,10 +1,12 @@
-import { EngineRequest, EngineResult } from './search'
+import { EngineResponse, EngineResult } from './search'
 import fetch from 'node-fetch'
 import * as cheerio from 'cheerio'
 import { Agent } from 'https'
+import * as dns from 'dns'
+import { performance } from 'perf_hooks'
 
 const httpsAgent = new Agent({
-	keepAlive: true
+	keepAlive: true,
 })
 
 
@@ -80,7 +82,7 @@ interface ParseResultListOptions {
 }
 
 // for search engines like google, bing, etc
-export async function parseResultList(url, options: ParseResultListOptions): Promise<EngineRequest> {
+export async function parseResultList(url, options: ParseResultListOptions): Promise<EngineResponse> {
 	const $: cheerio.Root = await requestDom(url)
 	const body: cheerio.Cheerio = $('body')
 
