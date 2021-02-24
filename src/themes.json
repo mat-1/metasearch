@@ -36,18 +36,6 @@
 		"result-content-color": "#9CFC97"
 	},
 	"sushi2": {
-		"background-color": "#fff",
-		"title-color": "#000",
-		"main-text": "#000",
-		"semi-light": "#aaa",
-		"very-light": "#bbb",
-		"very-very-light": "#eaeaea",
-		"result-content-color": "#444",
-		"result-title": "#4ac",
-		"result-title-selected": "#269",
-		"result-url": "#3B8"
-	},
-	"sushi3": {
 		"background-color": "#231B1B",
 		"title-color": "#00C49A",
 		"main-text": "#fff",
