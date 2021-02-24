@@ -15,6 +15,24 @@ interface DictionaryConfig {
 	definitionLabelPath: string
 }
 
+interface DictionaryEntryDefinition {
+	label: string
+	definition: string
+}
+
+interface DictionaryEntry {
+	partOfSpeech: string
+	definitions: DictionaryEntryDefinition[]
+}
+
+interface DictionaryResponse {
+	word: string
+	phoneticSpelling: string
+	ipaSpelling: string
+	entries: DictionaryEntry[]
+	url: string
+}
+
 async function parseDictionary(url, {
 	containerPath,
 	wordNamePath,
@@ -25,28 +43,31 @@ async function parseDictionary(url, {
 	entryDefinitionsPath,
 	definitionPath,
 	definitionLabelPath,
-}: DictionaryConfig) {
+}: DictionaryConfig): Promise<DictionaryResponse> {
 	const dom: cheerio.Root = await requestDom(url)
 	
 	const body: cheerio.Cheerio = dom(containerPath)
 
 	const wordName = extractText(body, wordNamePath)
-	console.log('body', body, 'wordName', wordName)
 	const phoneticSpelling = extractText(body, phoneticSpellingPath)
 	const ipaSpelling = extractText(body, ipaSpellingPath)
 
-	const entries = []
+	const entries: DictionaryEntry[] = []
 
 	for (const entryEl of getElements(body, entryPaths)) {
 		const partOfSpeech = extractText(entryEl, partOfSpeechPath)
 
-		const entryDefinitions = []
+		const entryDefinitions: DictionaryEntryDefinition[] = []
 		
 		for (const definitionEl of getElements(entryEl, entryDefinitionsPath)) {
 			const definition = extractText(definitionEl, definitionPath)
 			const label = extractText(definitionEl, definitionLabelPath)
 
 			entryDefinitions.push({
+				label,
+				definition
+			})
+			console.log(definitionEl.html(), {
 				label,
 				definition
 			})
@@ -66,16 +87,18 @@ async function parseDictionary(url, {
 	}
 }
 
-async function dictionaryCom(query) {
+/** Search dictionary.com, this is kinda broken */
+async function dictionaryCom(query: string): Promise<DictionaryResponse> {
 	return await parseDictionary('https://www.dictionary.com/browse/' + encodeURI(query), {
-		containerPath: '.default-content',
+		containerPath: 'section.serp-nav-button + div',
 		wordNamePath: 'section.entry-headword > div > div h1',
 		phoneticSpellingPath: 'section.entry-headword span.pron-spell-content',
 		ipaSpellingPath: '.pron-ipa-content',
-		entryPaths: 'section.e1hk9ate0',
-		partOfSpeechPath: 'h3.e1hk9ate1',
-		entryDefinitionsPath: '.e1q3nk1v3',
-		definitionPath: '.e1q3nk1v4',
+		entryPaths: 'section.entry-headword ~ section',
+		partOfSpeechPath: 'section > h3',
+		entryDefinitionsPath: 'div.expandable > div.default-content > div[value], h3 + div > div[value]',
+		definitionPath: 'div[value] > span.one-click-content',
+		// was this removed?
 		definitionLabelPath: '.luna-label',
 	})
 }
