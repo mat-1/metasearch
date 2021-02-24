@@ -54,6 +54,12 @@ ol.minecraft-name-history li:before {
 	padding: .25em;
 	margin-bottom: .5em;
 }
+.minecraft-player-container {
+	max-width: 100%
+}
+.minecraft-uuid {
+	overflow-wrap: anywhere
+}
 </style>
 <a href="{{ answer.url }}">
 	<h3 class="result-title">{{ answer.username }}</h3>
@@ -65,7 +71,7 @@ ol.minecraft-name-history li:before {
 	</div>
 	<div class="minecraft-player-container">
 		<div class="minecraft-player-data-box">
-			<div><strong>UUID</strong> <span class="minecraft-player-data-box-value"><samp>{{ answer.uuid }}<br>{{ answer.undasheduuid }}</samp></span></div>
+			<div><strong>UUID</strong> <span class="minecraft-player-data-box-value"><samp><span class="minecraft-uuid">{{ answer.uuid }}</span><br><span class="minecraft-uuid">{{ answer.undasheduuid }}</span></samp></span></div>
 			<div><strong>Username</strong> <span class="minecraft-player-data-box-value">{{ answer.username }}</span></div>
 		</div>
 		<ol class="minecraft-name-history">
