@@ -9,8 +9,10 @@ const timeUnits = {
 	'minute': 1 * 60,
 	'hour'  : 1 * 60 * 60,
 	'day'   : 1 * 60 * 60 * 24,
-	'month' : 1 * 60 * 60 * 24 * 30.4167,
-	'year'  : 1 * 60 * 60 * 24 * 365.242,
+	// 'month' : 1 * 60 * 60 * 24 * 30.4167,
+	'month' : 1 * 60 * 60 * 24 * 30,
+	// 'year'  : 1 * 60 * 60 * 24 * 365.242,
+	'year'  : 1 * 60 * 60 * 24 * 365,
 }
 
 export async function request(query) {

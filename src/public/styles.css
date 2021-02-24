@@ -218,3 +218,13 @@ a {
 	position: absolute;
 	right: .5em;
 }
+#github-button {
+	opacity: .2;
+	transition: opacity 300ms;
+	position: absolute;
+	top: .5em;
+	left: .5em
+}
+#github-button:hover {
+	opacity: .5
+}
