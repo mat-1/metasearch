@@ -59,12 +59,13 @@ for (const engineName in engines)
 async function requestEngine(engineName: string, query: string, req: ExpressRequest): Promise<EngineResponse> {
 	const engine: Engine = engines[engineName]
 	let perfBefore: number, perfAfter: number
-	perfBefore = performance.now()
-	const response: EngineResponse = await engine.request(query, req)
-	perfAfter = performance.now()
 	if (debugPerf)
+		perfBefore = performance.now()
+	const response: EngineResponse = await engine.request(query, req)
+	if (debugPerf) {
+		perfAfter = performance.now()
 		console.log(`${engineName} took ${Math.floor(perfAfter - perfBefore)}ms.`)
-	response.time = Math.floor(perfAfter - perfBefore)
+	}
 	return response
 }
 
@@ -128,8 +129,6 @@ async function request(query: string, req: ExpressRequest) {
 	let sidebar: any = {}
 	let suggestions: WeightedValue[] = []
 
-	const slowEngines = {}
-
 	for (const engineName in enginesResults) {
 		const engine: Engine = engines[engineName]
 		const engineWeight: number = engine.weight || 1
@@ -185,10 +184,6 @@ async function request(query: string, req: ExpressRequest) {
 			results[normalUrl].score += engineWeight / result.position
 			results[normalUrl].engines.push(engineName)
 		}
-
-		if (engineResponse.time > 1000) {
-			slowEngines[engineName] = engineResponse.time
-		}
 	}
 
 	const calculatedResults = Object.values(results).sort((a: any, b: any) => b.score - a.score).filter((result: any) => result.url !== answer.url)
@@ -201,7 +196,6 @@ async function request(query: string, req: ExpressRequest) {
 		answer,
 		sidebar,
 		suggestion,
-		slowEngines,
 
 		plugins: {} // these will be modified by plugins()
 	})
