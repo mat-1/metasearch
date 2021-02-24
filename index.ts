@@ -37,7 +37,7 @@ interface RenderOptions {
 }
   
 function render(res, template, options = {} as RenderOptions) {
-	const themeName = res.req.cookies.theme || 'light'
+	const themeName = res.req.cookies.theme || 'dark'
 	const theme = loadTheme(themeName)
 	options.theme = theme
 	return res.render(template, options)
@@ -89,7 +89,7 @@ app.get('/plugins/:plugin.js', async function(req, res) {
 })
 
 app.get('/settings', function(req, res) {
-	const activeTheme = res.req.cookies.theme || 'light'
+	const activeTheme = res.req.cookies.theme || 'dark'
 	render(res, 'settings.html', { themes, activeTheme })
 })
 
