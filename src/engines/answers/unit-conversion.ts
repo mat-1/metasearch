@@ -5,6 +5,7 @@ const unitsInUnitRegex = /^(?:how many |number of )?(.+?)s? (?:(?:are )?in|to) (
 
 
 const timeUnits = {
+	'millisecond': 0.001,
 	'second': 1,
 	'minute': 1 * 60,
 	'hour'  : 1 * 60 * 60,
