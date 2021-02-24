@@ -35,7 +35,7 @@ interface RenderOptions {
 	activeTheme?: string
 	theme?: string
 }
-  
+
 function render(res, template, options = {} as RenderOptions) {
 	const themeName = res.req.cookies.theme || 'dark'
 	const theme = loadTheme(themeName)
@@ -49,7 +49,10 @@ app.get('/', function(req, res) {
 
 app.get('/search', async function(req: ExpressRequest, res) {
 	const query = req.query.q as string
-	const results = await search.request(query, req)
+	const results = await search.request(query, {
+		req,
+		debug: req.cookies.debug === 'true'
+	})
 	const options = {
 		query,
 		...results

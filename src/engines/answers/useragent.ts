@@ -1,8 +1,8 @@
-import type { Request as ExpressRequest } from 'express'
+import { RequestOptions } from '../../search'
 
-export async function request(query: string, req: ExpressRequest) {
+export async function request(query: string, req: RequestOptions) {
 	if (query.toLowerCase().match(/^(what('s|s| is) my (user ?agent|ua)|ua|user ?agent)$/i)) {
-		const escapedUA = req.headers['user-agent']
+		const escapedUA = req.req.headers['user-agent']
 			.replace(/</g, '&lt;')
 			.replace(/>/g, '&gt;')
 		return {

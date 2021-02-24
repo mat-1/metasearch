@@ -41,7 +41,7 @@ interface Engine {
 const recursedEngines = requireDir('./engines', { recurse: true })
 const engines: { [engineName: string]: Engine } = {}
 
-const debugPerf: boolean = false
+const debugPerf: boolean = true
 
 const plugins = recursedEngines.plugins
 
@@ -56,7 +56,12 @@ for (const engineName in engines)
 	engines[engineName].name = engineName
 
 
-async function requestEngine(engineName: string, query: string, req: ExpressRequest): Promise<EngineResponse> {
+export interface RequestOptions {
+	req: ExpressRequest
+	debug: boolean
+}
+
+async function requestEngine(engineName: string, query: string, req: RequestOptions): Promise<EngineResponse> {
 	const engine: Engine = engines[engineName]
 	let perfBefore: number, perfAfter: number
 	if (debugPerf)
@@ -69,7 +74,7 @@ async function requestEngine(engineName: string, query: string, req: ExpressRequ
 	return response
 }
 
-async function requestAllEngines(query: string, req: ExpressRequest): Promise<{[engineName: string]: EngineResponse}> {
+async function requestAllEngines(query: string, req: RequestOptions): Promise<{[engineName: string]: EngineResponse}> {
 	const promises: Promise<EngineResponse>[] = []
 	for (const engineName in engines) {
 		const engine: Engine = engines[engineName]
@@ -122,7 +127,7 @@ interface WeightedValue {
 	value: any
 }
 
-async function request(query: string, req: ExpressRequest) {
+async function request(query: string, req: RequestOptions) {
 	const results = {}
 	const enginesResults = await requestAllEngines(query, req)
 	let answer: any = {}

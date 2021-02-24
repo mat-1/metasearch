@@ -2,28 +2,40 @@
 
 {% block body %}
 <script>
-function setTheme(theme) {
+function setCookie(name, value) {
 	var d = new Date()
 	d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000))
 	var expires = `expires=${d.toUTCString()}`
-	document.cookie = `theme=${theme};${expires};path=/`
+	document.cookie = `${name}=${value};${expires};path=/`
 } 
 
 document.addEventListener('DOMContentLoaded', () => {
 
-let themeEl = document.getElementById('theme')
+const themeEl = document.getElementById('theme')
+const debugEl = document.getElementById('debugSetting')
 themeEl.onchange = (e) => {
-	setTheme(e.target.value)
+	setCookie('theme', e.target.value)
 	location.reload()
+}
+debugEl.onchange = (e) => {
+	setCookie('debug', e.target.checked)
+	{# location.reload() #}
 }
 
 })
 </script>
-<label for="theme">Theme:</label>
-<select name="theme" id="theme">
-{% for theme, value in themes %}
-  <option value="{{ theme }}"{% if activeTheme == theme %} selected{% endif %}>{{ theme|title }}</option>
-{% endfor %}
-</select> 
+<div>
+	<label for="theme">Theme:</label>
+	<select name="theme" id="theme">
+		{% for theme, value in themes %}
+		<option value="{{ theme }}"{% if activeTheme == theme %} selected{% endif %}>{{ theme|title }}</option>
+		{% endfor %}
+	</select>
+</div>
+<label for="debugSetting">
+	Debug mode:
+	<input type="checkbox" id="debugSetting">
+	<span class="checkbox"></span>
+</label> 
 {% endblock %}
 

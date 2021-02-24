@@ -210,6 +210,10 @@ a {
 }
 .search-suggestion {
 	font-style: italic;
+	opacity: .5;
+	margin-top: -.5em;
+	margin-bottom: .5em;
+	margin-left: .5em
 }
 #answer .result-engines {
 	margin-top: -.5em;
@@ -227,4 +231,32 @@ a {
 }
 #github-button:hover {
 	opacity: .5
+}
+select {
+	background-color: var(--very-light);
+	border: none;
+	color: var(--main-text);
+	border-radius: .25em;
+}
+input[type=checkbox] {
+	display: none
+}
+input[type=checkbox] + .checkbox:after {
+	content: ""; 
+	position: relative;
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	background-color: var(--very-light);
+	border-radius: .25em;
+	top: .2em;
+	background-position: center center;
+	background-size: 0%;
+	transition-duration: 200ms
+}
+input[type=checkbox]:checked ~ .checkbox:after {
+	background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMjAuMjg1IDJsLTExLjI4NSAxMS41NjctNS4yODYtNS4wMTEtMy43MTQgMy43MTYgOSA4LjcyOCAxNS0xNS4yODV6IiBzdHJva2U9Im5vbmUiIGZpbGw9IiNmZmYiLz48L3N2Zz4=');
+	background-repeat: no-repeat;
+	background-color: var(--semi-light);
+	background-size: 75%;
 }

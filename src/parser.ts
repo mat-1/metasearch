@@ -2,8 +2,6 @@ import { EngineResponse, EngineResult } from './search'
 import fetch from 'node-fetch'
 import * as cheerio from 'cheerio'
 import { Agent } from 'https'
-import * as dns from 'dns'
-import { performance } from 'perf_hooks'
 
 const httpsAgent = new Agent({
 	keepAlive: true,
@@ -13,7 +11,7 @@ const httpsAgent = new Agent({
 export async function requestRaw(url: string): Promise<string> {
 	const response = await fetch(url, {
 		headers: {
-			'user-agent': 'Mozilla/5.0 Firefox/84.0'
+			'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0'
 		},
 		agent: () => httpsAgent
 	})
