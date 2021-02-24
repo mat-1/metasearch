@@ -25,7 +25,9 @@ env.addFilter('qs', (params) => {
 
 function loadTheme(name) {
 	let themeData = themes[name]
-	if (name !== 'light') { themeData = Object.assign({}, loadTheme(themeData.base || 'light'), themeData) }
+	if (!themeData) themeData = themes.dark
+	if (name !== 'light') 
+		themeData = Object.assign({}, loadTheme(themeData.base || 'light'), themeData)
 	return themeData
 }
 
