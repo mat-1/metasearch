@@ -2,37 +2,28 @@
 
 {% block body %}
 <script>
-function setCookie(name, value) {
-	const d = new Date();
-	d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
-	const expires = `expires=${d.toUTCString()}`
-	document.cookie = `${name}=${value};${expires};path=/`
+function setTheme(theme) {
+	var d = new Date()
+	d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000))
+	var expires = `expires=${d.toUTCString()}`
+	document.cookie = `theme=${theme};${expires};path=/`
 } 
 
 document.addEventListener('DOMContentLoaded', () => {
-	const themeEl = document.getElementById('theme')
-	const animationsEl = document.getElementById('animations')
-	themeEl.onchange = (e) => {
-		setCookie('theme', e.target.value)
-		location.reload()
-	}
-	animationsEl.onchange = (e) => {
-		setCookie('animations', e.target.checked)
-		location.reload()
-	}
+
+let themeEl = document.getElementById('theme')
+themeEl.onchange = (e) => {
+	setTheme(e.target.value)
+	location.reload()
+}
+
 })
 </script>
-<div>
-	<label for="theme">Theme:</label>
-	<select name="theme" id="theme">
-	{% for theme, value in themes %}
-	<option value="{{ theme }}"{% if activeTheme == theme %} selected{% endif %}>{{ theme|title }}</option>
-	{% endfor %}
-	</select> 
-</div>
-<div>
-	<label for="animations">Useless CSS animations:</label>
-	<input type="checkbox" name="animations" id="animations">
-</div>
+<label for="theme">Theme:</label>
+<select name="theme" id="theme">
+{% for theme, value in themes %}
+  <option value="{{ theme }}"{% if activeTheme == theme %} selected{% endif %}>{{ theme|title }}</option>
+{% endfor %}
+</select> 
 {% endblock %}
 

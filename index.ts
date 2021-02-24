@@ -34,15 +34,12 @@ interface RenderOptions {
 	themes?: Array<any>
 	activeTheme?: string
 	theme?: string
-	animations?: boolean
 }
   
 function render(res, template, options = {} as RenderOptions) {
 	const themeName = res.req.cookies.theme || 'light'
 	const theme = loadTheme(themeName)
-	const usingCoolerAnimations = res.req.cookies.animations === 'true'
 	options.theme = theme
-	options.animations = usingCoolerAnimations
 	return res.render(template, options)
 }
 
