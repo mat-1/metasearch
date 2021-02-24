@@ -41,7 +41,7 @@ interface Engine {
 const recursedEngines = requireDir('./engines', { recurse: true })
 const engines: { [engineName: string]: Engine } = {}
 
-const debugPerf: boolean = true
+const debugPerf: boolean = false
 
 const plugins = recursedEngines.plugins
 
