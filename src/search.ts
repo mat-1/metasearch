@@ -5,14 +5,21 @@ import { performance } from 'perf_hooks'
 export interface EngineResult {
 	url: string,
 	title: string,
-	content: number,
+	content: string,
 	position: number
 }
 
+interface InstantAnswer {
+	content: string,
+	title: string,
+	url: string
+}
+
 export interface EngineRequest {
-	results?: Array<EngineResult>,
-	answer?: any,
+	results?: EngineResult[],
+	answer?: InstantAnswer,
 	sidebar?: any
+	suggestion?: string
 }
 
 interface Engine {
@@ -40,7 +47,7 @@ async function requestEngine(engineName: string, query: string): Promise<EngineR
 	let perfBefore: number, perfAfter: number
 	if (debugPerf)
 		perfBefore = performance.now()
-	const response = await engine.request(query)
+	const response: EngineRequest = await engine.request(query)
 	if (debugPerf) {
 		perfAfter = performance.now()
 		console.log(`${engineName} took ${Math.floor(perfAfter - perfBefore)}ms.`)
@@ -49,12 +56,12 @@ async function requestEngine(engineName: string, query: string): Promise<EngineR
 }
 
 async function requestAllEngines(query: string): Promise<{[engineName: string]: EngineRequest}> {
-	const promises: Array<Promise<EngineRequest>> = []
+	const promises: Promise<EngineRequest>[] = []
 	for (const engineName in engines) {
 		const engine: Engine = engines[engineName]
 		if (engine.request) promises.push(requestEngine(engineName, query))
 	}
-	const resolvedRequests: Array<EngineRequest> = await Promise.all(promises)
+	const resolvedRequests: EngineRequest[] = await Promise.all(promises)
 	const results: {[engineName: string]: EngineRequest} = {}
 	for (const engineIndex in resolvedRequests) {
 		const engineName = Object.keys(engines)[engineIndex]
@@ -79,15 +86,38 @@ async function requestAllAutoCompleteEngines(query) {
 	return results
 }
 
+/** Sort an array by how frequently items are repeated, and based on their weight */
+function sortByFrequency(items: WeightedValue[]): any[] {
+	const occurencesMap: Map<any, number> =  new Map()
+	for (const item of items) {
+		if (occurencesMap.has(item.value))
+			occurencesMap.set(item.value, occurencesMap.get(item.value) + item.weight)
+		else
+			occurencesMap.set(item.value, item.weight)
+	}
+
+	const occurencesMapSorted = new Map([...occurencesMap.entries()].sort(([a, numberA], [b, numberB]) => {
+		return numberB - numberA
+	}))
+
+	return Array.from(occurencesMapSorted.keys())
+}
+
+interface WeightedValue {
+	weight: number
+	value: any
+}
+
 async function request(query) {
 	const results = {}
 	const enginesResults = await requestAllEngines(query)
 	let answer: any = {}
 	let sidebar: any = {}
+	let suggestions: WeightedValue[] = []
 	for (const engineName in enginesResults) {
-		const engine = engines[engineName]
-		const engineWeight = engine.weight || 1
-		const engineResults = enginesResults[engineName]
+		const engine: Engine = engines[engineName]
+		const engineWeight: number = engine.weight || 1
+		const engineResults: EngineRequest = enginesResults[engineName]
 
 		const engineAnswer = engineResults.answer
 		const engineSidebarAnswer = engineResults.sidebar
@@ -99,6 +129,12 @@ async function request(query) {
 		if (engineSidebarAnswer != null && ((sidebar.engine && sidebar.engine.weight) || engineWeight > 1)) {
 			sidebar = engineSidebarAnswer
 			sidebar.engine = engine
+		}
+		if (engineResults.suggestion) {
+			suggestions.push({
+				value: engineResults.suggestion,
+				weight: engineWeight
+			})
 		}
 
 		for (const result of engineResults.results || []) {
@@ -112,7 +148,7 @@ async function request(query) {
 
 			// Default values
 			if (!results[normalUrl]) {
- results[normalUrl] = {
+ 				results[normalUrl] = {
 					url: normalUrl,
 					title: result.title,
 					content: result.content,
@@ -120,7 +156,7 @@ async function request(query) {
 					weight: engineWeight,
 					engines: []
 				}
-}
+			}
 
 			// position 1 is score 1, position 2 is score .5, position 3 is score .333, etc
 
@@ -135,12 +171,15 @@ async function request(query) {
 	}
 
 	const calculatedResults = Object.values(results).sort((a: any, b: any) => b.score - a.score).filter((result: any) => result.url !== answer.url)
+	const suggestionsSorted = sortByFrequency(suggestions)
+	const suggestion = suggestionsSorted.length >= 1 ? suggestionsSorted[0] : null
 
 	// do some last second modifications, if necessary, and return the results!
 	return await requestAllPlugins({
 		results: calculatedResults,
 		answer,
 		sidebar,
+		suggestion,
 
 		plugins: {} // these will be modified by plugins()
 	})
@@ -155,17 +194,17 @@ async function autocomplete(query) {
 		let resultPosition = 0
 		for (const result of engineResults) {
 			const engineWeight = engine.weight || 1
-			resultPosition++
+			resultPosition ++
 
 			// Default values
 			if (!results[result]) {
- results[result] = {
+ 				results[result] = {
 					result,
 					score: 0,
 					weight: engineWeight,
 					engines: []
 				}
-}
+			}
 
 			results[result].score += engineWeight / resultPosition
 			results[result].engines.push(engineName)
@@ -175,7 +214,7 @@ async function autocomplete(query) {
 }
 
 // do some last second non-http modifications to the results
-async function requestAllPlugins(options) {
+async function requestAllPlugins(options: any) {
 	for (const pluginName in plugins) {
 		const plugin = plugins[pluginName]
 		if (plugin.changeOptions) { options = await plugin.changeOptions(options) }

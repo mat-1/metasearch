@@ -17,6 +17,7 @@
 	</form>
 </header>
 <div id="results">
+	{% if suggestion %}<div class="search-suggestion">Did you mean: <a href="/search?q={{ suggestion }}">{{ suggestion }}</a></div>{% endif %}
 	{% if sidebar|length > 0 %}
 		<aside id="sidebar"{% if answer|length > 0 %} class="sidebar-possibly-hidden"{% endif %}>
 			{% if sidebar.image %}<img class="sidebar-image" src="{{ sidebar.image }}">{% endif %}

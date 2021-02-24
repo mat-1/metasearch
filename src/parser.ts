@@ -1,4 +1,4 @@
-import { EngineRequest } from './search'
+import { EngineRequest, EngineResult } from './search'
 import fetch from 'node-fetch'
 import * as cheerio from 'cheerio'
 import { Agent } from 'https'
@@ -79,18 +79,18 @@ interface ParseResultListOptions {
 	featuredSnippetHrefPath?: string
 }
 
-// for google, bing, etc
-export async function parseResultList(url, options = {} as ParseResultListOptions): Promise<EngineRequest> {
+// for search engines like google, bing, etc
+export async function parseResultList(url, options: ParseResultListOptions): Promise<EngineRequest> {
 	const $: cheerio.Root = await requestDom(url)
-	const body = $('body')
+	const body: cheerio.Cheerio = $('body')
 
-	const results = []
+	const results: EngineResult[] = []
 
 	const resultElements = getElements(body, options.resultItemPath)
 
-	let featuredSnippetContent = null
-	let featuredSnippetTitle = null
-	let featuredSnippetUrl = null
+	let featuredSnippetContent: string = null
+	let featuredSnippetTitle: string = null
+	let featuredSnippetUrl: string = null
 
 	for (const resultItemIndex in resultElements) {
 		const resultItemEl = resultElements[resultItemIndex]
@@ -116,6 +116,8 @@ export async function parseResultList(url, options = {} as ParseResultListOption
 			position: parseInt(resultItemIndex) + 1 // starts at 1
 		})
 	}
+	const suggestionText: string = options.suggestionPath ? extractText(body, options.suggestionPath) : null
+	console.log(url, suggestionText)
 	return {
 		results,
 		answer: featuredSnippetContent !== null
@@ -124,7 +126,8 @@ export async function parseResultList(url, options = {} as ParseResultListOption
 			title: featuredSnippetTitle,
 			url: featuredSnippetUrl
 		}
-		: null
+		: null,
+		suggestion: suggestionText
 	}
 }
 

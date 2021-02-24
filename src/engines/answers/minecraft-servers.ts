@@ -156,7 +156,6 @@ function extractServerName(hostName, description) {
 export async function request(query) {
 	const regexMatch = query.match(minecraftRegex)
 	if (!regexMatch && !serverAliases[query]) {
-		console.log('didnt match regex')
 		return {}
 	}
 	let minecraftHost
@@ -173,7 +172,6 @@ export async function request(query) {
 		port = parseInt(splitHost[1])
 	} else
 		port = null
-	console.log(minecraftHost, port)
 	try {
 		status = await getStatus(minecraftHost, port, {
 			timeout: 500

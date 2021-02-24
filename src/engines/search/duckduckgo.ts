@@ -6,6 +6,10 @@ export async function request(query): Promise<EngineRequest> {
 		resultItemPath: '.result',
 		titlePath: 'h2',
 		hrefPath: 'h2 > a',
-		contentPath: '.result__snippet'
+		contentPath: '.result__snippet',
+
+		suggestionPath: '#did_you_mean > a:first-of-type'
 	})
 }
+
+export const weight = 1.01

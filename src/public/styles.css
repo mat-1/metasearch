@@ -208,3 +208,6 @@ a {
 .sidebar-content img {
 	max-width: 100%
 }
+.search-suggestion {
+	font-style: italic;
+}

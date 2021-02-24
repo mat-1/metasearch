@@ -7,6 +7,9 @@ export async function request(query): Promise<EngineRequest> {
 		titlePath: '.b_algo > h2 > a',
 		hrefPath: '.b_algo > h2 > a[href]',
 		contentPath: '.b_caption > p',
-		suggestionPath: '#sp_requery > a'
+
+		suggestionPath: 'li.b_ans > #sp_requery > a[href] > strong',
 	})
 }
+
+export const weight = 1.0

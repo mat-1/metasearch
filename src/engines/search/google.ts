@@ -7,12 +7,13 @@ export async function request(query): Promise<EngineRequest> {
 		titlePath: 'h3 > span',
 		hrefPath: 'div.yuRUbf > a[href], h3.H1u2de > a[href]',
 		contentPath: 'div.IsZvec',
-		suggestionPath: 'p.card-section a:first-of-type',
 
 		featuredSnippetPath: '.c2xzTb',
 		featuredSnippetContentPath: '.hgKElcm, .X5LH0c, .LGOjhe, .iKJnec',
 		featuredSnippetTitlePath: '.g > div > div > a > h3',
 		featuredSnippetHrefPath: '.g > div > div > a',
+
+		suggestionPath: 'a.gL9Hy > b > i'
 	})
 }
 
