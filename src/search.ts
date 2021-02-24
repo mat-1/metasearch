@@ -1,6 +1,7 @@
 import normalizeUrl from './normalize-url'
 import * as requireDir from 'require-dir'
 import { performance } from 'perf_hooks'
+import type { Request as ExpressRequest } from 'express'
 
 export interface EngineResult {
 	url: string,
@@ -49,12 +50,12 @@ Object.assign(
 )
 
 
-async function requestEngine(engineName: string, query: string): Promise<EngineRequest> {
+async function requestEngine(engineName: string, query: string, req: ExpressRequest): Promise<EngineRequest> {
 	const engine: Engine = engines[engineName]
 	let perfBefore: number, perfAfter: number
 	if (debugPerf)
 		perfBefore = performance.now()
-	const response: EngineRequest = await engine.request(query)
+	const response: EngineRequest = await engine.request(query, req)
 	if (debugPerf) {
 		perfAfter = performance.now()
 		console.log(`${engineName} took ${Math.floor(perfAfter - perfBefore)}ms.`)
@@ -62,11 +63,11 @@ async function requestEngine(engineName: string, query: string): Promise<EngineR
 	return response
 }
 
-async function requestAllEngines(query: string): Promise<{[engineName: string]: EngineRequest}> {
+async function requestAllEngines(query: string, req: ExpressRequest): Promise<{[engineName: string]: EngineRequest}> {
 	const promises: Promise<EngineRequest>[] = []
 	for (const engineName in engines) {
 		const engine: Engine = engines[engineName]
-		if (engine.request) promises.push(requestEngine(engineName, query))
+		if (engine.request) promises.push(requestEngine(engineName, query, req))
 	}
 	const resolvedRequests: EngineRequest[] = await Promise.all(promises)
 	const results: {[engineName: string]: EngineRequest} = {}
@@ -115,9 +116,9 @@ interface WeightedValue {
 	value: any
 }
 
-async function request(query) {
+async function request(query: string, req: ExpressRequest) {
 	const results = {}
-	const enginesResults = await requestAllEngines(query)
+	const enginesResults = await requestAllEngines(query, req)
 	let answer: any = {}
 	let sidebar: any = {}
 	let suggestions: WeightedValue[] = []

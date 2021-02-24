@@ -1,8 +1,10 @@
-const themes = require('./src/themes.json')
+import type { Request as ExpressRequest } from 'express'
 import * as cookieParser from 'cookie-parser'
 import * as nunjucks from 'nunjucks'
 import * as express from 'express'
 import * as search from './src/search'
+
+const themes = require('./src/themes.json')
 
 const app = express()
 app.use(cookieParser())
@@ -45,9 +47,9 @@ app.get('/', function(req, res) {
 	render(res, 'index.html')
 })
 
-app.get('/search', async function(req, res) {
-	const query = req.query.q
-	const results = await search.request(query)
+app.get('/search', async function(req: ExpressRequest, res) {
+	const query = req.query.q as string
+	const results = await search.request(query, req)
 	const options = {
 		query,
 		...results
