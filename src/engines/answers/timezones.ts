@@ -45,7 +45,7 @@ function to24h(hour, ampm) {
 	return hour
 }
 
-function from24h(hour) {
+function from24h(hour: number) {
 	const ampm = hour >= 12 ? 'pm' : 'am'
 	hour %= 12
 	if (hour < 1) hour += 12
@@ -80,6 +80,7 @@ export async function request(query) {
 	let { ampm: toAMPM, hour: toHour } = from24h(fromHour + totalOffset)
 	const toMinutes = Math.round((toHour - Math.floor(toHour)) * 60)
 	toHour -= (toMinutes / 60)
+	toHour = Math.round(toHour)
 
 	const toTimeString = `${toHour}:${('0' + toMinutes).slice(-2)}${toAMPM}`
 
