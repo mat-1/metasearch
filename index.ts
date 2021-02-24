@@ -60,7 +60,9 @@ app.get('/search', async function(req, res) {
 })
 
 app.get('/opensearch.xml', async function(req, res) {
-	res.header('Content-Type', 'application/opensearchdescription+xml')
+	res.header('Content-Type', 'text/html')
+	res.header('Content-Disposition', 'attachment; filename="opensearch.xml"')
+	// res.header('Content-Type', 'application/opensearchdescription+xml')
 	render(res, 'opensearch.xml', {
 		host: req.hostname
 	})
