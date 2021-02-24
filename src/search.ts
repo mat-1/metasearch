@@ -130,6 +130,7 @@ async function request(query: string, req: ExpressRequest) {
 		const engineAnswer = engineResults.answer
 		const engineSidebarAnswer = engineResults.sidebar
 		const answerEngineWeight = answer.engine ? answer.engine.weight || 1 : 0
+
 		if (engineAnswer && ((engineWeight > answerEngineWeight) || Object.keys(answer).length === 0)) {
 			answer = engineAnswer
 			answer.engine = engine
