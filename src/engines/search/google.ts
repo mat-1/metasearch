@@ -13,7 +13,7 @@ export async function request(query): Promise<EngineRequest> {
 		featuredSnippetTitlePath: '.g > div > div > a > h3',
 		featuredSnippetHrefPath: '.g > div > div > a',
 
-		suggestionPath: 'a.gL9Hy > b > i'
+		suggestionPath: 'a.gL9Hy'
 	})
 }
 
