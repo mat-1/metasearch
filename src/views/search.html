@@ -7,6 +7,16 @@
 {% for pluginName, pluginData in plugins %}
 <script src="/plugins/{{ pluginName }}.js?{{ pluginData|qs }}" async defer></script>
 {% endfor %}
+{% if animations %}
+<style>
+#results {
+	animation: bottomToTop 500ms;
+}
+@keyframes bottomToTop {
+  from { margin-top: 100vh }
+}
+</style>
+{% endif %}
 {% endblock %}
 
 {% block body %}
