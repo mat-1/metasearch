@@ -23,6 +23,9 @@
 			{% if sidebar.image %}<img class="sidebar-image" src="{{ sidebar.image }}">{% endif %}
 			{% if sidebar.url %}<a href="{{ sidebar.url }}">{% endif %}<h2 class="sidebar-title">{{ sidebar.title }}</h2>{% if sidebar.url %}</a>{% endif %}
 			<p class="sidebar-content">{{ sidebar.content }}</p>
+			<div class="result-engines">
+				<span class="result-engine">{{ sidebar.engine.name }}</span>
+			</div>
 		</aside>
 	{% endif %}
 	{% if answer|length > 0 %}
@@ -38,6 +41,9 @@
 					{% if answer.title %}<h3 class="result-title">{{ answer.title }}</h3>{% endif %}
 					{% if answer.url %}<span class="result-url">{{ answer.url }}</h3>{% endif %}
 				{% if answer.url %}</a>{% endif %}
+				<div class="result-engines">
+					<span class="result-engine">{{ answer.engine.name }}</span>
+				</div>
 			{% endif %}
 			{% endblock %}
 		</div>

@@ -31,9 +31,10 @@ export interface EngineRequest {
 }
 
 interface Engine {
-	request?: Function,
-	autoComplete?: Function,
-	weight?: number,
+	name?: string
+	request?: Function
+	autoComplete?: Function
+	weight?: number
 }
 
 const recursedEngines = requireDir('./engines', { recurse: true })
@@ -48,6 +49,10 @@ Object.assign(
 	recursedEngines.answers,
 	recursedEngines.search
 )
+
+// add "name" to all engines
+for (const engineName in engines)
+	engines[engineName].name = engineName
 
 
 async function requestEngine(engineName: string, query: string, req: ExpressRequest): Promise<EngineRequest> {

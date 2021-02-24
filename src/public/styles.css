@@ -211,3 +211,10 @@ a {
 .search-suggestion {
 	font-style: italic;
 }
+#answer .result-engines {
+	margin-top: -.5em;
+}
+#sidebar .result-engines {
+	position: absolute;
+	right: .5em;
+}
