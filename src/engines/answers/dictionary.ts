@@ -67,10 +67,6 @@ async function parseDictionary(url, {
 				label,
 				definition
 			})
-			console.log(definitionEl.html(), {
-				label,
-				definition
-			})
 		}
 		entries.push({
 			partOfSpeech,
@@ -117,7 +113,6 @@ export async function request(query) {
 	const inputtedWord = matchWord(query)
 	if (!inputtedWord) return {}
 	let { word, phoneticSpelling, ipaSpelling, entries, url } = await dictionaryCom(inputtedWord)
-	console.log('dictionary', word, phoneticSpelling, ipaSpelling, entries, url)
 	if (!word) return {}
 	return {
 		answer: {
