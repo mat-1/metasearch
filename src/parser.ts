@@ -5,6 +5,7 @@ import { Agent } from 'https'
 
 const httpsAgent = new Agent({
 	keepAlive: true,
+	keepAliveMsecs: 20000
 })
 
 
