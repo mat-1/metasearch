@@ -1,2 +1,2 @@
-language = "typescript"
-run = "npm i;npx ts-node index.ts"
+language = "nodejs"
+run = "npm start"
