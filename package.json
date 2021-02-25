@@ -26,6 +26,8 @@
 		"eslint-plugin-promise": "^4.2.1"
 	},
 	"scripts": {
-		"eslint:github-action": "eslint *.ts"
+		"eslint:github-action": "eslint *.ts",
+		"compile": "tsc",
+		"start": "npm i; node build/index.js"
 	}
 }
