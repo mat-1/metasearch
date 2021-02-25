@@ -1,4 +1,4 @@
-import * as Parser from './src/parser'
+import Parser from './src/parser'
 
 
 function solve(input) {

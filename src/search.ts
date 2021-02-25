@@ -1,7 +1,7 @@
-import normalizeUrl from './normalize-url'
-import * as requireDir from 'require-dir'
-import { performance } from 'perf_hooks'
 import type { Request as ExpressRequest } from 'express'
+import normalizeUrl from './normalize-url'
+import { performance } from 'perf_hooks'
+import requireDir from 'require-dir'
 
 export interface EngineResult {
 	url: string,

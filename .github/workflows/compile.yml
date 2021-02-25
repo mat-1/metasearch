@@ -1,0 +1,21 @@
+on: [push]
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    name: Compile Typescript
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: npm install
+      - name: Compile Typescript
+        uses: FuLagann/tsc-build-push@v1
+        with:
+          user-name: "mat-1"
+          user-email: "github@matdoes.dev"
+          message: "Compiled TS into JS"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

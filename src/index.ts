@@ -1,10 +1,10 @@
 import type { Request as ExpressRequest } from 'express'
-import * as cookieParser from 'cookie-parser'
+import cookieParser from 'cookie-parser'
 import * as nunjucks from 'nunjucks'
-import * as express from 'express'
-import * as search from './src/search'
+import * as search from './search'
+import express from 'express'
 
-const themes = require('./src/themes.json')
+const themes = require('../src/themes.json')
 
 const app = express()
 app.use(cookieParser())
@@ -90,7 +90,7 @@ app.get('/plugins/:plugin.js', async function(req, res) {
 		// if it's false then it shouldn't do anything
 		res.send('')
 	else
-		render(res, `plugins/${pluginName}.js`, data)
+		render(res, `plugins/${pluginName}.njk`, data)
 })
 
 app.get('/settings', function(req, res) {

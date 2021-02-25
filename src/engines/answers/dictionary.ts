@@ -1,4 +1,4 @@
-const commonWords = require('../../common-words.json')
+const commonWords = require('../../../src/common-words.json')
 import { requestDom, extractText, getElements } from '../../parser'
 
 const defineRegex = /^(?:define )(.+)$/i
