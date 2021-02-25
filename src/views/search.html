@@ -17,6 +17,30 @@
 	</form>
 </header>
 <div id="results">
+	{% if debug %}
+	<details id="debug-dropdown">
+		<summary>Debug</summary>
+		<ul>
+		{%- for engine in engines|sort(true, true, 'time') -%}
+			{% set opacity = 0.1 %}
+			{%- if engine.time > 1000 -%}
+				{% set opacity = 1 %}
+			{%- elif engine.time > 900 -%}
+				{% set opacity = 0.9 %}
+			{%- elif engine.time > 800 -%}
+				{% set opacity = 0.7 %}
+			{%- elif engine.time > 700 -%}
+				{% set opacity = 0.5 %}
+			{%- elif engine.time > 500 -%}
+				{% set opacity = 0.3 %}
+			{%- elif engine.time > 300 -%}
+				{% set opacity = 0.2 %}
+			{%- endif -%}
+			<li style="opacity: {{ opacity }}">{{ engine.engine.name }}: {{ engine.time }}ms</li>
+		{%- endfor -%}
+		</ul>
+	</details>
+{% endif %}
 	{% if suggestion %}<div class="search-suggestion">Did you mean: <a href="/search?q={{ suggestion }}">{{ suggestion }}</a></div>{% endif %}
 	{% if sidebar|length > 0 %}
 		<aside id="sidebar"{% if answer|length > 0 %} class="sidebar-possibly-hidden"{% endif %}>

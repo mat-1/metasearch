@@ -24,8 +24,9 @@ interface SidebarAnswer {
 }
 
 export interface EngineResponse {
-	results?: EngineResult[],
-	answer?: InstantAnswer,
+	engine?: Engine
+	results?: EngineResult[]
+	answer?: InstantAnswer
 	sidebar?: SidebarAnswer
 	suggestion?: string
 	time?: number
@@ -64,13 +65,15 @@ export interface RequestOptions {
 async function requestEngine(engineName: string, query: string, req: RequestOptions): Promise<EngineResponse> {
 	const engine: Engine = engines[engineName]
 	let perfBefore: number, perfAfter: number
-	if (debugPerf)
+	if (debugPerf || req.debug)
 		perfBefore = performance.now()
 	const response: EngineResponse = await engine.request(query, req)
-	if (debugPerf) {
+	if (debugPerf || req.debug) {
 		perfAfter = performance.now()
-		console.log(`${engineName} took ${Math.floor(perfAfter - perfBefore)}ms.`)
+		if (debugPerf) console.log(`${engineName} took ${Math.floor(perfAfter - perfBefore)}ms.`)
+		response.time = Math.floor(perfAfter - perfBefore)
 	}
+	response.engine = engine
 	return response
 }
 
@@ -201,6 +204,9 @@ async function request(query: string, req: RequestOptions) {
 		answer,
 		sidebar,
 		suggestion,
+
+		debug: req.debug,
+		engines: Object.values(enginesResults),
 
 		plugins: {} // these will be modified by plugins()
 	})
