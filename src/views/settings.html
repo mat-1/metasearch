@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block body %}
+{% include 'header.html' %}
 <script>
 function setCookie(name, value) {
 	var d = new Date()
@@ -21,21 +22,22 @@ debugEl.onchange = (e) => {
 	setCookie('debug', e.target.checked)
 	{# location.reload() #}
 }
-
 })
 </script>
-<div>
-	<label for="theme">Theme:</label>
-	<select name="theme" id="theme">
-		{% for theme, value in themes %}
-		<option value="{{ theme }}"{% if activeTheme == theme %} selected{% endif %}>{{ theme|title }}</option>
-		{% endfor %}
-	</select>
+<div id="results">
+	<div>
+		<label for="theme">Theme:</label>
+		<select name="theme" id="theme">
+			{% for theme, value in themes %}
+			<option value="{{ theme }}"{% if activeTheme == theme %} selected{% endif %}>{{ theme|title }}</option>
+			{% endfor %}
+		</select>
+	</div>
+	<label for="debugSetting">
+		Debug mode:
+		<input type="checkbox" id="debugSetting">
+		<span class="checkbox"></span>
+	</label>
 </div>
-<label for="debugSetting">
-	Debug mode:
-	<input type="checkbox" id="debugSetting">
-	<span class="checkbox"></span>
-</label> 
 {% endblock %}
 

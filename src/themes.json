@@ -1,4 +1,13 @@
 {
+	"dark": {
+		"background-color": "#111",
+		"title-color": "#fff",
+		"main-text": "#eee",
+		"semi-light": "rgba(255,255,255,.5)",
+		"very-light": "rgba(255,255,255,.2)",
+		"very-very-light": "#222",
+		"result-content-color": "#ccc"
+	},
 	"light": {
 		"background-color": "#fff",
 		"main-text": "#000",
@@ -11,15 +20,6 @@
 		"result-title-selected": "#269",
 		"title-color": "var(--main-text, #000)",
 		"result-title": "var(--anchor-text)"
-	},
-	"dark": {
-		"background-color": "#111",
-		"title-color": "#fff",
-		"main-text": "#eee",
-		"semi-light": "rgba(255,255,255,.5)",
-		"very-light": "rgba(255,255,255,.2)",
-		"very-very-light": "#222",
-		"result-content-color": "#ccc"
 	},
 	"amoled": {
 		"base": "dark",
