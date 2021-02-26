@@ -28,7 +28,6 @@ export async function runPlugin({ author, name }: GithubRepo) {
 }
 
 export async function changeOptions(options: Options) {
-	console.log(options)
 	if (options.sidebar)
 		// an answer was already found, no need to search for one
 		return options
