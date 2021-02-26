@@ -1,4 +1,5 @@
 import { requestDom, get, extractText, extractHref } from '../../parser'
+import { Options } from '../../search'
 
 const stackOverflowHost: string = 'https://stackoverflow.com/'
 
@@ -17,8 +18,8 @@ export async function runPlugin({ id }) {
 
 	let url = stackOverflowHost + extractHref(body, '.question-hyperlink')
 	
-	let answerId = answerContainerEl.attr('data-answerid')
-	let answerEl = get(answerContainerEl, 'div.answercell > div.js-post-body')
+	const answerId = answerContainerEl.attr('data-answerid')
+	const answerEl = get(answerContainerEl, 'div.answercell > div.js-post-body')
 	url = url + '#' + answerId
 	return {
 		html: answerEl.html().trim().replace(/\n/g, '\\n').replace(/`/g, '\\`'),
@@ -28,15 +29,15 @@ export async function runPlugin({ id }) {
 	}
 }
 
-export async function changeOptions(options) {
-	if (options.answer.length > 0 || options.sidebar.length > 0)
+export async function changeOptions(options: Options) {
+	if (options.answer && options.sidebar)
 		// an answer was already returned from somewhere else
 		return options
 
 	for (let resultIndex = 0; resultIndex < options.results.length; resultIndex++) {
-		let result = options.results[resultIndex]
-		if (result.url.startsWith(stackOverflowHost + 'questions') && resultIndex < 5) {
-			let stackOverflowId = result.url.slice(stackOverflowHost.length).split('/')[1]
+		const result = options.results[resultIndex]
+		if (result.url.startsWith(stackOverflowHost + 'questions') && resultIndex <= 4) {
+			const stackOverflowId = result.url.slice(stackOverflowHost.length).split('/')[1]
 			if (!options.plugins.stackoverflow)
 				options.plugins.stackoverflow = {
 					id: parseInt(stackOverflowId)

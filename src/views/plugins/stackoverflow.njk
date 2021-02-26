@@ -3,19 +3,42 @@
 {# if it's too long, just make it show up in the sidebar instead #}
 {% set usingSidebar = html.length > 300 %}
 
-{% if usingSidebar %}
-let answerEl = document.getElementById('sidebar')
-{% else %}
-let answerEl = document.getElementById('answer')
-{% endif %}
+function doesSidebarExist() {
+	return document.getElementById('sidebar') !== null
+}
+function doesAnswerExist() {
+	return document.getElementById('answer') !== null
+}
 
+function insertSidebar() {
+	let sidebarEl = document.getElementById('sidebar')
+	if (sidebarEl) {
+		sidebarEl.innerHTML = ''
+		return sidebarEl
+	}
+	sidebarEl = document.createElement('aside')
+	sidebarEl.id = 'sidebar'
+	const elementAfterSidebar = document.getElementById('answer') || document.getElementsByClassName('result')[0]
+	const resultsEl = document.getElementById('results')
+	resultsEl.insertBefore(sidebarEl, elementAfterSidebar)
+	return sidebarEl
+}
+function insertAnswer() {
+	let answerEl = document.getElementById('answer')
+	if (answerEl) {
+		answerEl.innerHTML = ''
+		return answerEl
+	}
+	answerEl = document.createElement('aside')
+	answerEl.id = 'sidebar'
+	const elementAfterAnswer = document.getElementsByClassName('result')[0]
+	const resultsEl = document.getElementById('results')
+	resultsEl.insertBefore(answerEl, elementAfterSidebar)
+	return answerEl
+}
 
-let resultsEl = document.getElementById('results')
-const firstResult = document.getElementById('answer') || document.getElementsByClassName('result')[0]
-
-if (!answerEl) {
-	answerEl = document.createElement('{% if usingSidebar %}aside{% else %}div{% endif %}')
-	answerEl.id = '{% if usingSidebar %}sidebar{% else %}answer{% endif %}'
+if (!{% if usingSidebar %}doesSidebarExist(){% else %}doesAnswerExist(){% endif %}) {
+	const answerEl = {% if usingSidebar %}insertSidebar(){% else %}insertAnswer(){% endif %}
 
 	let stackoverflowAnswerEl = document.createElement('p')
 	{% if usingSidebar %}stackoverflowAnswerEl.classList.add('sidebar-content'){% endif %}
@@ -42,18 +65,10 @@ if (!answerEl) {
 	{% endif %}
 
 	{% if usingSidebar %}
-	answerEl.appendChild(answerHrefEl)
-	answerEl.appendChild(stackoverflowAnswerEl)
+		answerEl.appendChild(answerHrefEl)
+		answerEl.appendChild(stackoverflowAnswerEl)
 	{% else %}
-	answerEl.appendChild(stackoverflowAnswerEl)
-	answerEl.appendChild(answerHrefEl)
+		answerEl.appendChild(stackoverflowAnswerEl)
+		answerEl.appendChild(answerHrefEl)
 	{% endif %}
-	resultsEl.insertBefore(answerEl, firstResult)
-
-
-// 	{% if answer.url %}<a href="{{ answer.url }}">{% endif %}
-// 	{% if answer.title %}<h3 class="result-title">{{ answer.title }}</h3>{% endif %}
-// 	{% if answer.url %}<span class="result-url">{{ answer.url }}</h3>{% endif %}
-// {% if answer.url %}</a>{% endif %}
-
 }

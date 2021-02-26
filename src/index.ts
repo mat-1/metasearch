@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser'
 import * as nunjucks from 'nunjucks'
 import * as search from './search'
 import express from 'express'
+import { Options } from './search'
 
 const themes = require('../src/themes.json')
 
@@ -38,7 +39,8 @@ interface RenderOptions {
 	theme?: string
 }
 
-function render(res, template, options = {} as RenderOptions) {
+
+function render(res, template, options = {} as RenderOptions & Partial<Options>) {
 	const themeName = res.req.cookies.theme || 'dark'
 	const theme = loadTheme(themeName)
 	options.theme = theme

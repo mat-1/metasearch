@@ -107,17 +107,16 @@ body {
 }
 #search-centered h1 {
 	text-align: center;
-	margin-top: 0;
 	color: var(--title-color);
 	width: 100%
 }
-h1 {
-	position: absolute;
-	width: 100%;
-	text-align: center
-}
-aside h2 {
+h1, h2 {
 	margin-top: 0
+}
+h1.toplogo, #search-centered h1 {
+	position: absolute;
+	/* width: 100%; */
+	text-align: center
 }
 aside p {
 	margin: 0
@@ -128,6 +127,9 @@ aside {
 	padding: 1em;
 	box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
 	margin-bottom: 2em
+}
+pre {
+	white-space: pre-wrap
 }
 .sidebar-possibly-hidden {
 	display: none

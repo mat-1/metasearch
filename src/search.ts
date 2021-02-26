@@ -11,9 +11,10 @@ export interface EngineResult {
 }
 
 interface InstantAnswer {
-	content: string,
-	title: string,
+	content: string
+	title: string
 	url: string
+	engine?: Engine
 }
 
 interface SidebarAnswer {
@@ -21,6 +22,7 @@ interface SidebarAnswer {
 	content: string
 	image: string
 	url: string
+	engine?: Engine
 }
 
 export interface EngineResponse {
@@ -130,23 +132,42 @@ interface WeightedValue {
 	value: any
 }
 
-async function request(query: string, req: RequestOptions) {
-	const results = {}
+export interface Options {
+	results: EngineUrlResult[]
+	answer: InstantAnswer
+	sidebar: SidebarAnswer
+	suggestion: string
+	debug: boolean
+	engines: EngineResponse[]
+	plugins: any
+}
+
+interface EngineUrlResult {
+	url: string,
+	title: string,
+	content: string,
+	score: number,
+	weight: number,
+	engines: string[]
+}
+
+async function request(query: string, req: RequestOptions): Promise<Options> {
+	const results: { [ key: string ]: EngineUrlResult } = {}
 	const enginesResults = await requestAllEngines(query, req)
-	let answer: any = {}
-	let sidebar: any = {}
+	let answer: InstantAnswer = null
+	let sidebar: SidebarAnswer = null
 	let suggestions: WeightedValue[] = []
 
 	for (const engineName in enginesResults) {
 		const engine: Engine = engines[engineName]
-		const engineWeight: number = engine.weight || 1
+		const engineWeight: number = engine.weight ?? 1
 		const engineResponse: EngineResponse = enginesResults[engineName]
 
 		const engineAnswer = engineResponse.answer
 		const engineSidebarAnswer = engineResponse.sidebar
-		const answerEngineWeight = answer.engine ? answer.engine.weight || 1 : 0
+		const answerEngineWeight = answer?.engine?.weight ?? 1
 
-		if (engineAnswer && ((engineWeight > answerEngineWeight) || Object.keys(answer).length === 0)) {
+		if (engineAnswer && ((engineWeight > answerEngineWeight) || !answer)) {
 			answer = engineAnswer
 			answer.engine = engine
 		}
@@ -193,8 +214,7 @@ async function request(query: string, req: RequestOptions) {
 			results[normalUrl].engines.push(engineName)
 		}
 	}
-
-	const calculatedResults = Object.values(results).sort((a: any, b: any) => b.score - a.score).filter((result: any) => result.url !== answer.url)
+	const calculatedResults = Object.values(results).sort((a: EngineUrlResult, b: EngineUrlResult) => b.score - a.score).filter((result: EngineUrlResult) => result.url !== answer?.url)
 	const suggestionsSorted = sortByFrequency(suggestions)
 	const suggestion = suggestionsSorted.length >= 1 ? suggestionsSorted[0] : null
 
@@ -241,10 +261,11 @@ async function autocomplete(query) {
 }
 
 // do some last second non-http modifications to the results
-async function requestAllPlugins(options: any) {
+async function requestAllPlugins(options: Options) {
 	for (const pluginName in plugins) {
 		const plugin = plugins[pluginName]
-		if (plugin.changeOptions) { options = await plugin.changeOptions(options) }
+		if (plugin.changeOptions) 
+			options = await plugin.changeOptions(options)
 	}
 	return options
 }
