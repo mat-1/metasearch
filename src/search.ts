@@ -171,7 +171,7 @@ async function request(query: string, req: RequestOptions): Promise<Options> {
 			answer = engineAnswer
 			answer.engine = engine
 		}
-		if (engineSidebarAnswer !== undefined && (!sidebar.engine || (sidebar.engine.weight && engineWeight > sidebar.engine.weight))) {
+		if (engineSidebarAnswer !== undefined && (!sidebar || !sidebar.engine || (sidebar.engine.weight && engineWeight > sidebar.engine.weight))) {
 			sidebar = engineSidebarAnswer
 			sidebar.engine = engine
 		}
