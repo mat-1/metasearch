@@ -5,7 +5,7 @@ const parser_1 = require("../../parser");
 async function request(query) {
     return await parser_1.parseResultList('https://www.google.com/search?nfpr=1&q=' + encodeURIComponent(query), {
         resultItemPath: 'div.g',
-        titlePath: 'h3 > span',
+        titlePath: 'h3.LC20lb',
         hrefPath: 'div.yuRUbf > a[href], h3.H1u2de > a[href]',
         contentPath: 'div.IsZvec',
         featuredSnippetPath: '.c2xzTb',

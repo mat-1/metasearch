@@ -78,19 +78,20 @@ function sortByFrequency(items) {
     return Array.from(occurencesMapSorted.keys());
 }
 async function request(query, req) {
+    var _a, _b, _c;
     const results = {};
     const enginesResults = await requestAllEngines(query, req);
-    let answer = {};
-    let sidebar = {};
+    let answer = null;
+    let sidebar = null;
     let suggestions = [];
     for (const engineName in enginesResults) {
         const engine = engines[engineName];
-        const engineWeight = engine.weight || 1;
+        const engineWeight = (_a = engine.weight) !== null && _a !== void 0 ? _a : 1;
         const engineResponse = enginesResults[engineName];
         const engineAnswer = engineResponse.answer;
         const engineSidebarAnswer = engineResponse.sidebar;
-        const answerEngineWeight = answer.engine ? answer.engine.weight || 1 : 0;
-        if (engineAnswer && ((engineWeight > answerEngineWeight) || Object.keys(answer).length === 0)) {
+        const answerEngineWeight = (_c = (_b = answer === null || answer === void 0 ? void 0 : answer.engine) === null || _b === void 0 ? void 0 : _b.weight) !== null && _c !== void 0 ? _c : 1;
+        if (engineAnswer && ((engineWeight > answerEngineWeight) || !answer)) {
             answer = engineAnswer;
             answer.engine = engine;
         }
@@ -134,7 +135,7 @@ async function request(query, req) {
             results[normalUrl].engines.push(engineName);
         }
     }
-    const calculatedResults = Object.values(results).sort((a, b) => b.score - a.score).filter((result) => result.url !== answer.url);
+    const calculatedResults = Object.values(results).sort((a, b) => b.score - a.score).filter((result) => result.url !== (answer === null || answer === void 0 ? void 0 : answer.url));
     const suggestionsSorted = sortByFrequency(suggestions);
     const suggestion = suggestionsSorted.length >= 1 ? suggestionsSorted[0] : null;
     // do some last second modifications, if necessary, and return the results!
@@ -179,9 +180,8 @@ exports.autocomplete = autocomplete;
 async function requestAllPlugins(options) {
     for (const pluginName in plugins) {
         const plugin = plugins[pluginName];
-        if (plugin.changeOptions) {
+        if (plugin.changeOptions)
             options = await plugin.changeOptions(options);
-        }
     }
     return options;
 }
