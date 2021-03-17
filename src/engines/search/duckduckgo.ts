@@ -1,6 +1,8 @@
 import { parseResultList } from '../../parser'
 import { EngineResponse } from '../../search'
 
+// this is duckduckgo html and not normal duckduckgo since normal duckduckgo is way too slow, but html duckduckgo provides worse results
+
 export async function request(query): Promise<EngineResponse> {
 	return await parseResultList('https://html.duckduckgo.com/html?q=' + encodeURIComponent(query), {
 		resultItemPath: '.result',
@@ -13,4 +15,5 @@ export async function request(query): Promise<EngineResponse> {
 	})
 }
 
-export const weight = 1.01
+// weight is low because of the bad results
+export const weight = .4
