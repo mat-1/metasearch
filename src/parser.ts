@@ -81,7 +81,7 @@ interface ParseResultListOptions {
 }
 
 // for search engines like google, bing, etc
-export async function parseResultList(url, options: ParseResultListOptions): Promise<EngineResponse> {
+export async function parseResultList(url: string, options: ParseResultListOptions): Promise<EngineResponse> {
 	const $: cheerio.Root = await requestDom(url)
 	const body: cheerio.Cheerio = $('body')
 
