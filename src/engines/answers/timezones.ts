@@ -24,11 +24,13 @@ const timezones = {
 	'HST': -10,
 	'AST': -9,
 	'PST': -8,
+	'PDT': -7, // daylight savings time
 	'PNT': -7,
 	'MST': -7,
 	'CST': -6,
 	'CDT': -5, // daylight savings time
 	'EST': -5,
+	'EDT': -4, // daylight savings time
 	'IET': -5,
 	'PRT': -4,
 	'CNT': -3.5,
@@ -84,21 +86,24 @@ export async function request(query) {
 
 	const toTimeString = `${toHour}:${('0' + toMinutes).slice(-2)}${toAMPM}`
 
+
 	let aheadBehindString = ''
-	aheadBehindString += `${fromTimezone} is `
+	aheadBehindString += `${toTimezone} is `
+
 	if (Math.floor(totalOffset) == 1) aheadBehindString += '1 hour '
 	else if (Math.floor(totalOffset) == -1) aheadBehindString += '1 hour '
-	else aheadBehindString += `${Math.floor(totalOffset)} hours `
+	else aheadBehindString += `${Math.floor(Math.abs(totalOffset))} hours `
+
 	if (totalOffset - Math.floor(totalOffset) > 0) {
 		const aheadBehindMinutes = Math.floor((totalOffset - Math.floor(totalOffset)) * 60)
 		aheadBehindString += `and ${aheadBehindMinutes} minutes `
 	}
 
 	if (totalOffset >= 0)
-		aheadBehindString += 'behind '
-	else
 		aheadBehindString += 'ahead of '
-	aheadBehindString += toTimezone
+	else
+		aheadBehindString += 'behind '
+	aheadBehindString += fromTimezone
 
 	return {
 		answer: {
