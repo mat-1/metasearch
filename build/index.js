@@ -83,9 +83,11 @@ app.get('/opensearch.xml', async function (req, res) {
     });
 });
 app.get('/autocomplete', async function (req, res) {
+    console.log('sent request to autocomplete');
     const query = req.query.q;
     const results = await search.autocomplete(query);
-    res.json([query, results, null, null]);
+    res.json([query, results, null, null])
+        .header('Content-Type', 'application/json');
 });
 app.get('/plugins/:plugin', async function (req, res) {
     let pluginName = req.params.plugin;
