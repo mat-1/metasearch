@@ -1,7 +1,7 @@
 {
 	"dark": {
 		"background-color": "#111",
-		"title-color": "#fff",
+		"title": "#fff",
 		"main-text": "#eee",
 		"semi-light": "rgba(255,255,255,.5)",
 		"very-light": "rgba(255,255,255,.2)",
@@ -18,7 +18,7 @@
 		"very-very-light": "#eaeaea",
 		"result-content-color": "#444",
 		"result-title-selected": "#269",
-		"title-color": "var(--main-text, #000)",
+		"title": "var(--main-text, #000)",
 		"result-title": "var(--anchor-text)"
 	},
 	"amoled": {
@@ -26,22 +26,14 @@
 		"background-color": "#000",
 		"main-text": "#eee"
 	},
-	"sushi1": {
-		"background-color": "#2D3142",
-		"title-color": "#E6FAFC",
-		"main-text": "#E6FAFC",
-		"semi-light": "#D183C9",
-		"very-light": "#B0D7FF",
-		"very-very-light": "#FEC0CE",
-		"result-content-color": "#9CFC97"
-	},
-	"sushi2": {
-		"background-color": "#231B1B",
-		"title-color": "#00C49A",
-		"main-text": "#fff",
-		"semi-light": "#39A9DB",
-		"very-light": "#B0D7FF",
-		"very-very-light": "#DDFFF7",
-		"result-content-color": "#1C77C3"	
+	"dracula": {
+		"base": "dark",
+		"background-color": "#282a36",
+		"main-text": "#f8f8f2",
+		"result-url": "#6272a4",
+		"very-very-light": "#44475a",
+		"result-title-selected": "#6272a4",
+		"result-content-color": "#f8f8f2",
+		"result-title": "#8be9fd"
 	}
 }

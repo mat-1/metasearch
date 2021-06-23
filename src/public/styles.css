@@ -38,7 +38,7 @@ body {
 	color: var(--result-title);
 	transition: color 200ms
 }
-.result-title:hover, a:visited .result-title {
+a:visited .result-title {
 	color: var(--result-title-selected)
 }
 .result-url {
@@ -107,7 +107,7 @@ body {
 }
 #search-centered h1 {
 	text-align: center;
-	color: var(--title-color);
+	color: var(--title);
 	width: 100%
 }
 h1, h2 {

@@ -28,6 +28,6 @@
 	"scripts": {
 		"eslint:github-action": "eslint src/**/*.ts",
 		"compile": "tsc",
-		"start": "npm i; node build/index.js"
+		"start": "npm i --only=prod; node build/index.js"
 	}
 }
