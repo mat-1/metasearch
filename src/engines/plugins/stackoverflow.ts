@@ -1,10 +1,10 @@
 import { requestDom, get, extractText, extractHref } from '../../parser'
 import { Options } from '../../search'
 
-const stackOverflowHost: string = 'https://stackoverflow.com/'
+const stackOverflowHost: string = 'https://stackoverflow.com'
 
 export async function runPlugin({ id }) {
-	const originalUrl = `${stackOverflowHost}questions/${id}`
+	const originalUrl = `${stackOverflowHost}/questions/${id}`
 	const dom = await requestDom(originalUrl)
 
 	const body: cheerio.Cheerio = dom('body')
@@ -36,8 +36,9 @@ export async function changeOptions(options: Options) {
 
 	for (let resultIndex = 0; resultIndex < options.results.length; resultIndex++) {
 		const result = options.results[resultIndex]
-		if (result.url.startsWith(stackOverflowHost + 'questions') && resultIndex <= 4) {
-			const stackOverflowId = result.url.slice(stackOverflowHost.length).split('/')[1]
+		if (result.url.startsWith(stackOverflowHost + '/questions') && resultIndex <= 4) {
+			// +1 to remove the extra slash
+			const stackOverflowId = result.url.slice(stackOverflowHost.length + 1).split('/')[1]
 			if (!options.plugins.stackoverflow)
 				options.plugins.stackoverflow = {
 					id: parseInt(stackOverflowId)
