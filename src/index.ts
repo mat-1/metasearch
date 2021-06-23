@@ -84,7 +84,7 @@ app.get('/autocomplete', async function(req, res) {
 	const results = await search.autocomplete(query)
 	res
 		.header('Content-Type', 'application/json')
-		.json([query, results, null, null])
+		.json([ query, results ])
 })
 
 app.get('/plugins/:plugin', async function(req, res) {
