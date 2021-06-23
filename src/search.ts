@@ -213,7 +213,9 @@ async function request(query: string, req: RequestOptions): Promise<Options> {
 				results[normalUrl].content = result.content
 			}
 			results[normalUrl].score += engineWeight / result.position
-			results[normalUrl].engines.push(engineName)
+			// for some reason the engine will be there twice, not sure why, for example first result for "mat does dev" has google twice
+			if (!results[normalUrl].engines.includes(engineName))
+				results[normalUrl].engines.push(engineName)
 		}
 	}
 	const calculatedResults = Object.values(results).sort((a: EngineUrlResult, b: EngineUrlResult) => b.score - a.score).filter((result: EngineUrlResult) => result.url !== answer?.url)
