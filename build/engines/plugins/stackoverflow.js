@@ -4,6 +4,7 @@ exports.changeOptions = exports.runPlugin = void 0;
 const parser_1 = require("../../parser");
 const stackOverflowHost = 'https://stackoverflow.com';
 async function runPlugin({ id }) {
+    var _a, _b, _c, _d;
     const originalUrl = `${stackOverflowHost}/questions/${id}`;
     const dom = await parser_1.requestDom(originalUrl);
     const body = dom('body');
@@ -17,7 +18,7 @@ async function runPlugin({ id }) {
     const answerEl = parser_1.get(answerContainerEl, 'div.answercell > div.js-post-body');
     url = url + '#' + answerId;
     return {
-        html: answerEl.html().trim().replace(/\n/g, '\\n').replace(/`/g, '\\`'),
+        html: (_d = (_c = (_b = (_a = answerEl.html()) === null || _a === void 0 ? void 0 : _a.trim()) === null || _b === void 0 ? void 0 : _b.replace(/\n/g, '\\n')) === null || _c === void 0 ? void 0 : _c.replace(/`/g, '\\`')) !== null && _d !== void 0 ? _d : '',
         url: url.replace(/`/g, '\\`'),
         title: title.replace(/`/g, '\\`'),
         originalUrl: originalUrl.replace(/`/g, '\\`')

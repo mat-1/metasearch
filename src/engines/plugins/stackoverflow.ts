@@ -3,7 +3,7 @@ import { Options } from '../../search'
 
 const stackOverflowHost: string = 'https://stackoverflow.com'
 
-export async function runPlugin({ id }) {
+export async function runPlugin({ id }: { id: string }) {
 	const originalUrl = `${stackOverflowHost}/questions/${id}`
 	const dom = await requestDom(originalUrl)
 
@@ -22,7 +22,7 @@ export async function runPlugin({ id }) {
 	const answerEl = get(answerContainerEl, 'div.answercell > div.js-post-body')
 	url = url + '#' + answerId
 	return {
-		html: answerEl.html().trim().replace(/\n/g, '\\n').replace(/`/g, '\\`'),
+		html: answerEl.html()?.trim()?.replace(/\n/g, '\\n')?.replace(/`/g, '\\`') ?? '',
 		url: url.replace(/`/g, '\\`'),
 		title: title.replace(/`/g, '\\`'),
 		originalUrl: originalUrl.replace(/`/g, '\\`')

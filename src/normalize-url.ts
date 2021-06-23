@@ -5,18 +5,17 @@ import * as querystring from 'querystring'
 const DATA_URL_DEFAULT_MIME_TYPE = 'text/plain'
 const DATA_URL_DEFAULT_CHARSET = 'us-ascii'
 
-const testParameter = (name, filters) => {
+function testParameter(name: string, filters: (RegExp | string)[]) {
 	return filters.some(filter => filter instanceof RegExp ? filter.test(name) : filter === name)
 }
 
-const normalizeDataURL = (urlString, { stripHash }) => {
+function normalizeDataURL(urlString: string, { stripHash }) {
 	const match = /^data:(?<type>.*?),(?<data>.*?)(?:#(?<hash>.*))?$/.exec(urlString)
 
-	if (!match) {
+	if (!match)
 		throw new Error(`Invalid URL: ${urlString}`)
-	}
 
-	let { type, data, hash } = match.groups
+	let { type, data, hash } = match.groups!
 	const mediaType = type.split(';')
 	hash = stripHash ? '' : hash
 

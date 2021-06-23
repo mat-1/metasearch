@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.request = void 0;
-const hexRegex = /^(?:hex(?:adecimal)?|base ?16?) ?(encode|decode|)(?:\s+)(.+)$/i;
+const encodeDecodeRegex = /(?:hex(?:adecimal)?|base ?16) ?(encode|decode|)(?:\s+)(.+)/i;
+const toFromRegex = /(.+) (to|from) (?:hex(?:adecimal)?|base ?16)/i;
 function hexEncode(string) {
     try {
         return Buffer.from(string).toString('hex');
@@ -22,14 +23,22 @@ function hexDecode(string) {
         return null;
     }
 }
-async function request(query) {
-    const regexMatch = query.match(hexRegex);
+function match(query) {
+    const regexMatch = query.match(encodeDecodeRegex);
     if (!regexMatch)
         return {};
-    const intent = regexMatch[1].trim().toLowerCase();
-    const string = regexMatch[2].trim();
-    let encoded;
-    let decoded;
+    return {
+        intent: regexMatch[1].trim().toLowerCase(),
+        string: regexMatch[2].trim()
+    };
+}
+async function request(query) {
+    const matchResponse = match(query);
+    if (!('intent' in matchResponse))
+        return {};
+    const { intent, string } = matchResponse;
+    let encoded = null;
+    let decoded = null;
     if (intent == 'encode') {
         encoded = hexEncode(string);
     }
@@ -42,7 +51,7 @@ async function request(query) {
     }
     if (!encoded && !decoded)
         return {};
-    let title = null;
+    let title;
     let answer;
     if (encoded && decoded) {
         title = 'hex encode & decode';

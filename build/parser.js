@@ -79,8 +79,9 @@ function extractText(dom, query) {
 }
 exports.extractText = extractText;
 function extractAttribute(dom, query, attribute) {
+    var _a;
     const element = get(dom, query);
-    return element.attr(attribute);
+    return (_a = element.attr(attribute)) !== null && _a !== void 0 ? _a : null;
 }
 exports.extractAttribute = extractAttribute;
 function extractHref(dom, query) {
@@ -102,16 +103,18 @@ async function parseResultList(url, options) {
         if (!resultTitle)
             continue;
         const resultUrl = extractHref(resultItemEl, options.hrefPath);
-        if (resultUrl.startsWith('https://duckduckgo.com/y.js')) {
+        if (!resultUrl || resultUrl.startsWith('https://duckduckgo.com/y.js'))
             continue;
-        }
         const resultContent = extractText(resultItemEl, options.contentPath);
         if (options.featuredSnippetPath) {
             const featuredSnippetEl = get(body, options.featuredSnippetPath);
             if (featuredSnippetEl.length > 0) {
-                featuredSnippetContent = extractText(featuredSnippetEl, options.featuredSnippetContentPath);
-                featuredSnippetTitle = extractText(featuredSnippetEl, options.featuredSnippetTitlePath);
-                featuredSnippetUrl = extractHref(featuredSnippetEl, options.featuredSnippetHrefPath);
+                if (options.featuredSnippetContentPath)
+                    featuredSnippetContent = extractText(featuredSnippetEl, options.featuredSnippetContentPath);
+                if (options.featuredSnippetTitlePath)
+                    featuredSnippetTitle = extractText(featuredSnippetEl, options.featuredSnippetTitlePath);
+                if (options.featuredSnippetHrefPath)
+                    featuredSnippetUrl = extractHref(featuredSnippetEl, options.featuredSnippetHrefPath);
             }
         }
         results.push({
@@ -121,16 +124,16 @@ async function parseResultList(url, options) {
             position: parseInt(resultItemIndex) + 1 // starts at 1
         });
     }
-    const suggestionText = options.suggestionPath ? extractText(body, options.suggestionPath) : null;
+    const suggestionText = options.suggestionPath ? extractText(body, options.suggestionPath) : undefined;
     return {
         results,
         answer: featuredSnippetContent !== null
             ? {
                 content: featuredSnippetContent,
-                title: featuredSnippetTitle,
-                url: featuredSnippetUrl
+                title: featuredSnippetTitle !== null && featuredSnippetTitle !== void 0 ? featuredSnippetTitle : undefined,
+                url: featuredSnippetUrl !== null && featuredSnippetUrl !== void 0 ? featuredSnippetUrl : undefined
             }
-            : null,
+            : undefined,
         suggestion: suggestionText
     };
 }

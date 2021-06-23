@@ -149,6 +149,7 @@ async function request(query, req) {
 }
 exports.request = request;
 async function autocomplete(query) {
+    var _a;
     const enginesResults = await requestAllAutoCompleteEngines(query);
     const weightedItems = [];
     for (const engineName in enginesResults) {
@@ -156,7 +157,7 @@ async function autocomplete(query) {
         for (const result of enginesResults[engineName])
             weightedItems.push({
                 value: result,
-                weight: engine.weight
+                weight: (_a = engine.weight) !== null && _a !== void 0 ? _a : 1
             });
     }
     return sortByFrequency(weightedItems).slice(0, 10);

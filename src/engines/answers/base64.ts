@@ -35,7 +35,7 @@ export async function request(query) {
 
 	if (!encoded && !decoded) return {}
 
-	let title = null
+	let title: string
 	let answer
 	if (encoded && decoded) {
 		title = 'base64 encode & decode'
@@ -50,7 +50,7 @@ export async function request(query) {
 
 	return {
 		answer: {
-			title: title,
+			title: title!,
 			content: answer,
 			url: encoded ? 'https://www.base64encode.org/' : 'https://www.base64decode.org/'
 		}

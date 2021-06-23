@@ -35,13 +35,13 @@ export async function getStatus(host: string, port?: number | null, options?: St
 		timeout: options.timeout
 	})
 
-	client.send(new PacketWriter(0x0).writeVarInt(options.protocol)
-		.writeString(host).writeUInt16(client.socket.remotePort)
+	client.send(new PacketWriter(0x0).writeVarInt(options.protocol ?? 99999)
+		.writeString(host).writeUInt16(client.socket.remotePort ?? 25565)
 		.writeVarInt(State.Status))
 
 	client.send(new PacketWriter(0x0))
 
-	const status = (await client.nextPacket(null, false)).readJSON()
+	const status = (await client.nextPacket(undefined, false)).readJSON()
 
 	if (options.checkPing) {
 		client.send(new PacketWriter(0x1).write(Buffer.alloc(8)))

@@ -12,8 +12,8 @@ export interface EngineResult {
 
 interface InstantAnswer {
 	content: string
-	title: string
-	url: string
+	title?: string
+	url?: string
 	engine?: Engine
 }
 
@@ -69,11 +69,11 @@ async function requestEngine(engineName: string, query: string, req: RequestOpti
 	let perfBefore: number, perfAfter: number
 	if (debugPerf || req.debug)
 		perfBefore = performance.now()
-	const response: EngineResponse = await engine.request(query, req)
+	const response: EngineResponse = await engine.request!(query, req)
 	if (debugPerf || req.debug) {
 		perfAfter = performance.now()
-		if (debugPerf) console.log(`${engineName} took ${Math.floor(perfAfter - perfBefore)}ms.`)
-		response.time = Math.floor(perfAfter - perfBefore)
+		if (debugPerf) console.log(`${engineName} took ${Math.floor(perfAfter - perfBefore!)}ms.`)
+		response.time = Math.floor(perfAfter - perfBefore!)
 	}
 	response.engine = engine
 	return response
@@ -116,7 +116,7 @@ function sortByFrequency<T>(items: WeightedValue<T>[]): T[] {
 	const occurencesMap: Map<T, number> =  new Map()
 	for (const item of items) {
 		if (occurencesMap.has(item.value))
-			occurencesMap.set(item.value, occurencesMap.get(item.value) + item.weight)
+			occurencesMap.set(item.value, occurencesMap.get(item.value)! + item.weight)
 		else
 			occurencesMap.set(item.value, item.weight)
 	}
@@ -136,9 +136,9 @@ interface WeightedValue<T> {
 
 export interface Options {
 	results: EngineUrlResult[]
-	answer: InstantAnswer
-	sidebar: SidebarAnswer
-	suggestion: string
+	answer: InstantAnswer | null
+	sidebar: SidebarAnswer | null
+	suggestion: string | null
 	debug: boolean
 	engines: EngineResponse[]
 	plugins: any
@@ -156,8 +156,8 @@ interface EngineUrlResult {
 async function request(query: string, req: RequestOptions): Promise<Options> {
 	const results: { [ key: string ]: EngineUrlResult } = {}
 	const enginesResults = await requestAllEngines(query, req)
-	let answer: InstantAnswer = null
-	let sidebar: SidebarAnswer = null
+	let answer: InstantAnswer | null = null
+	let sidebar: SidebarAnswer | null = null
 	let suggestions: WeightedValue<string>[] = []
 
 	for (const engineName in enginesResults) {
@@ -242,7 +242,7 @@ async function autocomplete(query) {
 		for (const result of enginesResults[engineName])
 			weightedItems.push({
 				value: result,
-				weight: engine.weight
+				weight: engine.weight ?? 1
 			})
 	}
 	return sortByFrequency(weightedItems).slice(0, 10)

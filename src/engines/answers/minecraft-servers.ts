@@ -52,15 +52,15 @@ function stringToColor(colorCode) {
 	return colorCodes[colorCode] || colorCode
 }
 
-function jsonColorCodes(jsonObject) {
+function jsonColorCodes(jsonObject: any): string {
 	if (Array.isArray(jsonObject)) {
-		const parts = []
+		const parts: string[] = []
 		for (const part of jsonObject)
 			parts.push(jsonColorCodes(part))
 		return parts.join('')
 	}
 
-	const style = []
+	const style: string[] = []
 	if (jsonObject.bold) style.push('font-weight: bold')
 	if (jsonObject.color) style.push('color: ' + stringToColor(jsonObject.color))
 	let innerHtml = colorCodeToHtml(jsonObject.text)
@@ -77,7 +77,7 @@ function jsonColorCodes(jsonObject) {
 
 function flattenJsonText(jsonObject) {
 	if (Array.isArray(jsonObject)) {
-		const parts = []
+		const parts: string[] = []
 		for (const part of jsonObject)
 			parts.push(jsonColorCodes(part))
 		return parts.join('')
@@ -173,9 +173,7 @@ export async function request(query) {
 	} else
 		port = null
 	try {
-		status = await getStatus(minecraftHost, port, {
-			timeout: 500
-		})
+		status = await getStatus(minecraftHost, port, { timeout: 500 })
 	} catch (e) {
 		return {}
 	}

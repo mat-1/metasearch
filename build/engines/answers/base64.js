@@ -42,7 +42,7 @@ async function request(query) {
     }
     if (!encoded && !decoded)
         return {};
-    let title = null;
+    let title;
     let answer;
     if (encoded && decoded) {
         title = 'base64 encode & decode';

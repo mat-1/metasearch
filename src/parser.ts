@@ -46,7 +46,7 @@ export function extractText(dom: cheerio.Cheerio, query: string): string {
 	const element = get(dom, query)
 	if (element.first && element.first.name === 'ol') {
 		// if it's a list, number it and add newlines
-		const listTexts = []
+		const listTexts: string[] = []
 		const listItems = getElements(element, 'li')
 		for (const listItemIndex in listItems) {
 			const listItem = listItems[listItemIndex]
@@ -58,12 +58,12 @@ export function extractText(dom: cheerio.Cheerio, query: string): string {
 	return element.text().trim()
 }
 
-export function extractAttribute(dom, query, attribute) {
+export function extractAttribute(dom: cheerio.Cheerio, query: string, attribute: string): string | null {
 	const element = get(dom, query)
-	return element.attr(attribute)
+	return element.attr(attribute) ?? null
 }
 
-export function extractHref(dom, query) {
+export function extractHref(dom: cheerio.Cheerio, query: string) {
 	return extractAttribute(dom, query, 'href')
 }
 
@@ -89,24 +89,24 @@ export async function parseResultList(url: string, options: ParseResultListOptio
 
 	const resultElements = getElements(body, options.resultItemPath)
 
-	let featuredSnippetContent: string = null
-	let featuredSnippetTitle: string = null
-	let featuredSnippetUrl: string = null
+	let featuredSnippetContent: string | null = null
+	let featuredSnippetTitle: string | null = null
+	let featuredSnippetUrl: string | null = null
 
 	for (const resultItemIndex in resultElements) {
 		const resultItemEl = resultElements[resultItemIndex]
 		const resultTitle = extractText(resultItemEl, options.titlePath)
 		if (!resultTitle) continue
 		const resultUrl = extractHref(resultItemEl, options.hrefPath)
-		if (resultUrl.startsWith('https://duckduckgo.com/y.js')) { continue }
+		if (!resultUrl || resultUrl.startsWith('https://duckduckgo.com/y.js')) continue
 		const resultContent = extractText(resultItemEl, options.contentPath)
 
 		if (options.featuredSnippetPath) {
 			const featuredSnippetEl = get(body, options.featuredSnippetPath)
 			if (featuredSnippetEl.length > 0) {
-				featuredSnippetContent = extractText(featuredSnippetEl, options.featuredSnippetContentPath)
-				featuredSnippetTitle = extractText(featuredSnippetEl, options.featuredSnippetTitlePath)
-				featuredSnippetUrl = extractHref(featuredSnippetEl, options.featuredSnippetHrefPath)
+				if (options.featuredSnippetContentPath) featuredSnippetContent = extractText(featuredSnippetEl, options.featuredSnippetContentPath)
+				if (options.featuredSnippetTitlePath) featuredSnippetTitle = extractText(featuredSnippetEl, options.featuredSnippetTitlePath)
+				if (options.featuredSnippetHrefPath) featuredSnippetUrl = extractHref(featuredSnippetEl, options.featuredSnippetHrefPath)
 			}
 		}
 
@@ -117,16 +117,16 @@ export async function parseResultList(url: string, options: ParseResultListOptio
 			position: parseInt(resultItemIndex) + 1 // starts at 1
 		})
 	}
-	const suggestionText: string = options.suggestionPath ? extractText(body, options.suggestionPath) : null
+	const suggestionText: string | undefined = options.suggestionPath ? extractText(body, options.suggestionPath) : undefined
 	return {
 		results,
 		answer: featuredSnippetContent !== null
 		? {
 			content: featuredSnippetContent,
-			title: featuredSnippetTitle,
-			url: featuredSnippetUrl
+			title: featuredSnippetTitle ?? undefined,
+			url: featuredSnippetUrl ?? undefined
 		}
-		: null,
+		: undefined,
 		suggestion: suggestionText
 	}
 }

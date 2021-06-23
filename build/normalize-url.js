@@ -23,14 +23,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const querystring = __importStar(require("querystring"));
 const DATA_URL_DEFAULT_MIME_TYPE = 'text/plain';
 const DATA_URL_DEFAULT_CHARSET = 'us-ascii';
-const testParameter = (name, filters) => {
+function testParameter(name, filters) {
     return filters.some(filter => filter instanceof RegExp ? filter.test(name) : filter === name);
-};
-const normalizeDataURL = (urlString, { stripHash }) => {
+}
+function normalizeDataURL(urlString, { stripHash }) {
     const match = /^data:(?<type>.*?),(?<data>.*?)(?:#(?<hash>.*))?$/.exec(urlString);
-    if (!match) {
+    if (!match)
         throw new Error(`Invalid URL: ${urlString}`);
-    }
     let { type, data, hash } = match.groups;
     const mediaType = type.split(';');
     hash = stripHash ? '' : hash;
@@ -64,7 +63,7 @@ const normalizeDataURL = (urlString, { stripHash }) => {
         normalizedMediaType.unshift(mimeType);
     }
     return `data:${normalizedMediaType.join(';')},${isBase64 ? data.trim() : data}${hash ? `#${hash}` : ''}`;
-};
+}
 const normalizeUrl = (urlString, options = {}) => {
     options = {
         defaultProtocol: 'http:',
