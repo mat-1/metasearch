@@ -148,6 +148,9 @@ pre {
 	.sidebar-possibly-hidden {
 		display: block
 	}
+	#sidebar .result-engines {
+		top: 1em
+	}
 }
 @media only screen and (min-width: 1000px) {
 	#search-form.search-form-left-offset, #results {
@@ -221,8 +224,9 @@ a {
 	margin-top: 1em;
 }
 #sidebar .result-engines {
-	position: absolute;
-	right: .5em;
+	float: right;
+	position: relative;
+	left: .75em;
 }
 #github-button {
 	opacity: .2;
