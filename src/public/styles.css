@@ -136,7 +136,6 @@ pre {
 }
 .sidebar-title {
 	color: var(--result-title);
-	margin-top: .5em;
 }
 @media only screen and (min-width: 1340px) {
 	aside {
