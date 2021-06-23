@@ -24,12 +24,19 @@ function hexDecode(string) {
     }
 }
 function match(query) {
-    const regexMatch = query.match(encodeDecodeRegex);
-    if (!regexMatch)
-        return {};
+    const encodeDecodeRegexMatch = query.match(encodeDecodeRegex);
+    if (!encodeDecodeRegexMatch) {
+        const toFromRegexMatch = query.match(toFromRegex);
+        if (!toFromRegexMatch)
+            return {};
+        return {
+            intent: toFromRegexMatch[2].trim().toLowerCase() === 'to' ? 'encode' : 'decode',
+            string: toFromRegexMatch[1].trim()
+        };
+    }
     return {
-        intent: regexMatch[1].trim().toLowerCase(),
-        string: regexMatch[2].trim()
+        intent: encodeDecodeRegexMatch[1].trim().toLowerCase(),
+        string: encodeDecodeRegexMatch[2].trim()
     };
 }
 async function request(query) {

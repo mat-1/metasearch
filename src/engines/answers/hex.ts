@@ -1,13 +1,14 @@
-const hexRegex = /^(?:hex(?:adecimal)?|base ?16?) ?(encode|decode|)(?:\s+)(.+)$/i
+import { EngineResponse } from '../../search'
 
-function hexEncode(string) {
-	try {
-		return Buffer.from(string).toString('hex')
-	} catch {
-		return null
-	}
+const encodeDecodeRegex = /(?:hex(?:adecimal)?|base ?16) ?(encode|decode|)(?:\s+)(.+)/i
+const toFromRegex = /(.+) (to|from) (?:hex(?:adecimal)?|base ?16)/i
+
+function hexEncode(string: string) {
+	try { return Buffer.from(string).toString('hex')
+	} catch { return null }
 }
-function hexDecode(string) {
+
+function hexDecode(string: string) {
 	try {
 		let decoded = Buffer.from(string, 'hex').toString('utf8')
 		if (decoded.includes('�')) return null
@@ -17,13 +18,28 @@ function hexDecode(string) {
 	}
 }
 
-export async function request(query) {
-	const regexMatch = query.match(hexRegex)
-	if (!regexMatch) return {}
-	const intent = regexMatch[1].trim().toLowerCase()
-	const string = regexMatch[2].trim()
-	let encoded
-	let decoded
+function match(query: string): { intent: string, string: string } | {} {
+	const encodeDecodeRegexMatch = query.match(encodeDecodeRegex)
+	if (!encodeDecodeRegexMatch) {
+		const toFromRegexMatch = query.match(toFromRegex)
+		if (!toFromRegexMatch) return {}
+		return {
+			intent: toFromRegexMatch[2].trim().toLowerCase() === 'to' ? 'encode' : 'decode',
+			string: toFromRegexMatch[1].trim()
+		}
+	}
+	return {
+		intent: encodeDecodeRegexMatch[1].trim().toLowerCase(),
+		string: encodeDecodeRegexMatch[2].trim()
+	}
+}
+
+export async function request(query: string): Promise<EngineResponse> {
+	const matchResponse = match(query)
+	if (!('intent' in matchResponse)) return {}
+	const { intent, string } = matchResponse
+	let encoded: string | null = null
+	let decoded: string | null = null
 	if (intent == 'encode') {
 		encoded = hexEncode(string)
 	} else if (intent == 'decode') {
@@ -35,8 +51,8 @@ export async function request(query) {
 
 	if (!encoded && !decoded) return {}
 
-	let title = null
-	let answer
+	let title: string
+	let answer: string
 	if (encoded && decoded) {
 		title = 'hex encode & decode'
 		answer = `${encoded}\n\n${decoded}`
@@ -50,8 +66,8 @@ export async function request(query) {
 
 	return {
 		answer: {
-			title: title,
-			content: answer,
+			title: title!,
+			content: answer!,
 		}
 	}
 }
