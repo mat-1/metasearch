@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.changeOptions = exports.runPlugin = void 0;
 const parser_1 = require("../../parser");
-const stackOverflowHost = 'https://stackoverflow.com/';
+const stackOverflowHost = 'https://stackoverflow.com';
 async function runPlugin({ id }) {
-    const originalUrl = `${stackOverflowHost}questions/${id}`;
+    const originalUrl = `${stackOverflowHost}/questions/${id}`;
     const dom = await parser_1.requestDom(originalUrl);
     const body = dom('body');
     const answerContainerEl = parser_1.get(body, 'div.answer.accepted-answer');
@@ -30,8 +30,9 @@ async function changeOptions(options) {
         return options;
     for (let resultIndex = 0; resultIndex < options.results.length; resultIndex++) {
         const result = options.results[resultIndex];
-        if (result.url.startsWith(stackOverflowHost + 'questions') && resultIndex <= 4) {
-            const stackOverflowId = result.url.slice(stackOverflowHost.length).split('/')[1];
+        if (result.url.startsWith(stackOverflowHost + '/questions') && resultIndex <= 4) {
+            // +1 to remove the extra slash
+            const stackOverflowId = result.url.slice(stackOverflowHost.length + 1).split('/')[1];
             if (!options.plugins.stackoverflow)
                 options.plugins.stackoverflow = {
                     id: parseInt(stackOverflowId)

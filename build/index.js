@@ -86,8 +86,10 @@ app.get('/autocomplete', async function (req, res) {
     const results = await search.autocomplete(query);
     res.json([query, results, null, null]);
 });
-app.get('/plugins/:plugin.js', async function (req, res) {
-    const pluginName = req.params.plugin;
+app.get('/plugins/:plugin', async function (req, res) {
+    let pluginName = req.params.plugin;
+    if (pluginName.endsWith('.js'))
+        pluginName = pluginName.slice(0, pluginName.length - 3);
     const options = req.query;
     const data = await search.runPlugin({ pluginName, options });
     res.header('Content-Type', 'application/javascript');
@@ -102,5 +104,5 @@ app.get('/settings', function (req, res) {
     render(res, 'settings.html', { themes, activeTheme });
 });
 app.use('/', express_1.default.static('src/public'));
-app.listen(8000, () => console.log('pog'));
+app.listen(8000, () => console.log('pog http://localhost:8000'));
 exports.default = require('require-dir')();

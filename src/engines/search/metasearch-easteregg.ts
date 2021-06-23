@@ -3,7 +3,10 @@ import { EngineResponse } from '../../search'
 // searching "metasearch" will show metasearch as the top result
 
 export async function request(query): Promise<EngineResponse> {
-	if (query.toLowerCase() === 'metasearch')
+	if (
+		query.toLowerCase() === 'metasearch'
+		|| /what( i|'|)s the best (meta ?)?search engine/i.test(query)
+	)
 		return {
 			results: [{
 				title: 'Metasearch',
