@@ -55,7 +55,7 @@ export function extractText(dom: cheerio.Cheerio, query: string): string {
 		}
 		return listTexts.join('\n')
 	}
-	return element.text().trim()
+	return element.first().text().trim()
 }
 
 export function extractAttribute(dom: cheerio.Cheerio, query: string, attribute: string): string | null {

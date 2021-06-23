@@ -75,7 +75,7 @@ function extractText(dom, query) {
         }
         return listTexts.join('\n');
     }
-    return element.text().trim();
+    return element.first().text().trim();
 }
 exports.extractText = extractText;
 function extractAttribute(dom, query, attribute) {
