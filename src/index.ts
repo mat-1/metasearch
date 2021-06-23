@@ -106,3 +106,7 @@ app.use('/', express.static('src/public'))
 app.listen(8000, () => console.log('pog http://localhost:8000'))
 
 export default require('require-dir')()
+
+setInterval(() => {
+	console.log(process.memoryUsage().heapUsed / 1024 / 1024 + 'mb')
+}, 1000 * 60)
