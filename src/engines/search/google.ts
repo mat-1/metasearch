@@ -10,8 +10,8 @@ export async function request(query): Promise<EngineResponse> {
 
 		featuredSnippetPath: '.c2xzTb',
 		featuredSnippetContentPath: '.hgKElcm, .X5LH0c, .LGOjhe, .iKJnec',
-		featuredSnippetTitlePath: '.g > div > div > a > h3',
-		featuredSnippetHrefPath: '.g > div > div > a',
+		featuredSnippetTitlePath: '.g > div > div a > h3',
+		featuredSnippetHrefPath: '.g > div > div a',
 
 		suggestionPath: 'a.gL9Hy'
 	})
