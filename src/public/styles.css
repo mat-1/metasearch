@@ -32,7 +32,8 @@ body {
 	position: relative;
 }
 .result a, #answer a, #sidebar a {
-	text-decoration: none
+	text-decoration: none;
+	display: block;
 }
 .result-title {
 	color: var(--result-title);
@@ -219,9 +220,6 @@ a {
 	margin-top: -.5em;
 	margin-bottom: .5em;
 	margin-left: .5em
-}
-#answer .result-engines {
-	margin-top: 1em;
 }
 #sidebar .result-engines {
 	float: right;
