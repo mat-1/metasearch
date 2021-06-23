@@ -156,10 +156,10 @@ async function autocomplete(query) {
     const weightedItems = [];
     for (const engineName in enginesResults) {
         const engine = engines[engineName];
-        for (const result of enginesResults[engineName])
+        for (let position = 0; position < enginesResults[engineName].length; position++)
             weightedItems.push({
-                value: result,
-                weight: (_a = engine.weight) !== null && _a !== void 0 ? _a : 1
+                value: enginesResults[engineName][position],
+                weight: ((_a = engine.weight) !== null && _a !== void 0 ? _a : 1) / (position + 1)
             });
     }
     return sortByFrequency(weightedItems).slice(0, 10);
