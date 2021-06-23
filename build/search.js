@@ -47,13 +47,12 @@ async function requestAllEngines(query, req) {
 }
 async function requestAllAutoCompleteEngines(query) {
     if (!query)
-        return [];
+        return {};
     const promises = [];
     for (const engineName in engines) {
         const engine = engines[engineName];
-        if (engine.autoComplete) {
+        if (engine.autoComplete)
             promises.push(engine.autoComplete(query));
-        }
     }
     const resolvedRequests = await Promise.all(promises);
     const results = {};
@@ -72,9 +71,8 @@ function sortByFrequency(items) {
         else
             occurencesMap.set(item.value, item.weight);
     }
-    const occurencesMapSorted = new Map([...occurencesMap.entries()].sort(([a, numberA], [b, numberB]) => {
-        return numberB - numberA;
-    }));
+    const occurencesMapSorted = new Map([...occurencesMap.entries()]
+        .sort(([a, numberA], [b, numberB]) => numberB - numberA));
     return Array.from(occurencesMapSorted.keys());
 }
 async function request(query, req) {
@@ -151,29 +149,17 @@ async function request(query, req) {
 }
 exports.request = request;
 async function autocomplete(query) {
-    const results = {};
     const enginesResults = await requestAllAutoCompleteEngines(query);
+    const weightedItems = [];
     for (const engineName in enginesResults) {
         const engine = engines[engineName];
-        const engineResults = enginesResults[engineName];
-        let resultPosition = 0;
-        for (const result of engineResults) {
-            const engineWeight = engine.weight || 1;
-            resultPosition++;
-            // Default values
-            if (!results[result]) {
-                results[result] = {
-                    result,
-                    score: 0,
-                    weight: engineWeight,
-                    engines: []
-                };
-            }
-            results[result].score += engineWeight / resultPosition;
-            results[result].engines.push(engineName);
-        }
+        for (const result of enginesResults[engineName])
+            weightedItems.push({
+                value: result,
+                weight: engine.weight
+            });
     }
-    return Object.keys(results);
+    return sortByFrequency(weightedItems).slice(0, 10);
 }
 exports.autocomplete = autocomplete;
 // do some last second non-http modifications to the results

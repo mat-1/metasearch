@@ -20,10 +20,7 @@ async function autoComplete(query) {
     if (!query.trim())
         return [];
     const data = await parser_1.requestJSON('https://suggestqueries.google.com/complete/search?output=firefox&client=firefox&hl=US-en&q=' + query);
-    const results = [];
-    for (const suggestion of data[1])
-        results.push(suggestion);
-    return results;
+    return data[1];
 }
 exports.autoComplete = autoComplete;
 exports.weight = 1.05;

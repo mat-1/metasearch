@@ -95,14 +95,15 @@ async function requestAllEngines(query: string, req: RequestOptions): Promise<{[
 }
 
 async function requestAllAutoCompleteEngines(query) {
-	if (!query) return []
-	const promises = []
+	if (!query) return {}
+	const promises: Promise<string[]>[] = []
 	for (const engineName in engines) {
 		const engine = engines[engineName]
-		if (engine.autoComplete) { promises.push(engine.autoComplete(query)) }
+		if (engine.autoComplete)
+			promises.push(engine.autoComplete(query))
 	}
 	const resolvedRequests = await Promise.all(promises)
-	const results = {}
+	const results: Record<string, string[]> = {}
 	for (const engineIndex in resolvedRequests) {
 		const engineName = Object.keys(engines)[engineIndex]
 		results[engineName] = resolvedRequests[engineIndex]
@@ -111,8 +112,8 @@ async function requestAllAutoCompleteEngines(query) {
 }
 
 /** Sort an array by how frequently items are repeated, and based on their weight */
-function sortByFrequency(items: WeightedValue[]): any[] {
-	const occurencesMap: Map<any, number> =  new Map()
+function sortByFrequency<T>(items: WeightedValue<T>[]): T[] {
+	const occurencesMap: Map<T, number> =  new Map()
 	for (const item of items) {
 		if (occurencesMap.has(item.value))
 			occurencesMap.set(item.value, occurencesMap.get(item.value) + item.weight)
@@ -120,16 +121,17 @@ function sortByFrequency(items: WeightedValue[]): any[] {
 			occurencesMap.set(item.value, item.weight)
 	}
 
-	const occurencesMapSorted = new Map([...occurencesMap.entries()].sort(([a, numberA], [b, numberB]) => {
-		return numberB - numberA
-	}))
+	const occurencesMapSorted = new Map(
+		[...occurencesMap.entries()]
+		.sort(([a, numberA], [b, numberB]) => numberB - numberA)
+	)
 
 	return Array.from(occurencesMapSorted.keys())
 }
 
-interface WeightedValue {
+interface WeightedValue<T> {
 	weight: number
-	value: any
+	value: T
 }
 
 export interface Options {
@@ -156,7 +158,7 @@ async function request(query: string, req: RequestOptions): Promise<Options> {
 	const enginesResults = await requestAllEngines(query, req)
 	let answer: InstantAnswer = null
 	let sidebar: SidebarAnswer = null
-	let suggestions: WeightedValue[] = []
+	let suggestions: WeightedValue<string>[] = []
 
 	for (const engineName in enginesResults) {
 		const engine: Engine = engines[engineName]
@@ -233,31 +235,17 @@ async function request(query: string, req: RequestOptions): Promise<Options> {
 }
 
 async function autocomplete(query) {
-	const results = {}
 	const enginesResults = await requestAllAutoCompleteEngines(query)
+	const weightedItems: WeightedValue<string>[] = []
 	for (const engineName in enginesResults) {
 		const engine = engines[engineName]
-		const engineResults = enginesResults[engineName]
-		let resultPosition = 0
-		for (const result of engineResults) {
-			const engineWeight = engine.weight || 1
-			resultPosition ++
-
-			// Default values
-			if (!results[result]) {
- 				results[result] = {
-					result,
-					score: 0,
-					weight: engineWeight,
-					engines: []
-				}
-			}
-
-			results[result].score += engineWeight / resultPosition
-			results[result].engines.push(engineName)
-		}
+		for (const result of enginesResults[engineName])
+			weightedItems.push({
+				value: result,
+				weight: engine.weight
+			})
 	}
-	return Object.keys(results)
+	return sortByFrequency(weightedItems).slice(0, 10)
 }
 
 // do some last second non-http modifications to the results
