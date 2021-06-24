@@ -51,17 +51,5 @@
 		"header-color": "#1a1c23",
 		"results-container-color": "#242731",
 		"font": "Poppins"
-	},
-	"google": {
-		"base": "light",
-		"main-text": "#000",
-		"result-url": "#202124",
-		"anchor-text": "#1a0dab",
-		"semi-light": "#aaa",
-		"very-light": "#bbb",
-		"very-very-light": "#eaeaea",
-		"result-content-color": "#4d5156",
-		"result-title-selected": "#609",
-		"search-bar-border-radius": "2em"
 	}
 }
