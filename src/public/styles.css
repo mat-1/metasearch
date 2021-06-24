@@ -9,7 +9,9 @@ body {
 		content: "why are you like this";
 	}
 }
-
+h3 {
+	font-weight: normal
+}
 .top-header {
 	padding: .5em;
 	background-color: var(--header-color);
@@ -84,7 +86,7 @@ a:visited .result-title {
 	margin: 0 1rem 0 1rem;
 	padding: .5rem;
 	font-size: 1rem;
-	border-radius: .5rem;
+	border-radius: var(--search-bar-border-radius, .5rem);
 	transition: border 200ms;
 	border: 1px solid var(--very-light);
 	width: 75%;
