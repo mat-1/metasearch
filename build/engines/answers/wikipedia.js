@@ -14,6 +14,8 @@ async function request(query) {
     if (pageId == '-1')
         return {};
     const article = pages[pageId];
+    if (article.extract.endsWith(':'))
+        return {};
     return {
         sidebar: {
             title: article.title,

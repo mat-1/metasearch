@@ -167,6 +167,7 @@ pre {
 .sidebar-image {
 	float: right;
 	max-height: 5em;
+	margin: 0 0 .5em .5em;
 }
 datalist {
 	position: absolute;
@@ -280,4 +281,7 @@ input[type=checkbox]:checked ~ .checkbox:after {
 		overflow: hidden;
 		max-height: 10.2em;
 	}
+}
+.sidebar-content {
+	white-space: pre-line
 }

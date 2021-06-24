@@ -11,6 +11,10 @@ export async function request(query) {
 	const pageId = Object.keys(pages)[0]
 	if (pageId == '-1') return {}
 	const article = pages[pageId]
+
+	if (article.extract.endsWith(':'))
+		return {}
+
 	return {
 		sidebar: {
 			title: article.title,

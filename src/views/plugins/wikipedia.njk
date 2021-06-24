@@ -1,0 +1,58 @@
+function doesSidebarExist() {
+	return document.getElementById('sidebar') !== null
+}
+function insertSidebar({ image, content, url, title, engine }) {
+	let sidebarEl = document.getElementById('sidebar')
+	if (sidebarEl) {
+		sidebarEl.innerHTML = ''
+		return sidebarEl
+	}
+	sidebarEl = document.createElement('aside')
+	sidebarEl.id = 'sidebar'
+	const elementAfterSidebar = document.getElementById('answer') || document.getElementsByClassName('result')[0]
+	const resultsEl = document.getElementById('results')
+	resultsEl.insertBefore(sidebarEl, elementAfterSidebar)
+	
+	
+	if (image) {
+		const sidebarImage = document.createElement('img')
+		sidebarImage.src = image
+		sidebarImage.classList.add('sidebar-image')
+		sidebarEl.appendChild(sidebarImage)
+	}
+
+	const sidebarContent = document.createElement('p')
+	sidebarContent.classList.add('sidebar-content')
+	sidebarContent.textContent = content
+
+	let answerHrefEl = document.createElement('a')
+	answerHrefEl.href = url
+
+	let answerTitleEl = document.createElement('{% if usingSidebar %}h2{% else %}h3{% endif %}')
+	answerTitleEl.textContent = title
+	answerTitleEl.classList.add('result-title')
+
+	answerHrefEl.appendChild(answerTitleEl)
+
+	const resultEnginesEl = document.createElement('div')
+	resultEnginesEl.classList.add('result-engines')
+	const resultEngineEl = document.createElement('span')
+	resultEngineEl.textContent = engine
+	resultEngineEl.classList.add('result-engine')
+	resultEnginesEl.appendChild(resultEngineEl)
+
+	sidebarEl.appendChild(answerHrefEl)
+	sidebarEl.appendChild(sidebarContent)
+	sidebarEl.appendChild(resultEnginesEl)
+	return sidebarEl
+}
+
+if (!doesSidebarExist()) {
+	insertSidebar({
+		image: `{{ image|safe }}`,
+		content: `{{ content|safe }}`,
+		url: '{{ url|safe }}',
+		title: '{{ title|safe }}',
+		engine: 'wikipedia'
+	})
+}
