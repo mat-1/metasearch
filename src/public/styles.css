@@ -239,7 +239,9 @@ a {
 	opacity: .5;
 	margin-top: -.5em;
 	margin-bottom: .5em;
-	margin-left: .5em
+	margin-left: .5em;
+	position: relative;
+	top: .5em;
 }
 #sidebar .result-engines {
 	float: right;
