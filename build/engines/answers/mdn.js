@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.request = void 0;
 const parser_1 = require("../../parser");
 const cssRegex = /^(?:(?:css ([a-z-]+))|(?:([a-z-]+) css))$/i;
-const htmlRegex = /^(?:(?:html ([a-z-]+))|(?:([a-z-]+) html))$/i;
+const htmlRegex = /^(?:(?:html ([a-z-]+)(?: element)?)|(?:([a-z-]+)(?: element)? html))$/i;
 const apiRegex = /^(?:(?:(?:js |javascript )?([a-z ]+) api)|(?:([a-z ]+) (?:js |javascript )?api))$/i;
 // "js closures"
 const jsRegex = /^(?:(?:(?:js|javascript) ?([a-z ]+))|(?:([a-z ]+) (?:js|javascript)))$/i;
