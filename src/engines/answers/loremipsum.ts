@@ -1,4 +1,6 @@
-export async function request(query) {
+import { EngineResponse } from '../../search'
+
+export async function request(query: string): Promise<EngineResponse> {
 	if (query.toLowerCase().includes('lorem ipsum'))
 		return {
 			answer: {

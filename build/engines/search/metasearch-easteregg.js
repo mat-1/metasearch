@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.weight = exports.request = void 0;
 // searching "metasearch" will show metasearch as the top result
 async function request(query) {
-    if (/(what( i|'|)s )?(the )?best (meta ?)?search engine/i.test(query))
+    if (/^(what( i|'|)s )?(the )?best (meta ?)?search engine$/i.test(query))
         return {
             answer: {
                 title: 'Metasearch',

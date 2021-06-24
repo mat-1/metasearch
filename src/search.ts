@@ -20,7 +20,7 @@ interface InstantAnswer {
 interface SidebarAnswer {
 	title: string
 	content: string
-	image: string
+	image?: string
 	url: string
 	engine?: Engine
 }

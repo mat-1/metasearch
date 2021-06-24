@@ -1,8 +1,9 @@
 import { requestJSON } from '../../parser'
+import { EngineResponse } from '../../search'
 
 const wikipediaRegex = /^([^<>]+)$/i
 
-export async function request(query) {
+export async function request(query: string): Promise<EngineResponse> {
 	const regexMatch = query.match(wikipediaRegex)
 	if (!regexMatch) return {}
 	const wikipediaQuery = regexMatch[1]

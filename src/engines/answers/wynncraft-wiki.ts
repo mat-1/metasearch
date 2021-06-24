@@ -4,7 +4,7 @@ import { EngineResponse } from '../../search'
 const wynncraftRegex = /^(?:wynn(?:craft)?)?\s*?([^<>]+?)\s*(?:wynn(?:craft)?)?$/i
 
 
-export async function request(query): Promise<EngineResponse> {
+export async function request(query: string): Promise<EngineResponse> {
 	const regexMatch = query.match(wynncraftRegex)
 	if (!regexMatch) return {}
 	let wynncraftQuery = regexMatch[1] + ' (Quest)'

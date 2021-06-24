@@ -1,7 +1,8 @@
+import { EngineResponse } from '../../search'
 import solve from '../../math'
 
 
-export async function request(query) {
+export async function request(query: string): Promise<EngineResponse> {
 	const answer = solve(query)
 	if (answer && answer != query)
 		return {
