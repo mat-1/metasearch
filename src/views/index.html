@@ -22,6 +22,7 @@ const settingsButtonEl = document.getElementsByClassName('settings-link')[0]
 let autocompleteEl = document.getElementById('autocomplete')
 searchForm.addEventListener('submit', () => {
 	autocompleteEl = document.getElementById('autocomplete')
+	document.getElementById('search-centered').classList.add('top-header')
 	document.getElementById('search-centered').id = ''
 	titleEl.classList.add('toplogo')
 	searchForm.classList.add('search-form-left-offset')
