@@ -10,6 +10,10 @@ body {
 	}
 }
 
+h3 {
+	font-weight: normal;
+}
+
 .top-header {
 	padding: .5em;
 	background-color: var(--header-color);
