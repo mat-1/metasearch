@@ -1,4 +1,4 @@
-import { EngineResponse, RequestOptions } from '../../search'
+import { EngineResponse, InstantAnswer, RequestOptions } from '../../search'
 
 // searching "metasearch" will show metasearch as the top result
 
@@ -18,15 +18,11 @@ export async function request(query: string, req: RequestOptions): Promise<Engin
 			}]
 		}
 	else if (query.trim() === '') {
-		const choices = [
+		const choices: InstantAnswer[] = [
 			{
 				content: 'You should give me a star on GitHub.',
 				title: 'mat-1/metasearch - GitHub',
 				url: 'https://github.com/mat-1/metasearch',
-			},
-			{
-				content: 'Fun fact, you can change the theme by going to the settings page.',
-				url: `https://${req.hostname}/settings`
 			},
 			{
 				content: 'This website was made by mat.',
@@ -38,6 +34,17 @@ export async function request(query: string, req: RequestOptions): Promise<Engin
 				title: 'Funny video - YouTube'
 			}
 		]
+		if (req.theme === 'dark') {
+			choices.push({
+				content: 'Fun fact, you can change the theme by going to the settings page.',
+				url: `https://${req.hostname}/settings`
+			})
+		} else if (req.theme === 'light') {
+			choices.push({
+				content: 'Fun fact, you can change the theme to something other than light theme by going to the settings page.',
+				url: `https://${req.hostname}/settings`
+			})
+		}
 		return {
 			answer: choices[Math.floor(Math.random() * choices.length)]
 		}

@@ -25,10 +25,6 @@ async function request(query, req) {
                 url: 'https://github.com/mat-1/metasearch',
             },
             {
-                content: 'Fun fact, you can change the theme by going to the settings page.',
-                url: `https://${req.hostname}/settings`
-            },
-            {
                 content: 'This website was made by mat.',
                 title: 'mat does dev',
                 url: 'https://matdoes.dev'
@@ -38,6 +34,18 @@ async function request(query, req) {
                 title: 'Funny video - YouTube'
             }
         ];
+        if (req.theme === 'dark') {
+            choices.push({
+                content: 'Fun fact, you can change the theme by going to the settings page.',
+                url: `https://${req.hostname}/settings`
+            });
+        }
+        else if (req.theme === 'light') {
+            choices.push({
+                content: 'Fun fact, you can change the theme to something other than light theme by going to the settings page.',
+                url: `https://${req.hostname}/settings`
+            });
+        }
         return {
             answer: choices[Math.floor(Math.random() * choices.length)]
         };

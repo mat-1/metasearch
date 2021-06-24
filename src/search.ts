@@ -10,7 +10,7 @@ export interface EngineResult {
 	position: number
 }
 
-interface InstantAnswer {
+export interface InstantAnswer {
 	content?: string
 	title?: string
 	url?: string
@@ -63,6 +63,7 @@ export interface RequestOptions {
 	req: ExpressRequest
 	debug: boolean
 	hostname: string
+	theme: string
 }
 
 async function requestEngine(engineName: string, query: string, req: RequestOptions): Promise<EngineResponse> {

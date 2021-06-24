@@ -64,7 +64,8 @@ app.get('/search', async function (req, res) {
     const results = await search.request(query, {
         req,
         debug: req.cookies.debug === 'true',
-        hostname: req.hostname
+        hostname: req.hostname,
+        theme: req.cookies.theme || 'dark'
     });
     const options = {
         query,
