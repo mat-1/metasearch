@@ -35,10 +35,15 @@ function loadTheme(name) {
 
 interface RenderOptions {
 	host?: string
-	themes?: Array<any>
-	activeTheme?: string
-	theme?: string
 
+	themes?: Array<any>
+	fonts?: string[]
+
+	theme?: string
+	font?: string
+
+	activeTheme?: string
+	activeFont?: string
 	showIcons?: boolean
 	debug?: boolean
 }
@@ -46,8 +51,10 @@ interface RenderOptions {
 
 function render(res, template, options = {} as RenderOptions & Partial<Options>) {
 	const themeName = res.req.cookies.theme || 'dark'
+	const font = res.req.cookies.font || 'default'
 	const theme = loadTheme(themeName)
 	options.theme = theme
+	options.font = font
 	return res.render(template, options)
 }
 
@@ -107,9 +114,17 @@ app.get('/plugins/:plugin', async function(req, res) {
 
 app.get('/settings', function(req, res) {
 	const activeTheme = res.req.cookies.theme || 'dark'
+	const activeFont = res.req.cookies.font || 'default'
 	render(res, 'settings.html', {
 		themes,
+		fonts: [
+			'default',
+			'Arial',
+			'Monaco',
+			'Poppins'
+		],
 		activeTheme,
+		activeFont,
 		debug: req.cookies.debug === 'true',
 		showIcons: req.cookies.showIcons === 'true',
 	})

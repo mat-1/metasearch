@@ -21,11 +21,14 @@
 	--{{ key }}: {{ value }};
 	{%- endfor %}
 }
-{%- if theme.font -%}
-body { font-family: {{ theme.font }}, Arial, sans-serif!important }
-{%- if theme.font == 'Poppins' -%}
+{%- if font == 'default' and theme.font -%}
+	{%- set font = theme.font -%}
+{%- endif -%}
+{%- if font != 'default' -%}
+body { font-family: {{ font }}, Arial, sans-serif!important }
+{%- if font == 'Poppins' -%}
 @font-face { font-family: Poppins; src: url("https://cdn.matdoes.dev/fonts/Poppins-latin-normal-400.woff2") format("woff2"); font-style: normal; font-weight: 400; font-display: swap; }
-{%- elif theme.font == 'Monaco' -%}
+{%- elif font == 'Monaco' -%}
 @font-face { font-family: Monaco; src: url("https://cdn.matdoes.dev/fonts/Monaco.woff") format("woff"); font-style: normal; font-weight: 400; font-display: swap; }
 {% endif %}
 {%- endif -%}

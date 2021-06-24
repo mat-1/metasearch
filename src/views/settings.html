@@ -13,6 +13,7 @@ function setCookie(name, value) {
 document.addEventListener('DOMContentLoaded', () => {
 
 document.getElementById('theme').onchange = e => { setCookie('theme', e.target.value); location.reload() }
+document.getElementById('font').onchange = e => { setCookie('font', e.target.value); location.reload() }
 document.getElementById('debugSetting').onchange = e => setCookie('debug', e.target.checked)
 document.getElementById('showIconsSetting').onchange = e => setCookie('showIcons', e.target.checked)
 
@@ -24,6 +25,14 @@ document.getElementById('showIconsSetting').onchange = e => setCookie('showIcons
 		<select name="theme" id="theme">
 			{% for theme, value in themes %}
 			<option value="{{ theme }}"{% if activeTheme == theme %} selected{% endif %}>{{ theme|title }}</option>
+			{% endfor %}
+		</select>
+	</div>
+	<div>
+		<label for="font">Font:</label>
+		<select name="font" id="font">
+			{% for font in fonts %}
+			<option value="{{ font }}"{% if activeFont == font %} selected{% endif %}>{{ font|title }}</option>
 			{% endfor %}
 		</select>
 	</div>
