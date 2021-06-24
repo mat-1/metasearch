@@ -11,7 +11,7 @@
 
 {% block body %}
 {% include 'header.html' %}
-<div id="results">
+<div id="results" class="search-results">
 	{% if debug %}
 	<details id="debug-dropdown">
 		<summary>Debug</summary>
@@ -70,7 +70,7 @@
 	{% for result in results %}
 	<div class="result">
 		<a href="{{ result.url }}">
-			<h3 class="result-title">{{ result.title }}</h3>
+			<h3 class="result-title">{% if showIcons %}<img src="https://external-content.duckduckgo.com/ip3/{{ getHost(result.url) }}.ico" class="site-icon">{% endif %}{{ result.title }}</h3>
 			<span class="result-url">{{ result.url }}</span>
 		</a>
 		<p class="result-content">{{ result.content }}</p>

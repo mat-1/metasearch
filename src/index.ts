@@ -16,6 +16,7 @@ const env = nunjucks.configure('src/views', {
 })
 
 env.addGlobal('dark', false)
+env.addGlobal('getHost', url => new URL(url).hostname)
 env.addFilter('qs', (params) => {
 	return (
 		Object.keys(params)
@@ -59,6 +60,7 @@ app.get('/search', async function(req: ExpressRequest, res) {
 	})
 	const options = {
 		query,
+		showIcons: req.cookies.showIcons === 'true',
 		...results
 	}
 	if (req.query.json === 'true') {

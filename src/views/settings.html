@@ -12,16 +12,10 @@ function setCookie(name, value) {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-const themeEl = document.getElementById('theme')
-const debugEl = document.getElementById('debugSetting')
-themeEl.onchange = (e) => {
-	setCookie('theme', e.target.value)
-	location.reload()
-}
-debugEl.onchange = (e) => {
-	setCookie('debug', e.target.checked)
-	{# location.reload() #}
-}
+document.getElementById('theme').onchange = e => { setCookie('theme', e.target.value); location.reload() }
+document.getElementById('debugSetting').onchange = e => setCookie('debug', e.target.checked)
+document.getElementById('showIconsSetting').onchange = e => setCookie('showIcons', e.target.checked)
+
 })
 </script>
 <div id="results">
@@ -33,11 +27,16 @@ debugEl.onchange = (e) => {
 			{% endfor %}
 		</select>
 	</div>
-	<label for="debugSetting">
+	<div><label for="debugSetting">
 		Debug mode:
 		<input type="checkbox" id="debugSetting">
 		<span class="checkbox"></span>
-	</label>
+	</label></div>
+	<div><label for="showIconsSetting">
+		Show icons:
+		<input type="checkbox" id="showIconsSetting">
+		<span class="checkbox"></span>
+	</label></div>
 </div>
 {% endblock %}
 

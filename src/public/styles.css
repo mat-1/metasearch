@@ -2,11 +2,18 @@ body {
 	font-family: Arial, sans-serif;
 	background-color: var(--background-color);
 	color: var(--main-text);
+	margin: 0;
 }
 @media only screen and (max-width: 175px) {
 	body::before {
 		content: "why are you like this";
 	}
+}
+
+.top-header {
+	padding: .5em;
+	background-color: var(--header-color);
+	padding-bottom: 1rem
 }
 
 .result-title, .result-content {
@@ -16,10 +23,16 @@ body {
 	padding: .5em 0;
 }
 #results {
-	padding: 0 1em;
-	margin: 0 1em;
+	display: block;
+	position: relative;
+	padding: 0 .5em;
+	margin: .5em 1em;
 	max-width: 40em;
-	margin-top: 1em
+	border-radius: .5em;
+	left: 1.5em
+}
+.search-results {
+	background-color: var(--results-container-color);
 }
 .result-engines {
 	float: right;
@@ -89,6 +102,8 @@ a:visited .result-title {
 	padding: 1em;
 	border-radius: 1em;
 	margin-bottom: 2em;
+	top: .5em;
+	position: relative;
 }
 .result-content {
 	color: var(--result-content-color);
@@ -284,4 +299,12 @@ input[type=checkbox]:checked ~ .checkbox:after {
 }
 .sidebar-content {
 	white-space: pre-line
+}
+.site-icon {
+	position: relative;
+	height: .9em;
+	width: .9em;
+	float: left;
+	margin-right: .2em;
+	top: .15em;
 }

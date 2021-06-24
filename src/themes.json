@@ -35,5 +35,17 @@
 		"result-title-selected": "#6272a4",
 		"result-content-color": "#f8f8f2",
 		"result-title": "#8be9fd"
+	},
+	"brave dark": {
+		"base": "dark",
+		"background-color": "#1e2028",
+		"main-text": "#c9d4dc",
+		"result-url": "#737d87",
+		"anchor-text": "#858791",
+		"very-very-light": "#242731",
+		"result-title": "#c9d4dc",
+		"result-title-selected": "#727b86",
+		"header-color": "#1a1c23",
+		"results-container-color": "#242731"
 	}
 }
