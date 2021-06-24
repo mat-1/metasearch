@@ -24,12 +24,12 @@ h3 {
 	margin: 0
 }
 .result {
-	padding: .5em 0;
+	padding: .5em;
 }
 #results {
 	display: block;
 	position: relative;
-	padding: 0 .5em;
+	padding: 0 .5em .75em 0;
 	margin: .5em 1em;
 	max-width: 40em;
 	border-radius: .5em;
@@ -47,7 +47,8 @@ h3 {
 	z-index: 1;
 	position: relative;
 }
-.result a, #answer a, #sidebar a {
+/* not actually sure why this is display block */
+.result a, #answer a, #sidebar > a {
 	text-decoration: none;
 	display: block;
 }
@@ -104,9 +105,10 @@ a:visited .result-title {
 	border: 1px solid var(--very-light);
 	padding: 1em;
 	border-radius: 1em;
-	margin-bottom: 2em;
+	margin-bottom: .25em;
 	top: .5em;
 	position: relative;
+	margin-left: .5em;
 }
 .result-content {
 	color: var(--result-content-color);
@@ -150,7 +152,7 @@ aside {
 	box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
 	margin-bottom: 2em;
 	top: .5em;
-	position: relative
+	position: relative;
 }
 pre {
 	white-space: pre-wrap
@@ -174,6 +176,18 @@ pre {
 	}
 	#sidebar .result-engines {
 		top: 1em
+	}
+}
+@media only screen and (max-width: 1340px) {
+	.sidebar-content {
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 9;
+		overflow: hidden;
+		max-height: 10.2em;
+	}
+	aside {
+		margin-left: .5em;
 	}
 }
 @media only screen and (min-width: 1340px) and (max-width: 1500px) {
@@ -256,7 +270,7 @@ a {
 	position: relative;
 	top: .5em;
 }
-#sidebar .result-engines {
+#sidebar .result-engines, #answer .result-engines {
 	float: right;
 	position: relative;
 	left: .75em;
@@ -309,13 +323,6 @@ input[type=checkbox]:checked ~ .checkbox:after {
 	}
 }
 @media only screen and (max-width: 1000px) {
-	.sidebar-content {
-		display: -webkit-box;
-		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 9;
-		overflow: hidden;
-		max-height: 10.2em;
-	}
 	.top-header {
 		margin-left: -1em;
 	}
@@ -329,4 +336,7 @@ input[type=checkbox]:checked ~ .checkbox:after {
 	width: .9em;
 	margin-right: .2em;
 	top: .1em;
+}
+#answer + .result {
+	margin-top: 1.5em
 }

@@ -11,7 +11,7 @@ export interface EngineResult {
 }
 
 interface InstantAnswer {
-	content: string
+	content?: string
 	title?: string
 	url?: string
 	engine?: Engine
@@ -62,6 +62,7 @@ for (const engineName in engines)
 export interface RequestOptions {
 	req: ExpressRequest
 	debug: boolean
+	hostname: string
 }
 
 async function requestEngine(engineName: string, query: string, req: RequestOptions): Promise<EngineResponse> {

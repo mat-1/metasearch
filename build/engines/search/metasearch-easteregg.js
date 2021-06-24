@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.weight = exports.request = void 0;
 // searching "metasearch" will show metasearch as the top result
-async function request(query) {
+async function request(query, req) {
     if (/^(what( i|'|)s )?(the )?best (meta ?)?search engine$/i.test(query))
         return {
             answer: {
@@ -17,6 +17,31 @@ async function request(query) {
                     url: 'https://s.matdoes.dev',
                 }]
         };
+    else if (query.trim() === '') {
+        const choices = [
+            {
+                content: 'You should give me a star on GitHub.',
+                title: 'mat-1/metasearch - GitHub',
+                url: 'https://github.com/mat-1/metasearch',
+            },
+            {
+                content: 'Fun fact, you can change the theme by going to the settings page.',
+                url: `https://${req.hostname}/settings`
+            },
+            {
+                content: 'This website was made by mat.',
+                title: 'mat does dev',
+                url: 'https://matdoes.dev'
+            },
+            {
+                url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                title: 'Funny video - YouTube'
+            }
+        ];
+        return {
+            answer: choices[Math.floor(Math.random() * choices.length)]
+        };
+    }
     else
         return {};
 }

@@ -1,8 +1,8 @@
-import { EngineResponse } from '../../search'
+import { EngineResponse, RequestOptions } from '../../search'
 
 // searching "metasearch" will show metasearch as the top result
 
-export async function request(query): Promise<EngineResponse> {
+export async function request(query: string, req: RequestOptions): Promise<EngineResponse> {
 	if (/^(what( i|'|)s )?(the )?best (meta ?)?search engine$/i.test(query))
 		return {
 			answer: {
@@ -17,7 +17,31 @@ export async function request(query): Promise<EngineResponse> {
 				url: 'https://s.matdoes.dev',
 			}]
 		}
-	else
+	else if (query.trim() === '') {
+		const choices = [
+			{
+				content: 'You should give me a star on GitHub.',
+				title: 'mat-1/metasearch - GitHub',
+				url: 'https://github.com/mat-1/metasearch',
+			},
+			{
+				content: 'Fun fact, you can change the theme by going to the settings page.',
+				url: `https://${req.hostname}/settings`
+			},
+			{
+				content: 'This website was made by mat.',
+				title: 'mat does dev',
+				url: 'https://matdoes.dev'
+			},
+			{
+				url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+				title: 'Funny video - YouTube'
+			}
+		]
+		return {
+			answer: choices[Math.floor(Math.random() * choices.length)]
+		}
+	} else
 		return {}
 }
 
