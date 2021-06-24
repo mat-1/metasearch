@@ -4,8 +4,11 @@ exports.request = void 0;
 const parser_1 = require("../../parser");
 const cssRegex = /^(?:(?:css ([a-z-]+))|(?:([a-z-]+) css))$/i;
 const htmlRegex = /^(?:(?:html ([a-z-]+))|(?:([a-z-]+) html))$/i;
-const apiRegex = /^(?:(?:(?:js )?([a-z ]+) api)|(?:([a-z ]+) (?:js )?api))$/i;
-const jsRegex = /^(?:(?:js ?([a-z ]+))|(?:([a-z ]+)  js))$/i;
+const apiRegex = /^(?:(?:(?:js |javascript )?([a-z ]+) api)|(?:([a-z ]+) (?:js |javascript )?api))$/i;
+// "js closures"
+const jsRegex = /^(?:(?:(?:js|javascript) ?([a-z ]+))|(?:([a-z ]+) (?:js|javascript)))$/i;
+// "js what are closures"
+const jsRegex2 = /^(?:(?:(?:js|javascript)(?: what( is|'s|s| are|'re))? ?([a-z ]+))|(?:what( is|'s|s| are|'re))? (?:([a-z ]+) (?:in )?(?:js|javascript)))$/i;
 async function makeSidebarResponse(urlPart) {
     const url = `https://developer.mozilla.org/en-US/docs/Web/${urlPart}`;
     const dom = (await parser_1.requestDom(url))('html');
@@ -23,7 +26,7 @@ async function makeSidebarResponse(urlPart) {
     };
 }
 async function request(query) {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e;
     let match;
     match = query.match(cssRegex);
     if (match)
@@ -37,6 +40,9 @@ async function request(query) {
     match = query.match(jsRegex);
     if (match)
         return await makeSidebarResponse(`JavaScript/${((_d = match[1]) !== null && _d !== void 0 ? _d : match[2]).replace(/ /g, '_')}`);
+    match = query.match(jsRegex2);
+    if (match)
+        return await makeSidebarResponse(`JavaScript/${((_e = match[1]) !== null && _e !== void 0 ? _e : match[2]).replace(/ /g, '_')}`);
     return {};
 }
 exports.request = request;

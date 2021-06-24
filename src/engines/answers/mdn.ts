@@ -4,8 +4,11 @@ import { extractText, requestDom } from '../../parser'
 const cssRegex = /^(?:(?:css ([a-z-]+))|(?:([a-z-]+) css))$/i
 const htmlRegex = /^(?:(?:html ([a-z-]+))|(?:([a-z-]+) html))$/i
 
-const apiRegex = /^(?:(?:(?:js )?([a-z ]+) api)|(?:([a-z ]+) (?:js )?api))$/i
-const jsRegex = /^(?:(?:js ?([a-z ]+))|(?:([a-z ]+)  js))$/i
+const apiRegex = /^(?:(?:(?:js |javascript )?([a-z ]+) api)|(?:([a-z ]+) (?:js |javascript )?api))$/i
+// "js closures"
+const jsRegex = /^(?:(?:(?:js|javascript) ?([a-z ]+))|(?:([a-z ]+) (?:js|javascript)))$/i
+// "js what are closures"
+const jsRegex2 = /^(?:(?:(?:js|javascript)(?: what( is|'s|s| are|'re))? ?([a-z ]+))|(?:what( is|'s|s| are|'re))? (?:([a-z ]+) (?:in )?(?:js|javascript)))$/i
 
 async function makeSidebarResponse(urlPart: string): Promise<EngineResponse> {
 	const url = `https://developer.mozilla.org/en-US/docs/Web/${urlPart}`
@@ -35,6 +38,8 @@ export async function request(query: string): Promise<EngineResponse> {
 	if (match) return await makeSidebarResponse(`API/${(match[1] ?? match[2]).replace(/ /g, '_')}`)
 
 	match = query.match(jsRegex)
+	if (match) return await makeSidebarResponse(`JavaScript/${(match[1] ?? match[2]).replace(/ /g, '_')}`)
+	match = query.match(jsRegex2)
 	if (match) return await makeSidebarResponse(`JavaScript/${(match[1] ?? match[2]).replace(/ /g, '_')}`)
 
 	return {}
