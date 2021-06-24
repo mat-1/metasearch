@@ -46,6 +46,7 @@
 		"result-title": "#c9d4dc",
 		"result-title-selected": "#727b86",
 		"header-color": "#1a1c23",
-		"results-container-color": "#242731"
+		"results-container-color": "#242731",
+		"font": "Poppins"
 	}
 }
