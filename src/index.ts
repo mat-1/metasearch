@@ -38,6 +38,9 @@ interface RenderOptions {
 	themes?: Array<any>
 	activeTheme?: string
 	theme?: string
+
+	showIcons?: boolean
+	debug?: boolean
 }
 
 
@@ -51,6 +54,7 @@ function render(res, template, options = {} as RenderOptions & Partial<Options>)
 app.get('/', function(req, res) {
 	render(res, 'index.html')
 })
+
 
 app.get('/search', async function(req: ExpressRequest, res) {
 	const query = req.query.q as string
@@ -103,7 +107,12 @@ app.get('/plugins/:plugin', async function(req, res) {
 
 app.get('/settings', function(req, res) {
 	const activeTheme = res.req.cookies.theme || 'dark'
-	render(res, 'settings.html', { themes, activeTheme })
+	render(res, 'settings.html', {
+		themes,
+		activeTheme,
+		debug: req.cookies.debug === 'true',
+		showIcons: req.cookies.showIcons === 'true',
+	})
 })
 
 app.use('/', express.static('src/public'))

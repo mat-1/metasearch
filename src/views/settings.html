@@ -29,12 +29,12 @@ document.getElementById('showIconsSetting').onchange = e => setCookie('showIcons
 	</div>
 	<div><label for="debugSetting">
 		Debug mode:
-		<input type="checkbox" id="debugSetting">
+		<input type="checkbox" id="debugSetting"{% if debug %} checked{% endif %}>
 		<span class="checkbox"></span>
 	</label></div>
 	<div><label for="showIconsSetting">
 		Show icons:
-		<input type="checkbox" id="showIconsSetting">
+		<input type="checkbox" id="showIconsSetting"{% if showIcons %} checked{% endif %}>
 		<span class="checkbox"></span>
 	</label></div>
 </div>

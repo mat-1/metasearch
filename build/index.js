@@ -106,7 +106,12 @@ app.get('/plugins/:plugin', async function (req, res) {
 });
 app.get('/settings', function (req, res) {
     const activeTheme = res.req.cookies.theme || 'dark';
-    render(res, 'settings.html', { themes, activeTheme });
+    render(res, 'settings.html', {
+        themes,
+        activeTheme,
+        debug: req.cookies.debug === 'true',
+        showIcons: req.cookies.showIcons === 'true',
+    });
 });
 app.use('/', express_1.default.static('src/public'));
 app.listen(8000, () => console.log('pog http://localhost:8000'));
