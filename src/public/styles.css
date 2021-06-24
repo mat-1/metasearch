@@ -304,7 +304,6 @@ input[type=checkbox]:checked ~ .checkbox:after {
 	position: relative;
 	height: .9em;
 	width: .9em;
-	float: left;
 	margin-right: .2em;
-	top: .15em;
+	top: .1em;
 }
