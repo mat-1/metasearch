@@ -28,7 +28,7 @@ export async function changeOptions(options: Options) {
 
 	for (let resultIndex = 0; resultIndex < Math.max(10, options.results.length); resultIndex++) {
 		const result = options.results[resultIndex]
-		if (result.url.startsWith(wikipediaPrefix)) {
+		if (result?.url?.startsWith(wikipediaPrefix)) {
 			const wikipediaArticleTitle = result.url.slice(wikipediaPrefix.length)
             options.plugins.wikipedia = {
                 urlTitle: wikipediaArticleTitle

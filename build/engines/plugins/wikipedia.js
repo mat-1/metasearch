@@ -21,12 +21,13 @@ async function runPlugin({ urlTitle }) {
 }
 exports.runPlugin = runPlugin;
 async function changeOptions(options) {
+    var _a;
     if (options.answer && options.sidebar)
         // an answer was already returned from somewhere else
         return options;
     for (let resultIndex = 0; resultIndex < Math.max(10, options.results.length); resultIndex++) {
         const result = options.results[resultIndex];
-        if (result.url.startsWith(wikipediaPrefix)) {
+        if ((_a = result === null || result === void 0 ? void 0 : result.url) === null || _a === void 0 ? void 0 : _a.startsWith(wikipediaPrefix)) {
             const wikipediaArticleTitle = result.url.slice(wikipediaPrefix.length);
             options.plugins.wikipedia = {
                 urlTitle: wikipediaArticleTitle
