@@ -28,13 +28,16 @@
 	},
 	"dracula": {
 		"base": "dark",
-		"background-color": "#282a36",
+		"background-color": "#21222C",
 		"main-text": "#f8f8f2",
 		"result-url": "#6272a4",
 		"very-very-light": "#44475a",
 		"result-title-selected": "#6272a4",
 		"result-content-color": "#f8f8f2",
-		"result-title": "#8be9fd"
+		"result-title": "#8be9fd",
+		"header-color": "#343746",
+		"results-container-color": "#282a36",
+		"font": "Monaco"
 	},
 	"brave dark": {
 		"base": "dark",
