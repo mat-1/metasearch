@@ -33,7 +33,6 @@ h3 {
 	margin: .5em 1em;
 	max-width: 40em;
 	border-radius: .5em;
-	left: 1.5em
 }
 .search-results {
 	background-color: var(--results-container-color);
@@ -80,7 +79,7 @@ a:visited .result-title {
 	width: 100%
 }
 .search-form-left-offset #search-bar {
-	width: 75vw;
+	width: calc(100vw - 4em);
 }
 #search-bar {
 	color: var(--text-color);
@@ -125,6 +124,9 @@ a:visited .result-title {
 #answer p {
 	margin-top: 0
 }
+#answer h3:first-child {
+	margin-top: 0
+}
 #search-centered h1 {
 	text-align: center;
 	color: var(--title);
@@ -146,7 +148,9 @@ aside {
 	border-radius: .5em;
 	padding: 1em;
 	box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
-	margin-bottom: 2em
+	margin-bottom: 2em;
+	top: .5em;
+	position: relative
 }
 pre {
 	white-space: pre-wrap
@@ -163,7 +167,7 @@ pre {
 		left: 55em;
 		width: 25em;
 		box-shadow: none;
-		margin-bottom: 0
+		margin-bottom: 0;
 	}
 	.sidebar-possibly-hidden {
 		display: block
@@ -172,9 +176,18 @@ pre {
 		top: 1em
 	}
 }
+@media only screen and (min-width: 1340px) and (max-width: 1500px) {
+	aside {
+		left: 42em;
+	}
+}
+
 @media only screen and (min-width: 1000px) {
 	#search-form.search-form-left-offset, #results {
 		margin-left: 10em;
+	}
+	#results {
+		left: 1.5em;
 	}
 }
 @media only screen and (max-width: 1000px) {
@@ -247,6 +260,7 @@ a {
 	float: right;
 	position: relative;
 	left: .75em;
+	bottom: .3em;
 }
 #github-button {
 	opacity: .2;
@@ -301,6 +315,9 @@ input[type=checkbox]:checked ~ .checkbox:after {
 		-webkit-line-clamp: 9;
 		overflow: hidden;
 		max-height: 10.2em;
+	}
+	.top-header {
+		margin-left: -1em;
 	}
 }
 .sidebar-content {
