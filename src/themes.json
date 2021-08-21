@@ -51,5 +51,18 @@
 		"header-color": "#1a1c23",
 		"results-container-color": "#242731",
 		"font": "Poppins"
+	},
+	"gruvbox": {
+		"_comment": "theme by Dededecent",
+		"base": "dark",
+		"background-color": "#282828",
+		"main-text": "#fbf1c7",
+		"result-url": "#98971a",
+		"anchor-text": "#928374",
+		"very-very-light": "#32302f",
+		"result-title": "#458588",
+		"result-title-selected": "#b16286",
+		"header-color": "#1d2021",
+		"results-container-color": "#32302f"
 	}
 }
