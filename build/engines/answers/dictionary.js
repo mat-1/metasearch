@@ -43,8 +43,8 @@ async function dictionaryCom(query) {
         phoneticSpellingPath: 'section.entry-headword span.pron-spell-content',
         ipaSpellingPath: '.pron-ipa-content',
         entryPaths: 'section.entry-headword ~ section',
-        partOfSpeechPath: 'section > h3',
-        entryDefinitionsPath: 'div.expandable > div.default-content > div[value], h3 + div > div[value]',
+        partOfSpeechPath: '.luna-pos',
+        entryDefinitionsPath: 'section > div > div[value], h3 + div > div[value]',
         definitionPath: 'div[value] > span.one-click-content',
         // was this removed?
         definitionLabelPath: '.luna-label',
