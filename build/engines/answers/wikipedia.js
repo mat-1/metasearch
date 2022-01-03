@@ -8,7 +8,7 @@ async function request(query) {
     if (!regexMatch)
         return {};
     const wikipediaQuery = regexMatch[1];
-    const summaryJson = await parser_1.requestJSON('https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts|pageimages&exintro&explaintext&redirects=1&exsentences=2&titles=' + encodeURIComponent(wikipediaQuery));
+    const summaryJson = await (0, parser_1.requestJSON)('https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts|pageimages&exintro&explaintext&redirects=1&exsentences=2&titles=' + encodeURIComponent(wikipediaQuery));
     const pages = summaryJson.query.pages;
     const pageId = Object.keys(pages)[0];
     if (pageId == '-1')

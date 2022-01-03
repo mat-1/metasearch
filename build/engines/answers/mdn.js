@@ -11,15 +11,15 @@ const jsRegex = /^(?:(?:(?:js|javascript) ?([a-z ]+))|(?:([a-z ]+) (?:js|javascr
 const jsRegex2 = /^(?:(?:(?:js|javascript)(?: what( is|'s|s| are|'re))? ?([a-z ]+))|(?:what( is|'s|s| are|'re))? (?:([a-z ]+) (?:in )?(?:js|javascript)))$/i;
 async function makeSidebarResponse(urlPart) {
     const url = `https://developer.mozilla.org/en-US/docs/Web/${urlPart}`;
-    const dom = (await parser_1.requestDom(url))('html');
-    if (parser_1.extractText(dom, 'h1') === 'Page not found')
+    const dom = (await (0, parser_1.requestDom)(url))('html');
+    if ((0, parser_1.extractText)(dom, 'h1') === 'Page not found')
         return {};
-    const firstParagraph = parser_1.extractText(dom, 'article p');
+    const firstParagraph = (0, parser_1.extractText)(dom, 'article p');
     if (!firstParagraph)
         return {};
     return {
         sidebar: {
-            title: parser_1.extractText(dom, 'h1'),
+            title: (0, parser_1.extractText)(dom, 'h1'),
             content: firstParagraph,
             url,
         }

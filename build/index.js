@@ -27,8 +27,8 @@ const nunjucks = __importStar(require("nunjucks"));
 const search = __importStar(require("./search"));
 const express_1 = __importDefault(require("express"));
 const themes = require('../src/themes.json');
-const app = express_1.default();
-app.use(cookie_parser_1.default());
+const app = (0, express_1.default)();
+app.use((0, cookie_parser_1.default)());
 const env = nunjucks.configure('src/views', {
     autoescape: true,
     express: app
@@ -61,22 +61,28 @@ app.get('/', function (req, res) {
 });
 app.get('/search', async function (req, res) {
     const query = req.query.q;
-    const results = await search.request(query, {
-        req,
-        debug: req.cookies.debug === 'true',
-        hostname: req.hostname,
-        theme: req.cookies.theme || 'dark'
-    });
-    const options = {
-        query,
-        showIcons: req.cookies.showIcons === 'true',
-        ...results
-    };
-    if (req.query.json === 'true') {
-        res.json(options);
+    try {
+        const results = await search.request(query, {
+            req,
+            debug: req.cookies.debug === 'true',
+            hostname: req.hostname,
+            theme: req.cookies.theme || 'dark'
+        });
+        const options = {
+            query,
+            showIcons: req.cookies.showIcons === 'true',
+            ...results
+        };
+        if (req.query.json === 'true') {
+            res.json(options);
+        }
+        else {
+            render(res, 'search.html', options);
+        }
     }
-    else {
-        render(res, 'search.html', options);
+    catch (err) {
+        console.error(err);
+        return res.status(500).send(err.message);
     }
 });
 app.get('/opensearch.xml', async function (req, res) {
@@ -106,8 +112,8 @@ app.get('/plugins/:plugin', async function (req, res) {
         render(res, `plugins/${pluginName}.njk`, data);
 });
 app.get('/settings', function (req, res) {
-    const activeTheme = res.req.cookies.theme || 'dark';
-    const activeFont = res.req.cookies.font || 'default';
+    const activeTheme = res.req.cookies.theme || 'brave dark';
+    const activeFont = res.req.cookies.font || 'monaco';
     render(res, 'settings.html', {
         themes,
         fonts: [

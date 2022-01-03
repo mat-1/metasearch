@@ -5,10 +5,10 @@ const parser_1 = require("../../parser");
 const githubHost = 'https://github.com';
 async function runPlugin({ author, name }) {
     const url = `${githubHost}/${author}/${name}`;
-    const dom = await parser_1.requestDom(url);
+    const dom = await (0, parser_1.requestDom)(url);
     dom('svg').remove();
     const body = dom('body');
-    const readmeEl = parser_1.get(body, '#readme article');
+    const readmeEl = (0, parser_1.get)(body, '#readme article');
     const readmeHtml = readmeEl.html();
     if (readmeHtml == null)
         // no readme :(

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.weight = exports.request = void 0;
-const timezoneRegex = /^([0-9][1-4]?):?([0-5]?[0-9])? ?(am|pm)? (...) to (...)$/i;
+const timezoneRegex = /^([0-9][0-4]?):?([0-5]?[0-9])? ?(am|pm)? (...) to (...)$/i;
 const timezones = {
     'GMT': 0,
     'UTC': 0,

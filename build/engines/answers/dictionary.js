@@ -5,18 +5,18 @@ const commonWords = require('../../../src/common-words.json');
 const parser_1 = require("../../parser");
 const defineRegex = /^(?:define )(.+)$/i;
 async function parseDictionary(url, { containerPath, wordNamePath, phoneticSpellingPath, ipaSpellingPath, entryPaths, partOfSpeechPath, entryDefinitionsPath, definitionPath, definitionLabelPath, }) {
-    const dom = await parser_1.requestDom(url);
+    const dom = await (0, parser_1.requestDom)(url);
     const body = dom(containerPath);
-    const wordName = parser_1.extractText(body, wordNamePath);
-    const phoneticSpelling = parser_1.extractText(body, phoneticSpellingPath);
-    const ipaSpelling = parser_1.extractText(body, ipaSpellingPath);
+    const wordName = (0, parser_1.extractText)(body, wordNamePath);
+    const phoneticSpelling = (0, parser_1.extractText)(body, phoneticSpellingPath);
+    const ipaSpelling = (0, parser_1.extractText)(body, ipaSpellingPath);
     const entries = [];
-    for (const entryEl of parser_1.getElements(body, entryPaths)) {
-        const partOfSpeech = parser_1.extractText(entryEl, partOfSpeechPath);
+    for (const entryEl of (0, parser_1.getElements)(body, entryPaths)) {
+        const partOfSpeech = (0, parser_1.extractText)(entryEl, partOfSpeechPath);
         const entryDefinitions = [];
-        for (const definitionEl of parser_1.getElements(entryEl, entryDefinitionsPath)) {
-            const definition = parser_1.extractText(definitionEl, definitionPath);
-            const label = parser_1.extractText(definitionEl, definitionLabelPath);
+        for (const definitionEl of (0, parser_1.getElements)(entryEl, entryDefinitionsPath)) {
+            const definition = (0, parser_1.extractText)(definitionEl, definitionPath);
+            const label = (0, parser_1.extractText)(definitionEl, definitionLabelPath);
             entryDefinitions.push({
                 label,
                 definition

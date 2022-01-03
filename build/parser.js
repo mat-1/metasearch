@@ -30,22 +30,65 @@ const httpsAgent = new https_1.Agent({
     keepAlive: true,
     keepAliveMsecs: 20000
 });
-async function requestRaw(url) {
-    const response = await node_fetch_1.default(url, {
-        headers: {
-            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0'
-        },
-        agent: () => httpsAgent
-    });
-    return await response.text();
+let cachedCookies = {};
+// clear the cookies every hour
+setInterval(() => {
+    cachedCookies = {};
+}, 60 * 60 * 1000);
+async function requestRaw(url, session = false) {
+    var _a;
+    let attempts = 0;
+    let urlObject = new URL(url);
+    let cookie = session ? (_a = cachedCookies[urlObject.hostname]) !== null && _a !== void 0 ? _a : {} : {};
+    while (attempts < 5) {
+        const response = await (0, node_fetch_1.default)(url, {
+            headers: {
+                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+                'accept-language': 'en-US,en;q=0.5',
+                'DNT': '1',
+                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:96.0) Gecko/20100101 Firefox/96.0',
+                'cookie': Object.entries(cookie).map(([k, v]) => `${k}=${v}`).join('; ')
+            },
+            agent: () => httpsAgent,
+            redirect: 'manual',
+        });
+        // if it's a redirect, follow it
+        if (response.status === 302 || response.status === 301) {
+            let location = response.headers.get('location');
+            // extract the cookies
+            const cookies = response.headers.raw()['set-cookie'];
+            if (cookies) {
+                // extract the cookies
+                for (const c of cookies) {
+                    const [name, value] = c.split(';')[0].split('=');
+                    // get the expire date
+                    let expiresPart = c.split(';').find(s => s.trim().startsWith('expires='));
+                    let expiresDate = expiresPart ? new Date(expiresPart.split('=')[1]) : null;
+                    // if it's expired, don't save it
+                    if (expiresDate && expiresDate < new Date())
+                        continue;
+                    cookie[name] = value;
+                }
+            }
+            if (location)
+                url = location;
+        }
+        else {
+            if (session)
+                cachedCookies[urlObject.hostname] = cookie;
+            return await response.text();
+        }
+        attempts++;
+    }
+    return '';
 }
 exports.requestRaw = requestRaw;
 async function requestJSON(url) {
     return JSON.parse(await requestRaw(url));
 }
 exports.requestJSON = requestJSON;
-async function requestDom(url) {
-    const htmlResponse = await requestRaw(url);
+async function requestDom(url, session = false) {
+    const htmlResponse = await requestRaw(url, session);
     return cheerio.load(htmlResponse);
 }
 exports.requestDom = requestDom;
@@ -90,7 +133,8 @@ function extractHref(dom, query) {
 exports.extractHref = extractHref;
 // for search engines like google, bing, etc
 async function parseResultList(url, options) {
-    const $ = await requestDom(url);
+    var _a;
+    const $ = await requestDom(url, (_a = options.session) !== null && _a !== void 0 ? _a : false);
     const body = $('body');
     const results = [];
     const resultElements = getElements(body, options.resultItemPath);

@@ -7,7 +7,7 @@ exports.runPlugin = exports.autocomplete = exports.request = void 0;
 const normalize_url_1 = __importDefault(require("./normalize-url"));
 const perf_hooks_1 = require("perf_hooks");
 const require_dir_1 = __importDefault(require("require-dir"));
-const recursedEngines = require_dir_1.default('./engines', { recurse: true });
+const recursedEngines = (0, require_dir_1.default)('./engines', { recurse: true });
 const engines = {};
 const debugPerf = false;
 const plugins = recursedEngines.plugins;
@@ -106,7 +106,7 @@ async function request(query, req) {
         for (const result of engineResponse.results || []) {
             let normalUrl;
             try {
-                normalUrl = normalize_url_1.default(result.url);
+                normalUrl = (0, normalize_url_1.default)(result.url);
             }
             catch {
                 console.log('Invalid URL!', result, engineName);

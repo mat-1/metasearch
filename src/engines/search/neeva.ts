@@ -2,7 +2,6 @@ import { parseResultList } from '../../parser'
 import { EngineResponse } from '../../search'
 
 export async function request(query): Promise<EngineResponse> {
-	// return await parseResultList('https://neeva.com/search?q=' + encodeURIComponent(query), {
 	return await parseResultList('https://neeva.com/search?q=' + encodeURIComponent(query), {
 		// neeva makes us do a redirect if we don't save the cookies
 		session: true,
@@ -16,4 +15,4 @@ export async function request(query): Promise<EngineResponse> {
 	})
 }
 
-export const weight = 1.0
+export const weight = 1.2

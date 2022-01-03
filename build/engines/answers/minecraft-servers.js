@@ -198,7 +198,7 @@ async function request(query) {
     else
         port = null;
     try {
-        status = await mcstatus_1.getStatus(minecraftHost, port, { timeout: 500 });
+        status = await (0, mcstatus_1.getStatus)(minecraftHost, port, { timeout: 500 });
     }
     catch (e) {
         return {};

@@ -20,4 +20,4 @@ export async function autoComplete(query) {
 }
 
 
-export const weight = 1.5 // brave's results are really good!
+export const weight = 1.2

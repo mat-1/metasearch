@@ -4,7 +4,7 @@ exports.changeOptions = exports.runPlugin = void 0;
 const parser_1 = require("../../parser");
 const wikipediaPrefix = 'https://en.wikipedia.org/wiki/';
 async function runPlugin({ urlTitle }) {
-    const summaryJson = await parser_1.requestJSON('https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts|pageimages&exintro&explaintext&redirects=1&exsentences=2&titles=' + encodeURIComponent(urlTitle));
+    const summaryJson = await (0, parser_1.requestJSON)('https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts|pageimages&exintro&explaintext&redirects=1&exsentences=2&titles=' + encodeURIComponent(urlTitle));
     const pages = summaryJson.query.pages;
     const pageId = Object.keys(pages)[0];
     if (pageId == '-1')

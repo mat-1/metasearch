@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.weight = exports.request = void 0;
 const parser_1 = require("../../parser");
 async function request(query) {
-    return await parser_1.parseResultList('https://www.bing.com/search?q=' + encodeURIComponent(query), {
+    return await (0, parser_1.parseResultList)('https://www.bing.com/search?q=' + encodeURIComponent(query), {
         resultItemPath: '#b_results > li.b_algo',
         titlePath: '.b_algo > h2 > a',
         hrefPath: '.b_algo > h2 > a[href]',

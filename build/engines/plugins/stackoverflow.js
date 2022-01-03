@@ -6,16 +6,16 @@ const stackOverflowHost = 'https://stackoverflow.com';
 async function runPlugin({ id }) {
     var _a, _b, _c, _d;
     const originalUrl = `${stackOverflowHost}/questions/${id}`;
-    const dom = await parser_1.requestDom(originalUrl);
+    const dom = await (0, parser_1.requestDom)(originalUrl);
     const body = dom('body');
-    const answerContainerEl = parser_1.get(body, 'div.answer.accepted-answer');
+    const answerContainerEl = (0, parser_1.get)(body, 'div.answer.accepted-answer');
     if (answerContainerEl.html() == null)
         // no accepted answer :(
         return false;
-    const title = parser_1.extractText(body, 'h1.fs-headline1 a.question-hyperlink');
-    let url = stackOverflowHost + parser_1.extractHref(body, '.question-hyperlink');
+    const title = (0, parser_1.extractText)(body, 'h1.fs-headline1 a.question-hyperlink');
+    let url = stackOverflowHost + (0, parser_1.extractHref)(body, '.question-hyperlink');
     const answerId = answerContainerEl.attr('data-answerid');
-    const answerEl = parser_1.get(answerContainerEl, 'div.answercell > div.js-post-body');
+    const answerEl = (0, parser_1.get)(answerContainerEl, 'div.answercell > div.js-post-body');
     url = url + '#' + answerId;
     return {
         html: (_d = (_c = (_b = (_a = answerEl.html()) === null || _a === void 0 ? void 0 : _a.trim()) === null || _b === void 0 ? void 0 : _b.replace(/\n/g, '\\n')) === null || _c === void 0 ? void 0 : _c.replace(/`/g, '\\`')) !== null && _d !== void 0 ? _d : '',
