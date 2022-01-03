@@ -8,23 +8,69 @@ const httpsAgent = new Agent({
 	keepAliveMsecs: 20000
 })
 
+let cachedCookies = {}
 
-export async function requestRaw(url: string): Promise<string> {
-	const response = await fetch(url, {
-		headers: {
-			'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0'
-		},
-		agent: () => httpsAgent
-	})
-	return await response.text()
+// clear the cookies every hour
+setInterval(() => {
+	cachedCookies = {}
+}, 60 * 60 * 1000)
+
+
+export async function requestRaw(url: string, session: boolean=false): Promise<string> {
+	let attempts = 0
+
+	let urlObject = new URL(url)
+
+	let cookie = session ? cachedCookies[urlObject.hostname] ?? {} : {}
+
+	while (attempts < 5) {
+		const response = await fetch(url, {
+			headers: {
+				'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+				'accept-language': 'en-US,en;q=0.5',
+				'DNT': '1',
+				'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:96.0) Gecko/20100101 Firefox/96.0',
+				'cookie': Object.entries(cookie).map(([k, v]) => `${k}=${v}`).join('; ')
+			},
+			agent: () => httpsAgent,
+			redirect: 'manual',
+		})
+
+		// if it's a redirect, follow it
+		if (response.status === 302 || response.status === 301) {
+			let location = response.headers.get('location')
+			// extract the cookies
+			const cookies = response.headers.raw()['set-cookie']
+			if (cookies) {
+				// extract the cookies
+				for (const c of cookies) {
+					const [name, value] = c.split(';')[0].split('=')
+					// get the expire date
+					let expiresPart = c.split(';').find(s => s.trim().startsWith('expires='))
+					let expiresDate = expiresPart ? new Date(expiresPart.split('=')[1]) : null
+					// if it's expired, don't save it
+					if (expiresDate && expiresDate < new Date()) continue
+					cookie[name] = value
+				}
+			}
+			if (location)
+				url = location
+		} else {
+			if (session)
+				cachedCookies[urlObject.hostname] = cookie
+			return await response.text()
+		}
+		attempts ++
+	}
+	return ''
 }
 
 export async function requestJSON(url: string): Promise<any> {
 	return JSON.parse(await requestRaw(url))
 }
 
-export async function requestDom(url): Promise<cheerio.Root> {
-	const htmlResponse = await requestRaw(url)
+export async function requestDom(url, session: boolean=false): Promise<cheerio.Root> {
+	const htmlResponse = await requestRaw(url, session)
 	return cheerio.load(htmlResponse)
 }
 
@@ -68,6 +114,9 @@ export function extractHref(dom: cheerio.Cheerio, query: string) {
 }
 
 interface ParseResultListOptions {
+	/** Whether it should remember this cookies into the next request for the same host */
+	session?: boolean
+
 	resultItemPath: string
 	titlePath: string
 	hrefPath: string
@@ -82,7 +131,7 @@ interface ParseResultListOptions {
 
 // for search engines like google, bing, etc
 export async function parseResultList(url: string, options: ParseResultListOptions): Promise<EngineResponse> {
-	const $: cheerio.Root = await requestDom(url)
+	const $: cheerio.Root = await requestDom(url, options.session ?? false)
 	const body: cheerio.Cheerio = $('body')
 
 	const results: EngineResult[] = []

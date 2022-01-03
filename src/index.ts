@@ -65,21 +65,27 @@ app.get('/', function(req, res) {
 
 app.get('/search', async function(req: ExpressRequest, res) {
 	const query = req.query.q as string
-	const results = await search.request(query, {
-		req,
-		debug: req.cookies.debug === 'true',
-		hostname: req.hostname,
-		theme: req.cookies.theme || 'dark'
-	})
-	const options = {
-		query,
-		showIcons: req.cookies.showIcons === 'true',
-		...results
-	}
-	if (req.query.json === 'true') {
-		res.json(options)
-	} else {
-		render(res, 'search.html', options)
+	try {
+		const results = await search.request(query, {
+			req,
+			debug: req.cookies.debug === 'true',
+			hostname: req.hostname,
+			theme: req.cookies.theme || 'dark'
+		})
+		const options = {
+			query,
+			showIcons: req.cookies.showIcons === 'true',
+			...results
+		}
+		if (req.query.json === 'true') {
+			res.json(options)
+		} else {
+			render(res, 'search.html', options)
+		}
+
+	} catch (err) {
+		console.error(err)
+		return res.status(500).send(err.message)
 	}
 })
 
@@ -112,8 +118,8 @@ app.get('/plugins/:plugin', async function(req, res) {
 })
 
 app.get('/settings', function(req, res) {
-	const activeTheme = res.req.cookies.theme || 'dark'
-	const activeFont = res.req.cookies.font || 'default'
+	const activeTheme = res.req.cookies.theme || 'brave dark'
+	const activeFont = res.req.cookies.font || 'monaco'
 	render(res, 'settings.html', {
 		themes,
 		fonts: [
