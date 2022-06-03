@@ -137,7 +137,7 @@ app.get('/settings', function(req, res) {
 
 app.use('/', express.static('src/public'))
 
-app.listen(8000, () => console.log('pog http://localhost:8000'))
+app.listen(8000, () => console.log('Running at http://localhost:8000'))
 
 export default require('require-dir')()
 

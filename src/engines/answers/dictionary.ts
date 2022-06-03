@@ -90,11 +90,11 @@ async function dictionaryCom(query: string): Promise<DictionaryResponse> {
 		wordNamePath: 'section.entry-headword > div > div h1',
 		phoneticSpellingPath: 'section.entry-headword span.pron-spell-content',
 		ipaSpellingPath: '.pron-ipa-content',
+
 		entryPaths: 'section.entry-headword ~ section',
 		partOfSpeechPath: '.luna-pos',
-		entryDefinitionsPath: 'section > div > div[value], h3 + div > div[value]',
-		definitionPath: 'div[value] > span.one-click-content',
-		// was this removed?
+		entryDefinitionsPath: 'section > div > div[value], .default-content > div[value], h3 + div > div[value]',
+		definitionPath: 'div[value] > span.one-click-content:last-of-type',
 		definitionLabelPath: '.luna-label',
 	})
 }

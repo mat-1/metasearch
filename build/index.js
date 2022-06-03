@@ -133,7 +133,7 @@ app.get('/settings', function (req, res) {
     });
 });
 app.use('/', express_1.default.static('src/public'));
-app.listen(8000, () => console.log('pog http://localhost:8000'));
+app.listen(8000, () => console.log('Running at http://localhost:8000'));
 exports.default = require('require-dir')();
 setInterval(() => {
     console.log(process.memoryUsage().heapUsed / 1024 / 1024 + 'mb');

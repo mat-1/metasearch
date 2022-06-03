@@ -44,9 +44,8 @@ async function dictionaryCom(query) {
         ipaSpellingPath: '.pron-ipa-content',
         entryPaths: 'section.entry-headword ~ section',
         partOfSpeechPath: '.luna-pos',
-        entryDefinitionsPath: 'section > div > div[value], h3 + div > div[value]',
-        definitionPath: 'div[value] > span.one-click-content',
-        // was this removed?
+        entryDefinitionsPath: 'section > div > div[value], .default-content > div[value], h3 + div > div[value]',
+        definitionPath: 'div[value] > span.one-click-content:last-of-type',
         definitionLabelPath: '.luna-label',
     });
 }
