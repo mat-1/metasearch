@@ -10,7 +10,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - run: npm install
+      - run: yarn
       - name: Compile Typescript
         uses: FuLagann/tsc-build-push@v1
         with:

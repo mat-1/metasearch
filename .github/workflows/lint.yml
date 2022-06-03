@@ -23,7 +23,7 @@ jobs:
           node-version: 14
         
       - name: Install Node.js dependencies
-        run: npm install
+        run: yarn
 
       - name: Cache
         uses: actions/cache@v2.1.3
@@ -33,4 +33,4 @@ jobs:
           key: ${{ runner.os }}-metasearch
 
       - name: ESlint
-        run: npm run eslint:github-action
+        run: yarn run eslint:github-action
