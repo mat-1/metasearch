@@ -1,12 +1,6 @@
 import { EngineResponse, EngineResult } from './search'
-import fetch from 'node-fetch'
+import { Agent, fetch } from 'undici'
 import * as cheerio from 'cheerio'
-import { Agent } from 'https'
-
-const httpsAgent = new Agent({
-	keepAlive: true,
-	keepAliveMsecs: 20000
-})
 
 let cachedCookies = {}
 
@@ -32,15 +26,18 @@ export async function requestRaw(url: string, session: boolean=false): Promise<s
 				'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:96.0) Gecko/20100101 Firefox/96.0',
 				'cookie': Object.entries(cookie).map(([k, v]) => `${k}=${v}`).join('; ')
 			},
-			agent: () => httpsAgent,
 			redirect: 'manual',
+			dispatcher: new Agent({
+				keepAliveTimeout: 20000,
+				keepAliveMaxTimeout: 20000
+			})
 		})
 
 		// if it's a redirect, follow it
 		if (response.status === 302 || response.status === 301) {
 			let location = response.headers.get('location')
 			// extract the cookies
-			const cookies = response.headers.raw()['set-cookie']
+			const cookies = response.headers.get('set-cookie')
 			if (cookies) {
 				// extract the cookies
 				for (const c of cookies) {
@@ -53,8 +50,9 @@ export async function requestRaw(url: string, session: boolean=false): Promise<s
 					cookie[name] = value
 				}
 			}
-			if (location)
-				url = location
+			if (location) {
+				url = new URL(location, url).toString()
+			}
 		} else {
 			if (session)
 				cachedCookies[urlObject.hostname] = cookie
@@ -110,7 +108,13 @@ export function extractAttribute(dom: cheerio.Cheerio, query: string, attribute:
 }
 
 export function extractHref(dom: cheerio.Cheerio, query: string) {
-	return extractAttribute(dom, query, 'href')
+	const elementHref = extractAttribute(dom, query, 'href')
+	if (elementHref)
+		return elementHref
+	const elementText = extractText(dom, query)
+	if (elementText.startsWith('https://'))
+		return elementText
+	return null
 }
 
 interface ParseResultListOptions {

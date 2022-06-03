@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -18,18 +22,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseResultList = exports.extractHref = exports.extractAttribute = exports.extractText = exports.getElements = exports.get = exports.requestDom = exports.requestJSON = exports.requestRaw = void 0;
-const node_fetch_1 = __importDefault(require("node-fetch"));
+const undici_1 = require("undici");
 const cheerio = __importStar(require("cheerio"));
-const https_1 = require("https");
-const httpsAgent = new https_1.Agent({
-    keepAlive: true,
-    keepAliveMsecs: 20000
-});
 let cachedCookies = {};
 // clear the cookies every hour
 setInterval(() => {
@@ -41,7 +37,7 @@ async function requestRaw(url, session = false) {
     let urlObject = new URL(url);
     let cookie = session ? (_a = cachedCookies[urlObject.hostname]) !== null && _a !== void 0 ? _a : {} : {};
     while (attempts < 5) {
-        const response = await (0, node_fetch_1.default)(url, {
+        const response = await (0, undici_1.fetch)(url, {
             headers: {
                 'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
                 'accept-language': 'en-US,en;q=0.5',
@@ -49,14 +45,17 @@ async function requestRaw(url, session = false) {
                 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:96.0) Gecko/20100101 Firefox/96.0',
                 'cookie': Object.entries(cookie).map(([k, v]) => `${k}=${v}`).join('; ')
             },
-            agent: () => httpsAgent,
             redirect: 'manual',
+            dispatcher: new undici_1.Agent({
+                keepAliveTimeout: 20000,
+                keepAliveMaxTimeout: 20000
+            })
         });
         // if it's a redirect, follow it
         if (response.status === 302 || response.status === 301) {
             let location = response.headers.get('location');
             // extract the cookies
-            const cookies = response.headers.raw()['set-cookie'];
+            const cookies = response.headers.get('set-cookie');
             if (cookies) {
                 // extract the cookies
                 for (const c of cookies) {
@@ -70,8 +69,9 @@ async function requestRaw(url, session = false) {
                     cookie[name] = value;
                 }
             }
-            if (location)
-                url = location;
+            if (location) {
+                url = new URL(location, url).toString();
+            }
         }
         else {
             if (session)
@@ -128,7 +128,13 @@ function extractAttribute(dom, query, attribute) {
 }
 exports.extractAttribute = extractAttribute;
 function extractHref(dom, query) {
-    return extractAttribute(dom, query, 'href');
+    const elementHref = extractAttribute(dom, query, 'href');
+    if (elementHref)
+        return elementHref;
+    const elementText = extractText(dom, query);
+    if (elementText.startsWith('https://'))
+        return elementText;
+    return null;
 }
 exports.extractHref = extractHref;
 // for search engines like google, bing, etc
